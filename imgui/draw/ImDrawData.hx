@@ -16,14 +16,14 @@ extern class ImDrawData
     public var TotalVtxCount : Int;
     public var TotalIdxCount : Int;
 
+    @:native('ImDrawData') static function create() : Pointer<ImDrawData>;
     @:native('ImGui::linc::GetDrawList') static function getDrawList(_data : Pointer<ImDrawData>, _index : Int) : Pointer<ImDrawList>;
-
     @:native('DeIndexAllBuffers') private function _deIndexAllBuffers() : Void;
+    @:native('ScaleClipRects') private function _scaleClipRects(_scale : ImVec2) : Void;
+
     static inline function deIndexAllBuffers(_drawData : Pointer<ImDrawData>) : Void {
         _drawData.ref._deIndexAllBuffers();
     }
-
-    @:native('ScaleClipRects') private function _scaleClipRects(_scale : ImVec2) : Void;
     static inline function scaleClipRects(_drawData : Pointer<ImDrawData>, _scale : ImVec2) : Void {
         _drawData.ref._scaleClipRects(_scale);
     }
