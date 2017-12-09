@@ -1,0 +1,14 @@
+
+{
+    "name" : "linc_imgui",
+    "license": "MIT",
+    "description": "Haxe hxcpp @:native externs for ImGui",
+    "version" : "0.0.1",
+    "releasenote": "Initial release",
+    "contributors": [
+        "Aidan"
+    ],
+    "dependencies" : {
+        "hxcpp" : ""
+    }
+}

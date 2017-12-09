@@ -1,0 +1,31 @@
+<xml>
+
+    <!-- For a more in depth guide: https://github.com/snowkit/hxcpp-guide -->
+    <set name="IMGUI" value="${LINC_IMGUI_PATH}lib/imgui" />
+
+    <files id="haxe">
+
+        <!-- add files and flags to the haxe c++ build -->
+
+        <compilerflag value="-I${LINC_IMGUI_PATH}linc/"/>
+        <compilerflag value="-I${LINC_IMGUI_PATH}lib/imgui/" />
+
+        <file name="${LINC_IMGUI_PATH}linc/linc_imgui.cpp" />
+
+    </files>
+
+    <files id="imgui-sources">
+        <compilerflag value="-I${LINC_IMGUI_PATH}lib/imgui/" />
+        <file name="${IMGUI}/imgui.cpp" />
+        <file name="${IMGUI}/imgui_draw.cpp" />
+        <file name="${IMGUI}/imgui_demo.cpp" />
+    </files>
+
+    <target id="haxe">
+
+        <!-- add linker flags to the haxe build output -->
+        <files id="imgui-sources" />
+
+    </target>
+
+</xml>
