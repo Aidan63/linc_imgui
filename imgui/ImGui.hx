@@ -7,7 +7,7 @@ import imgui.draw.ImDrawData;
 // Typedefs and Enumerations
 typedef ImU32 = UInt;
 typedef ImGuiID = UInt;
-typedef ImWchar = Int;
+typedef ImWchar = cpp.UInt16;
 typedef ImTextureID = Pointer<Void>;
 typedef ImGuiCol = Int;
 typedef ImGuiStyleVar = Int;
