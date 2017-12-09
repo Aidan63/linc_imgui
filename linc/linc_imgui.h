@@ -12,6 +12,7 @@ namespace ImGui
 
         // Atlas functions
         extern unsigned char* GetTexDataAsRGBA32(ImFontAtlas* _atlas, int* _outWidth, int* _outHeight);
+        extern unsigned char* GetTexDataAsAlpha8(ImFontAtlas* _atlas, int* _outWidth, int* _outHeight);
         extern void SetTexID(ImFontAtlas* _atlas, const char* _data);
 
         // ImDrawData functions

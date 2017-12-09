@@ -11,6 +11,7 @@
         <compilerflag value="-I${LINC_IMGUI_PATH}lib/imgui/" />
 
         <file name="${LINC_IMGUI_PATH}linc/linc_imgui.cpp" />
+        <file name="${LINC_IMGUI_PATH}linc/linc_imgui_fontatlas.cpp" />
 
     </files>
 
