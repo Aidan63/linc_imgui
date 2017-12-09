@@ -18,9 +18,10 @@ class Test
         var io = ImGui.getIO();
         io.DisplaySize = ImVec2.create(640, 480);
         
-        var width = 0;
-        var height = 0;
-        var pixels = ImFontAtlas.getTexDataAsRGBA32(io.Fonts, width, height);
+        var width  : Int = 0;
+        var height : Int = 0;
+        var pixels : Array<Int> = null;
+        ImFontAtlas.getTexDataAsRGBA32(io.Fonts, pixels, width, height);
         ImFontAtlas.setTexID(io.Fonts, "TextureID");
 
         // Update
