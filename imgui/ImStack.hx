@@ -50,12 +50,12 @@ extern class ImStack
     /**
       retrieve given color with style alpha applied
      */
-    @:native('ImGui::GetColorU32') static function getColorU32(_col : Reference<ImVec4>) : ImU32;
+    @:native('ImGui::GetColorU32') static function getColorU32Vec(_col : Reference<ImVec4>) : ImU32;
 
     /**
       retrieve given color with style alpha applied
      */
-    @:native('ImGui::GetColorU32') static function getColorU32(_col : ImU32) : ImU32;
+    @:native('ImGui::GetColorU32') static function getColorU32Val(_col : ImU32) : ImU32;
 
     // Parameters stacks (current window)
 
@@ -75,13 +75,13 @@ extern class ImStack
       word-wrapping for Text*() commands. < 0.0f: no wrapping; 0.0f: wrap to end of window (or column);
       > 0.0f: wrap at 'wrap_pos_x' position in window local space
      */
-    @:native('ImGui::PushTextWrapPos') static function pushTextWrapPos(_wrapPosX = 0) : Void;
+    @:native('ImGui::PushTextWrapPos') static function pushTextWrapPos(_wrapPosX : Int = 0) : Void;
     @:native('ImGui::PopTextWrapPos') static function popTextWrapPos() : Void;
 
     /**
       allow focusing using TAB/Shift-TAB, enabled by default but you can disable it for certain widgets
      */
-    @:native('ImGui::PushAllowKeyboardFocus') static function pushAllowKeyboardFocus(_allowKeyboardFocus) : Void;
+    @:native('ImGui::PushAllowKeyboardFocus') static function pushAllowKeyboardFocus(_allowKeyboardFocus : Bool) : Void;
     @:native('ImGui::PopAllowKeyboardFocus') static function popAllowKeyboardFocus() : Void;
 
     /**
