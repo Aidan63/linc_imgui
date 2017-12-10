@@ -10,5 +10,10 @@ extern class ImVec4
     public var z : Float;
     public var w : Float;
 
-    @:native('ImVec4') static function create(_x : Float = 0, _y : Float = 0, _z : Float, _w : Float) : ImVec2;
+    @:native('ImVec4') static function create(_x : Float = 0, _y : Float = 0, _z : Float = 0, _w : Float = 0) : ImVec4;
+}
+
+class ImVec4Util
+{
+    public static var DEFAULT = ImVec4.create();
 }
