@@ -21,7 +21,6 @@ typedef ImGuiMouseCursor = Int;
 typedef ImGuiCond = Int;
 typedef ImDrawCornerFlags = Int;
 typedef ImGuiColorEditFlags = Int;
-typedef ImGuiWindowFlags = Int;
 typedef ImGuiColumnsFlags = Int;
 typedef ImGuiInputTextFlags = Int;
 typedef ImGuiSelectableFlags = Int;
@@ -61,87 +60,6 @@ extern class ImGui
 //-------//
 // Enums //
 //-------//
-
-/**
-  Flags for ImGui::Begin()
- */
-@:unreflective
-@:enum extern abstract ImGuiWindowFlags_(ImGuiWindowFlagsImpl)
-{
-    /**
-      Disable title-bar
-     */
-    @:native('ImGuiWindowFlags_NoTitleBar') var NoTitleBar;
-    /**
-      Disable user resizing with the lower-right grip
-     */
-    @:native('ImGuiWindowFlags_NoResize') var NoResize;
-    /**
-      Disable user moving the window
-     */
-    @:native('ImGuiWindowFlags_NoMove') var NoMove;
-    /**
-      Disable scrollbars (window can still scroll with mouse or programatically)
-     */
-    @:native('ImGuiWindowFlags_NoScrollbar') var NoScrollbar;
-    /**
-      Disable user vertically scrolling with mouse wheel
-     */
-    @:native('ImGuiWindowFlags_NoScrollWithMouse') var NoScrollWithMouse;
-    /**
-      Disable user collapsing window by double-clicking on it
-     */
-    @:native('ImGuiWindowFlags_NoCollapse') var NoCollapse;
-    /**
-      Resize every window to its content every frame
-     */
-    @:native('ImGuiWindowFlags_AlwaysAutoResize') var AlwaysAutoResize;
-    /**
-      Never load/save settings in .ini file
-     */
-    @:native('ImGuiWindowFlags_NoSavedSettings') var NoSavedSettings;
-    /**
-      Disable catching mouse or keyboard inputs, hovering test with pass through.
-     */
-    @:native('ImGuiWindowFlags_NoInputs') var NoInputs;
-    /**
-      Has a menu-bar
-     */
-    @:native('ImGuiWindowFlags_MenuBar') var MenuBar;
-    /**
-      Allow horizontal scrollbar to appear (off by default). You may use SetNextWindowContentSize(ImVec2(width,0.0f));
-      
-      prior to calling Begin() to specify width. Read code in imgui_demo in the "Horizontal Scrolling" section.
-     */
-    @:native('ImGuiWindowFlags_HorizontalScrollbar') var HorizontalScrollbar;
-    /**
-      Disable taking focus when transitioning from hidden to visible state
-     */
-    @:native('ImGuiWindowFlags_NoFocusOnAppearing') var NoFocusOnAppearing;
-    /**
-      Disable bringing window to front when taking focus (e.g. clicking on it or programatically giving it focus)
-     */
-    @:native('ImGuiWindowFlags_NoBringToFrontOnFocus') var NoBringToFrontOnFocus;
-    /**
-      Always show vertical scrollbar (even if ContentSize.y < Size.y)
-     */
-    @:native('ImGuiWindowFlags_AlwaysVerticalScrollbar') var AlwaysVerticalScrollbar;
-    /**
-      Always show horizontal scrollbar (even if ContentSize.x < Size.x)
-     */
-    @:native('ImGuiWindowFlags_AlwaysHorizontalScrollbar') var AlwaysHorizontalScrollbar;
-    /**
-      Ensure child windows without border uses style.WindowPadding (ignored by default for non-bordered child windows, because more convenient)
-     */
-    @:native('ImGuiWindowFlags_AlwaysUseWindowPadding') var AlwaysUseWindowPadding;
-    /**
-      (WIP) Enable resize from any corners and borders. Your back-end needs to honor the different values of io.MouseCursor set by imgui.
-     */
-    @:native('ImGuiWindowFlags_ResizeFromAnySide') var ResizeFromAnySide;
-}
-@:unreflective
-@:native('ImGuiWindowFlags_')
-extern class ImGuiWindowFlagsImpl {}
 
 /**
   Flags for ImGui::InputText()

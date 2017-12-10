@@ -209,3 +209,80 @@ extern class ImWindow
     @:native('SetStateStorage') static function SetStateStorage(_tree : Pointer<ImGuiStorage>) : Void;
     @:native('GetStateStorage') static function GetStateStorage() : Pointer<ImGuiStorage>;
 }
+
+/**
+  Flags for ImGui::Begin()
+ */
+@:enum abstract ImGuiWindowFlags(Int) from Int to Int
+{
+    /**
+      Disable title-bar
+     */
+    var NoTitleBar = 1 << 0;
+    /**
+      Disable user resizing with the lower-right grip
+     */
+    var NoResize = 1 << 1;
+    /**
+      Disable user moving the window
+     */
+    var NoMove = 1 << 2;
+    /**
+      Disable scrollbars (window can still scroll with mouse or programatically)
+     */
+    var NoScrollbar = 1 << 3;
+    /**
+      Disable user vertically scrolling with mouse wheel
+     */
+    var NoScrollWithMouse = 1 << 4;
+    /**
+      Disable user collapsing window by double-clicking on it
+     */
+    var NoCollapse = 1 << 5;
+    /**
+      Resize every window to its content every frame
+     */
+    var AlwaysAutoResize = 1 << 6;
+    /**
+      Never load/save settings in .ini file
+     */
+    var NoSavedSettings = 1 << 8;
+    /**
+      Disable catching mouse or keyboard inputs, hovering test with pass through.
+     */
+    var NoInputs = 1 << 9;
+    /**
+      Has a menu-bar
+     */
+    var MenuBar = 1 << 10;
+    /**
+      Allow horizontal scrollbar to appear (off by default). You may use SetNextWindowContentSize(ImVec2(width,0.0f));
+      
+      prior to calling Begin() to specify width. Read code in imgui_demo in the "Horizontal Scrolling" section.
+     */
+    var HorizontalScrollbar = 1 << 11;
+    /**
+      Disable taking focus when transitioning from hidden to visible state
+     */
+    var NoFocusOnAppearing = 1 << 12;
+    /**
+      Disable bringing window to front when taking focus (e.g. clicking on it or programatically giving it focus)
+     */
+    var NoBringToFrontOnFocus = 1 << 13;
+    /**
+      Always show vertical scrollbar (even if ContentSize.y < Size.y)
+     */
+    var AlwaysVerticalScrollbar = 1 << 14;
+    /**
+      Always show horizontal scrollbar (even if ContentSize.x < Size.x)
+     */
+    var AlwaysHorizontalScrollbar = 1 << 15;
+    /**
+      Ensure child windows without border uses style.WindowPadding (ignored by default for non-bordered child windows, because more convenient)
+     */
+    var AlwaysUseWindowPadding = 1 << 16;
+    /**
+      (WIP) Enable resize from any corners and borders. Your back-end needs to honor the different values of io.MouseCursor set by imgui.
+     */
+    var ResizeFromAnySide = 1 << 17;
+}
