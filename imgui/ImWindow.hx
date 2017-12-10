@@ -4,74 +4,75 @@ import imgui.ImGui;
 import imgui.draw.ImDrawList;
 import imgui.util.ImVec2;
 import imgui.util.ImGuiStorage;
+import cpp.Pointer;
+import cpp.Reference;
 
 @:keep
 @:include('linc_imgui.h')
-@:native('ImGuiWindow')
 @:structAccess
 @:unreflective
-extern class ImGuiWindow
+extern class ImWindow
 {
     /**
       push window to the stack and start appending to it. see .cpp for details. return false when window is collapsed, so you can early out in your code.
       'bool* p_open' creates a widget on the upper-right to close the window (which sets your bool to false).
      */
-    @:native('ImGui::Begin') static function Begin(_name : String, _open : Pointer<Bool> = null, _flags : ImGuiWindowFlags = 0) : Bool;
+    @:native('ImGui::Begin') static function begin(_name : String, _open : Pointer<Bool> = null, _flags : ImGuiWindowFlags = 0) : Bool;
 
     /**
       finish appending to current window, pop it off the window stack.
      */
-    @:native('ImGui::End') static function End() : Void;
+    @:native('ImGui::End') static function end() : Void;
 
     /**
       begin a scrolling region. size==0.0f: use remaining window size, size<0.0f: use remaining window size minus abs(size).
       size>0.0f: fixed size. each axis can use a different mode, e.g. ImVec2(0,400).
      */
-    @:native('ImGui::BeginChild') static function BeginChildStr(_strID : String , _size : Reference<ImVec2> = ImVec2.create(), _border : Bool = false, _flags : ImGuiWindowFlags = 0) : Bool;
-    @:native('ImGui::BeginChild') static function BeginChildInt(_intID : ImGuiID, _size : Reference<ImVec2> = ImVec2.create(), _border : Bool = false, _flags : ImGuiWindowFlags = 0) : Bool;
-    @:native('ImGui::EndChild') static function EndChild() : Void;
+    @:native('ImGui::BeginChild') static function beginChildStr(_strID : String , _size : Reference<ImVec2>, _border : Bool = false, _flags : ImGuiWindowFlags = 0) : Bool;
+    @:native('ImGui::BeginChild') static function beginChildInt(_intID : ImGuiID, _size : Reference<ImVec2>, _border : Bool = false, _flags : ImGuiWindowFlags = 0) : Bool;
+    @:native('ImGui::EndChild') static function endChild() : Void;
 
     /**
       current content boundaries (typically window boundaries including scrolling, or current column boundaries), in windows coordinates
      */
-    @:native('ImGui::GetContentRegionMax') static function GetContentRegionMax() : ImVec2;
+    @:native('ImGui::GetContentRegionMax') static function getContentRegionMax() : ImVec2;
 
     /**
       == GetContentRegionMax() - GetCursorPos()
      */
-    @:native('ImGui::GetContentRegionAvail') static function GetContentRegionAvail() : ImVec2;
-    @:native('ImGui::GetContentRegionAvailWidth') static function GetContentRegionAvailWidth() : Float;
+    @:native('ImGui::GetContentRegionAvail') static function getContentRegionAvail() : ImVec2;
+    @:native('ImGui::GetContentRegionAvailWidth') static function getContentRegionAvailWidth() : Float;
 
     /**
       content boundaries min (roughly (0,0)-Scroll), in window coordinates
      */
-    @:native('ImGui::GetWindowContentRegionMin') static function GetWindowContentRegionMin() : ImVec2;
+    @:native('ImGui::GetWindowContentRegionMin') static function getWindowContentRegionMin() : ImVec2;
 
     /**
       content boundaries max (roughly (0,0)+Size-Scroll) where Size can be override with SetNextWindowContentSize(), in window coordinates
      */
-    @:native('ImGui::GetWindowContentRegionMax') static function GetWindowContentRegionMax() : ImVec2;
-    @:native('ImGui::GetWindowContentRegionWidth') static function GetWindowContentRegionWidth() : Float;
+    @:native('ImGui::GetWindowContentRegionMax') static function getWindowContentRegionMax() : ImVec2;
+    @:native('ImGui::GetWindowContentRegionWidth') static function getWindowContentRegionWidth() : Float;
 
     /**
       get rendering command-list if you want to append your own draw primitives
      */
-    @:native('ImGui::GetWindowDrawList') static function GetWindowDrawList() : Pointer<ImDrawList>;
+    @:native('ImGui::GetWindowDrawList') static function getWindowDrawList() : Pointer<ImDrawList>;
 
     /**
       get current window position in screen space (useful if you want to do your own drawing via the DrawList api)
      */
-    @:native('ImGui::GetWindowPos') static function GetWindowPos() : ImVec2;
-    @:native('ImGui::GetWindowSize') static function GetWindowSize() : ImVec2;
-    @:native('ImGui::GetWindowWidth') static function GetWindowWidth() : Float;
-    @:native('ImGui::GetWindowHeight') static function GetWindowHeight() : Float;
-    @:native('ImGui::IsWindowCollapsed') static function IsWindowCollapsed() : Bool;
-    @:native('ImGui::IsWindowAppearing') static function IsWindowAppearing() : Bool;
+    @:native('ImGui::GetWindowPos') static function getWindowPos() : ImVec2;
+    @:native('ImGui::GetWindowSize') static function getWindowSize() : ImVec2;
+    @:native('ImGui::GetWindowWidth') static function getWindowWidth() : Float;
+    @:native('ImGui::GetWindowHeight') static function getWindowHeight() : Float;
+    @:native('ImGui::IsWindowCollapsed') static function isWindowCollapsed() : Bool;
+    @:native('ImGui::IsWindowAppearing') static function isWindowAppearing() : Bool;
 
     /**
       per-window font scale. Adjust IO.FontGlobalScale if you want to scale all windows
      */
-    @:native('ImGui::SetWindowFontScale') static function SetWindowFontScale(_scale : Float) : Void;
+    @:native('ImGui::SetWindowFontScale') static function setWindowFontScale(_scale : Float) : Void;
 
     //----------------//
     // Window Setters //
@@ -80,7 +81,7 @@ extern class ImGuiWindow
     /**
       set next window position. call before Begin(). use pivot=(0.5f,0.5f) to center on given point, etc.
      */
-    @:native('ImGui::SetNextWindowPos') static function setNextWindowPos(_pos : Reference<ImVec2>, _cond : ImGuiCond = 0, _pivot : Reference<ImVec2> = ImVec2.create()) : Void;
+    @:native('ImGui::SetNextWindowPos') static function setNextWindowPos(_pos : Reference<ImVec2>, _cond : ImGuiCond, _pivot : Reference<ImVec2>) : Void;
 
     /**
       set next window size. set axis to 0.0f to force an auto-fit on this axis. call before Begin()
@@ -118,7 +119,8 @@ extern class ImGuiWindow
     @:native('ImGui::SetWindowPos') static function setCurrentWindowPos(_pos : Reference<ImVec2>, _cond : ImGuiCond = 0) : Void;
 
     /**
-      (not recommended) set current window size - call within Begin()/End(). set to ImVec2(0,0) to force an auto-fit. prefer using SetNextWindowSize(), as this may incur tearing and minor side-effects.
+      (not recommended) set current window size - call within Begin()/End().
+      set to ImVec2(0,0) to force an auto-fit. prefer using SetNextWindowSize(), as this may incur tearing and minor side-effects.
      */
     @:native('ImGui::SetWindowSize') static function setCurrentWindowSize(_size : Reference<ImVec2>, _cond : ImGuiCond = 0) : Void;
 
