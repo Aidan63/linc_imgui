@@ -7,10 +7,7 @@ import imgui.util.ImGuiStorage;
 import cpp.Pointer;
 import cpp.Reference;
 
-@:keep
 @:include('linc_imgui.h')
-@:structAccess
-@:unreflective
 extern class ImWindow
 {
     /**
