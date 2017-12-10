@@ -1,6 +1,8 @@
 package imgui;
 
 import cpp.Pointer;
+import cpp.ConstPointer;
+import cpp.ConstCharStar;
 import cpp.Reference;
 import cpp.Callable;
 import imgui.draw.ImDrawData;
@@ -55,6 +57,27 @@ extern class ImGui
     @:native('ImGui::ShowMetricsWindow') static function showMetricsWindow(_open : Pointer<Bool> = null) : Void;
     @:native('ImGui::ShowStyleEditor') static function showStyleEditor(_style : Pointer<ImGuiStyle> = null) : Void;
     @:native('ImGui::ShowUserGuide') static function showUserGuide() : Void;
+
+    // ID scopes
+    // If you are creating widgets in a loop you most likely want to push a unique identifier (e.g. object pointer, loop index) so ImGui can differentiate them.
+    // You can also use the "##foobar" syntax within widget label to distinguish them from each others. Read "A primer on the use of labels/IDs" in the FAQ for more details.
+    @:native('ImGui::PopID') static function popID() : Void;
+
+    /**
+      push identifier into the ID stack. IDs are hash of the entire stack!
+     */
+    @:overload(function(_strIdBegin : ConstCharStar, _strIdEnd : ConstCharStar) : Void {})
+    @:overload(function(_ptrId : ConstCharStar) : Void {})
+    @:overload(function(_intId : Int) : Void {})
+    @:native('ImGui::PushID') static function pushID(_strId : ConstCharStar) : Void;
+
+    /**
+      calculate unique ID (hash of whole ID stack + given parameter). e.g. if you want to query into ImGuiStorage yourself
+     */
+    @:overload(function(_strIdBegin : ConstCharStar, _strIdEnd : ConstCharStar) : ImGuiID {})
+    @:overload(function(_ptrId : ConstPointer<Void>) : ImGuiID {})
+    @:native('ImGui::GetID') static function getID(_strId : ConstCharStar) : ImGuiID;
+
 }
 
 //-------//
