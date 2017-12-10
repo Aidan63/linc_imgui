@@ -2,7 +2,12 @@ package imgui;
 
 import cpp.Pointer;
 import cpp.Reference;
+import cpp.Callable;
 import imgui.draw.ImDrawData;
+import imgui.draw.ImDrawList;
+import imgui.util.ImVec2;
+import imgui.callback.ImGuiSizeConstraintCallbackData;
+import imgui.callback.ImGuiTextEditCallbackData;
 
 // Typedefs
 typedef ImU32 = UInt;
@@ -22,6 +27,9 @@ typedef ImGuiInputTextFlags = Int;
 typedef ImGuiSelectableFlags = Int;
 typedef ImGuiTreeNodeFlags = Int;
 typedef ImGuiHoveredFlags = Int;
+
+typedef ImGuiSizeConstraintCallback = Callable<Pointer<ImGuiSizeConstraintCallbackData>->Void>;
+typedef ImGuiTextEditCallback = Callable<Pointer<ImGuiTextEditCallback>->Int>;
 
 @:keep
 @:include('linc_imgui.h')
@@ -48,10 +56,6 @@ extern class ImGui
     @:native('ImGui::ShowMetricsWindow') static function showMetricsWindow(_open : Pointer<Bool> = null) : Void;
     @:native('ImGui::ShowStyleEditor') static function showStyleEditor(_style : Pointer<ImGuiStyle> = null) : Void;
     @:native('ImGui::ShowUserGuide') static function showUserGuide() : Void;
-
-    // Tmp for testing?
-    @:native('ImGui::Begin') static function begin(_name : cpp.ConstCharStar) : Void;
-    @:native('ImGui::End') static function end() : Void;
 }
 
 //-------//
@@ -316,7 +320,7 @@ extern class ImGuiKeyImpl {}
 }
 @:unreflective
 @:native('ImGuiCol_')
-extern class ImGuiColImple {}
+extern class ImGuiColImpl {}
 
 /**
   Enumeration for PushStyleVar() / PopStyleVar() to temporarily modify the ImGuiStyle structure.
