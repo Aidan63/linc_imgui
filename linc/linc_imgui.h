@@ -8,7 +8,8 @@ namespace ImGui
     namespace linc
     {
         // Misc
-        extern const char* GetVoidStar(void* _ptr);
+        extern const char* resolveVoidStar(void* _ptr);
+        extern void* createVoidStar(const char* _data);
 
         // Atlas functions
         extern unsigned char* GetTexDataAsRGBA32(ImFontAtlas* _atlas, int* _outWidth, int* _outHeight);
