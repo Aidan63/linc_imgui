@@ -4,8 +4,11 @@ import imgui.ImGui;
 import imgui.util.ImVec2;
 import imgui.font.ImFontAtlas;
 import imgui.font.ImFont;
+import imgui.draw.ImDrawData;
 import cpp.Pointer;
+import cpp.RawPointer;
 import cpp.ConstCharStar;
+import cpp.Callable;
 
 @:keep
 @:include('linc_imgui.h')
@@ -146,6 +149,15 @@ extern class ImGuiIO
       - Default : true
      */
     public var OptCursorBlink : Bool;
+
+    //------------------------//
+    // User Function Settings //
+    //------------------------//
+
+    public var RenderDrawListsFn : Callable<RawPointer<ImDrawData>->Void>;
+
+    public var GetClipboardTextFn : Callable<RawPointer<cpp.Void>->ConstCharStar>;
+    public var SetClipboardTextFn : Callable<RawPointer<cpp.Void>->ConstCharStar->Void>;
 
     // -------------------------------------------//
     // Settings to fill before calling NewFrame() //
