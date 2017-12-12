@@ -9,7 +9,6 @@ import imgui.draw.ImDrawData;
 import imgui.draw.ImDrawList;
 import imgui.util.ImVec2;
 import imgui.callback.ImGuiSizeConstraintCallbackData;
-import imgui.callback.ImGuiTextEditCallbackData;
 
 // Typedefs
 typedef ImU32 = UInt;
@@ -24,13 +23,11 @@ typedef ImGuiCond = Int;
 typedef ImDrawCornerFlags = Int;
 typedef ImGuiColorEditFlags = Int;
 typedef ImGuiColumnsFlags = Int;
-typedef ImGuiInputTextFlags = Int;
 typedef ImGuiSelectableFlags = Int;
 typedef ImGuiTreeNodeFlags = Int;
 typedef ImGuiHoveredFlags = Int;
 
 typedef ImGuiSizeConstraintCallback = Callable<Pointer<ImGuiSizeConstraintCallbackData>->Void>;
-typedef ImGuiTextEditCallback = Callable<Pointer<ImGuiTextEditCallback>->Int>;
 
 @:keep
 @:include('linc_imgui.h')
@@ -83,34 +80,6 @@ extern class ImGui
 //-------//
 // Enums //
 //-------//
-
-/**
-  Flags for ImGui::InputText()
- */
-@:unreflective
-@:enum extern abstract ImGuiInputTextFlags_(ImGuiInputTextFlagsImpl)
-{
-    // Default: 0
-    @:native('ImGuiInputTextFlags_CharsDecimal') var CharsDecimal;   // Allow 0123456789.+-*/
-    @:native('ImGuiInputTextFlags_CharsHexadecimal') var CharsHexadecimal;   // Allow 0123456789ABCDEFabcdef
-    @:native('ImGuiInputTextFlags_CharsUppercase') var CharsUppercase;   // Turn a..z into A..Z
-    @:native('ImGuiInputTextFlags_CharsNoBlank') var CharsNoBlank;   // Filter out spaces, tabs
-    @:native('ImGuiInputTextFlags_AutoSelectAll') var AutoSelectAll;   // Select entire text when first taking mouse focus
-    @:native('ImGuiInputTextFlags_EnterReturnsTrue') var EnterReturnsTrue;   // Return 'true' when Enter is pressed (as opposed to when the value was modified)
-    @:native('ImGuiInputTextFlags_CallbackCompletion') var CallbackCompletion;   // Call user function on pressing TAB (for completion handling)
-    @:native('ImGuiInputTextFlags_CallbackHistory') var CallbackHistory;   // Call user function on pressing Up/Down arrows (for history handling)
-    @:native('ImGuiInputTextFlags_CallbackAlways') var CallbackAlways;   // Call user function every time. User code may query cursor position, modify text buffer.
-    @:native('ImGuiInputTextFlags_CallbackCharFilter') var CallbackCharFilter;   // Call user function to filter character. Modify data->EventChar to replace/filter input, or return 1 to discard character.
-    @:native('ImGuiInputTextFlags_AllowTabInput') var AllowTabInput;  // Pressing TAB input a '\t' character into the text field
-    @:native('ImGuiInputTextFlags_CtrlEnterForNewLine') var CtrlEnterForNewLine;  // In multi-line mode, unfocus with Enter, add new line with Ctrl+Enter (default is opposite: unfocus with Ctrl+Enter, add line with Enter).
-    @:native('ImGuiInputTextFlags_NoHorizontalScroll') var NoHorizontalScroll;  // Disable following the cursor horizontally
-    @:native('ImGuiInputTextFlags_AlwaysInsertMode') var AlwaysInsertMode;  // Insert mode
-    @:native('ImGuiInputTextFlags_ReadOnly') var ReadOnly;  // Read-only mode
-    @:native('ImGuiInputTextFlags_Password') var Password;  // Password mode, display all characters as '*'
-}
-@:unreflective
-@:native('ImGuiInputTextFlags_')
-extern class ImGuiInputTextFlagsImpl {}
 
 /**
   Flags for ImGui::TreeNodeEx(), ImGui::CollapsingHeader*()
