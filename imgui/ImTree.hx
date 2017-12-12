@@ -12,20 +12,17 @@ extern class ImTree
 {
     /**
       if returning 'true' the node is open and the tree id is pushed into the id stack. user is responsible for calling TreePop().
-     */
-    @:native('ImGui::TreeNode') static function treeNode(_label : ConstCharStar) : Bool;
 
-    /**
       read the FAQ about why and how to use ID. to align arbitrary text at the same level as a TreeNode() you can use Bullet().
      */
     @:overload(function(_strId : ConstCharStar, _fmt : ConstCharStar) : Bool {})
-    @:native('ImGui::TreeNode') static function treeNodeId(_ptrId : RawConstPointer<cpp.Void>, _fmt : ConstCharStar) : Bool;
+    @:overload(function(_ptrId : RawConstPointer<cpp.Void>, _fmt : ConstCharStar) : Bool {})
+    @:native('ImGui::TreeNode') static function treeNode(_label : ConstCharStar) : Bool;
 
     @:overload(function(_label : ConstCharStar) : Bool {})
-    @:native('ImGui::TreeNodeEx') static function treeNodeEx(_label : ConstCharStar, _flags : ImGuiTreeNodeFlags) : Bool;
-
+    @:overload(function(_label : ConstCharStar, _flags : ImGuiTreeNodeFlags) : Bool {})
     @:overload(function(_strId : ConstCharStar, _flags : ImGuiTreeNodeFlags, _fmt : ConstCharStar) : Bool {})
-    @:native('ImGui::TreeNodeEx') static function treeNodeExId(_ptrId : RawConstPointer<cpp.Void>, _flags : ImGuiTreeNodeFlags, _fmt : ConstCharStar) : Bool;
+    @:native('ImGui::TreeNodeEx') static function treeNodeEx(_ptrId : RawConstPointer<cpp.Void>, _flags : ImGuiTreeNodeFlags, _fmt : ConstCharStar) : Bool;
 
     /**
       Indent()+PushId(). Already called by TreeNode() when returning true, but you can call Push/Pop yourself for layout purpose
@@ -56,15 +53,13 @@ extern class ImTree
 
     /**
       if returning 'true' the header is open. doesn't indent nor push on ID stack. user doesn't have to call TreePop().
-     */
-    @:overload(function(_label : ConstCharStar) : Bool {})
-    @:native('ImGui::CollapsingHeader') static function collapsingHeader(_label : ConstCharStar, _flags : ImGuiTreeNodeFlags) : Bool;
 
-    /**
-      when 'p_open' isn't NULL, display an additional small close button on upper right of the header   
+      when 'p_open' isn't NULL, display an additional small close button on upper right of the header
      */
     @:overload(function(_label : ConstCharStar, _pOpen : Pointer<Bool>) : Bool {})
-    @:native('ImGui::CollapsingHeader') static function collapsingHeaderPtr(_label : ConstCharStar, _pOpen : Pointer<Bool>, _flags : ImGuiTreeNodeFlags) : Bool;
+    @:overload(function(_label : ConstCharStar, _pOpen : Pointer<Bool>, _flags : ImGuiTreeNodeFlags) : Bool {})
+    @:overload(function(_label : ConstCharStar) : Bool {})
+    @:native('ImGui::CollapsingHeader') static function collapsingHeader(_label : ConstCharStar, _flags : ImGuiTreeNodeFlags) : Bool;
 }
 
 /**
