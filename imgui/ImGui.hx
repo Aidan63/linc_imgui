@@ -23,7 +23,6 @@ typedef ImGuiCond = Int;
 typedef ImDrawCornerFlags = Int;
 typedef ImGuiColorEditFlags = Int;
 typedef ImGuiColumnsFlags = Int;
-typedef ImGuiSelectableFlags = Int;
 typedef ImGuiHoveredFlags = Int;
 
 typedef ImGuiSizeConstraintCallback = Callable<Pointer<ImGuiSizeConstraintCallbackData>->Void>;
@@ -79,29 +78,6 @@ extern class ImGui
 //-------//
 // Enums //
 //-------//
-
-/**
-  Flags for ImGui::Selectable()
- */
-@:unreflective
-@:enum extern abstract ImGuiSelectableFlags_(ImGuiSelectableFlagsImpl)
-{
-    /**
-      Clicking this don't close parent popup window
-     */
-    @:native('ImGuiSelectableFlags_DontClosePopups') var DontClosePopups;
-    /**
-      Selectable frame can span all columns (text will still fit in current column)
-     */
-    @:native('ImGuiSelectableFlags_SpanAllColumns') var SpanAllColumns;
-    /**
-      Generate press events on double clicks too
-     */
-    @:native('ImGuiSelectableFlags_AllowDoubleClick') var AllowDoubleClick;
-}
-@:unreflective
-@:native('ImGuiSelectableFlags_')
-extern class ImGuiSelectableFlagsImpl {}
 
 /**
   Flags for ImGui::IsItemHovered(), ImGui::IsWindowHovered()
