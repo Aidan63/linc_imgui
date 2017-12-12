@@ -24,7 +24,6 @@ typedef ImDrawCornerFlags = Int;
 typedef ImGuiColorEditFlags = Int;
 typedef ImGuiColumnsFlags = Int;
 typedef ImGuiSelectableFlags = Int;
-typedef ImGuiTreeNodeFlags = Int;
 typedef ImGuiHoveredFlags = Int;
 
 typedef ImGuiSizeConstraintCallback = Callable<Pointer<ImGuiSizeConstraintCallbackData>->Void>;
@@ -80,31 +79,6 @@ extern class ImGui
 //-------//
 // Enums //
 //-------//
-
-/**
-  Flags for ImGui::TreeNodeEx(), ImGui::CollapsingHeader*()
- */
-@:unreflective
-@:enum extern abstract ImGuiTreeNodeFlags_(ImGuiTreeNodeFlagsImpl)
-{
-    @:native('ImGuiTreeNodeFlags_Selected') var Selected; // Draw as selected
-    @:native('ImGuiTreeNodeFlags_Framed') var Framed; // Full colored frame (e.g. for CollapsingHeader)
-    @:native('ImGuiTreeNodeFlags_AllowOverlapMode') var AllowOverlapMode; // Hit testing to allow subsequent widgets to overlap this one
-    @:native('ImGuiTreeNodeFlags_NoTreePushOnOpen') var NoTreePushOnOpen; // Don't do a TreePush() when open (e.g. for CollapsingHeader) = no extra indent nor pushing on ID stack
-    @:native('ImGuiTreeNodeFlags_NoAutoOpenOnLog') var NoAutoOpenOnLog; // Don't automatically and temporarily open node when Logging is active (by default logging will automatically open tree nodes)
-    @:native('ImGuiTreeNodeFlags_DefaultOpen') var DefaultOpen; // Default node to be open
-    @:native('ImGuiTreeNodeFlags_OpenOnDoubleClick') var OpenOnDoubleClick; // Need double-click to open node
-    @:native('ImGuiTreeNodeFlags_OpenOnArrow') var OpenOnArrow; // Only open when clicking on the arrow part. If ImGuiTreeNodeFlags_OpenOnDoubleClick is also set, single-click arrow or double-click all box to open.
-    @:native('ImGuiTreeNodeFlags_Leaf') var Leaf; // No collapsing, no arrow (use as a convenience for leaf nodes). 
-    @:native('ImGuiTreeNodeFlags_Bullet') var Bullet; // Display a bullet instead of arrow
-    @:native('ImGuiTreeNodeFlags_FramePadding') var FramePadding; // Use FramePadding (even for an unframed text node) to vertically align text baseline to regular widget height. Equivalent to calling AlignTextToFramePadding().
-    //@:native('ImGuITreeNodeFlags_SpanAllAvailWidth') var SpanAllAvailWidth; // FIXME: TODO: Extend hit box horizontally even if not framed
-    //@:native('ImGuiTreeNodeFlags_NoScrollOnOpen') var NoScrollOnOpen; // FIXME: TODO: Disable automatic scroll on TreePop() if node got just open and contents is not visible
-    @:native('ImGuiTreeNodeFlags_CollapsingHeader') var CollapsingHeader;
-}
-@:unreflective
-@:native('ImGuiTreeNodeFlags_')
-extern class ImGuiTreeNodeFlagsImpl {}
 
 /**
   Flags for ImGui::Selectable()
