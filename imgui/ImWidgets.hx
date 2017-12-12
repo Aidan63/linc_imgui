@@ -38,7 +38,7 @@ extern class ImWidgets
     @:native('ImGui::CheckboxFlags') static function checkboxFlags(_label : ConstCharStar, _flags : Pointer<UInt>, _flagsValue : UInt) : Bool;
 
     @:overload(function(_label : ConstCharStar, _active : Bool) : Bool {})
-    @:native('ImGui::RadioButton') static function radioButton(_label : ConstCharStar, _v : Pointer<Bool>, _vButton : Int) : Bool;
+    @:native('ImGui::RadioButton') static function radioButton(_label : ConstCharStar, _v : Pointer<Int>, _vButton : Int) : Bool;
 
     @:overload(function(_label : ConstCharStar, _currentItem : Pointer<Int>, _items : Pointer<ConstCharStar>, _itemsCount : Int) : Bool {})
     @:overload(function(_label : ConstCharStar, _currentItem : Pointer<Int>, _items : Pointer<ConstCharStar>, _itemsCount : Int, _heightInItems : Int) : Bool {})
