@@ -44,7 +44,7 @@ namespace ImGui
             ImGui::BulletText("%s", _text);
         }
 
-        // Main Widgets
+        // Main Widgets Wrappers
         void Image(const char* _imageTextureID, const ImVec2& _size, const ImVec2& _uv0, const ImVec2& _uv1, const ImVec4& _tintCol, const ImVec4& _borderCol)
         {
             char* id = const_cast<char*>(_imageTextureID);
@@ -66,6 +66,24 @@ namespace ImGui
         bool RadioButton(const char* _label, int &_v, int _button)
         {
             return ImGui::RadioButton(_label, &_v, _button);
+        }
+        bool Combo(const char* _label, int &_currentItem, Array<String> _items, int _heightInItems)
+        {
+            const char* listbox_items[_items->length];
+            for (int i = 0; i < _items->length; i++)
+            {
+                listbox_items[i] = _items[i];
+            }
+
+            return ImGui::Combo(_label, &_currentItem, listbox_items, _items->length, _heightInItems);
+        }
+        void PlotLines(const char* _label, Array<float> _values, int _valuesOffset, const char* _overlayText, float _scaleMin, float _scaleMax, ImVec2 _graphSize, int _stride)
+        {
+            ImGui::PlotLines(_label, &_values[0], _values->length, _valuesOffset, _overlayText, _scaleMin, _scaleMax, _graphSize, _stride);
+        }
+        void PlotHistogram(const char* _label, Array<float> _values, int _valuesOffset, const char* _overlayText, float _scaleMin, float _scaleMax, ImVec2 _graphSize, int _stride)
+        {
+            ImGui::PlotHistogram(_label, &_values[0], _values->length, _valuesOffset, _overlayText, _scaleMin, _scaleMax, _graphSize, _stride);
         }
     }
 }

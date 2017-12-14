@@ -25,8 +25,9 @@ namespace ImGui
         extern bool Checkbox(const char* _label, bool &_v);
         extern bool RadioButton(const char* _label, bool _active);
         extern bool RadioButton(const char* _label, int &_v, int _button);
-
-
+        extern bool Combo(const char* _label, int &_currentItem, Array<String> _items, int _heightInItems = -1);
+        extern void PlotLines(const char* _label, Array<float> _values, int _valuesOffset = 0, const char* _overlayText = NULL, float _scaleMin = FLT_MIN, float _scaleMax = FLT_MAX, ImVec2 _graphSize = ImVec2(0, 0), int _stide = sizeof(float));
+        extern void PlotHistogram(const char* _label, Array<float> _values, int _valuesOffset = 0, const char* _overlayText = NULL, float _scaleMin = FLT_MIN, float _scaleMax = FLT_MAX, ImVec2 _graphSize = ImVec2(0, 0), int _stride = sizeof(float));
 
         // Old / need to be refactored.
 
