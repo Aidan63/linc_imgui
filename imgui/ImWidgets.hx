@@ -21,24 +21,23 @@ extern class ImWidgets
     @:overload(function(_label : ConstCharStar) : Bool {})
     @:native('ImGui::Button') static function button(_label : ConstCharStar, _size : Reference<ImVec2>) : Bool;
 
-    @:overload(function(_userTextureId : ImTextureID, _size : Reference<ImVec2>) : Void {})
-    @:overload(function(_userTextureId : ImTextureID, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>) : Void {})
-    @:overload(function(_userTextureId : ImTextureID, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>) : Void {})
-    @:overload(function(_userTextureId : ImTextureID, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _tintCol : Reference<ImVec4>) : Void {})
-    @:native('ImGui::Image') static function image(_userTextureId : ImTextureID, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _tintCol : Reference<ImVec4>, _borderCol : Reference<ImVec4>) : Void;
+    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>) : Void {})
+    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>) : Void {})
+    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>) : Void {})
+    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _tintCol : Reference<ImVec4>) : Void {})
+    @:native('ImGui::linc::Image') static function image(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _tintCol : Reference<ImVec4>, _borderCol : Reference<ImVec4>) : Void;
 
-    @:overload(function(_userTextureId : ImTextureID, _size : Reference<ImVec2>) : Bool {})
-    @:overload(function(_userTextureId : ImTextureID, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>) : Bool {})
-    @:overload(function(_userTextureId : ImTextureID, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>) : Bool {})
-    @:overload(function(_userTextureId : ImTextureID, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _framePadding : Int) : Bool {})
-    @:overload(function(_userTextureId : ImTextureID, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _framePadding : Int, _bgCol : Reference<ImVec4>) : Bool {})
-    @:native('ImGui::ImageButton') static function imageButton(_userTextureId : ImTextureID, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _framePadding : Int, _bgCol : Reference<ImVec4>, _tintCol : Reference<ImVec4>) : Bool;
+    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>) : Bool {})
+    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>) : Bool {})
+    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>) : Bool {})
+    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _framePadding : Int) : Bool {})
+    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _framePadding : Int, _bgCol : Reference<ImVec4>) : Bool {})
+    @:native('ImGui::linc::ImageButton') static function imageButton(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _framePadding : Int, _bgCol : Reference<ImVec4>, _tintCol : Reference<ImVec4>) : Bool;
 
-    @:native('ImGui::Checkbox')      static function checkbox(_label : ConstCharStar, _v : Pointer<Bool>) : Bool;
-    @:native('ImGui::CheckboxFlags') static function checkboxFlags(_label : ConstCharStar, _flags : Pointer<UInt>, _flagsValue : UInt) : Bool;
+    @:native('ImGui::linc::Checkbox') static function checkbox(_label : String, _v : Bool) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _active : Bool) : Bool {})
-    @:native('ImGui::RadioButton') static function radioButton(_label : ConstCharStar, _v : Pointer<Int>, _vButton : Int) : Bool;
+    @:overload(function(_label : String, _active : Bool) : Bool {})
+    @:native('ImGui::linc::RadioButton') static function radioButton(_label : String, _v : Int, _vButton : Int) : Bool;
 
     @:overload(function(_label : ConstCharStar, _currentItem : Pointer<Int>, _items : Pointer<ConstCharStar>, _itemsCount : Int) : Bool {})
     @:overload(function(_label : ConstCharStar, _currentItem : Pointer<Int>, _items : Pointer<ConstCharStar>, _itemsCount : Int, _heightInItems : Int) : Bool {})

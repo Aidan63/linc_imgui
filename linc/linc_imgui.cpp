@@ -43,6 +43,30 @@ namespace ImGui
         {
             ImGui::BulletText("%s", _text);
         }
+
+        // Main Widgets
+        void Image(const char* _imageTextureID, const ImVec2& _size, const ImVec2& _uv0, const ImVec2& _uv1, const ImVec4& _tintCol, const ImVec4& _borderCol)
+        {
+            char* id = const_cast<char*>(_imageTextureID);
+            ImGui::Image(static_cast<void*>(id), _size, _uv0, _uv1, _tintCol, _borderCol);
+        }
+        bool ImageButton(const char* _imageTextureID, const ImVec2& _size, const ImVec2& _uv0, const ImVec2& _uv1, int _framePadding, const ImVec4& _bgCol, const ImVec4& _tintCol)
+        {
+            char* id = const_cast<char*>(_imageTextureID);
+            return ImGui::ImageButton(static_cast<void*>(id), _size, _uv0, _uv1, _framePadding, _bgCol, _tintCol);
+        }
+        bool Checkbox(const char* _label, bool &_v)
+        {
+            return ImGui::Checkbox(_label, &_v);
+        }
+        bool RadioButton(const char* _label, bool _active)
+        {
+            return ImGui::RadioButton(_label, _active);
+        }
+        bool RadioButton(const char* _label, int &_v, int _button)
+        {
+            return ImGui::RadioButton(_label, &_v, _button);
+        }
     }
 }
 

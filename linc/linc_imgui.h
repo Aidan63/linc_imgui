@@ -19,8 +19,12 @@ namespace ImGui
         extern void LabelText(const char* _label, const char* _text);
         extern void BulletText(const char* _text);
 
-
-
+        // Main Widgets
+        extern void Image(const char* _imageTextureID, const ImVec2& _size, const ImVec2& _uv0 = ImVec2(0,0), const ImVec2& _uv1 = ImVec2(1,1), const ImVec4& _tintCol = ImVec4(1,1,1,1), const ImVec4& _borderCol = ImVec4(0,0,0,0));
+        extern bool ImageButton(const char* _imageTextureID, const ImVec2& _size, const ImVec2& _uv0 = ImVec2(0,0), const ImVec2& _uv1 = ImVec2(1,1), int _framePadding = -1, const ImVec4& _bgCol = ImVec4(0,0,0,0), const ImVec4& _tintCol = ImVec4(1,1,1,1));
+        extern bool Checkbox(const char* _label, bool &_v);
+        extern bool RadioButton(const char* _label, bool _active);
+        extern bool RadioButton(const char* _label, int &_v, int _button);
 
 
 
