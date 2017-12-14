@@ -26,7 +26,10 @@ class Test
 
         // Update
         ImGui.newFrame();
-        ImGui.showTestWindow();
+        
+        imgui.ImWindow.begin("Test");
+        imgui.ImWindow.end();
+
         ImGui.render();
 
         // Draw

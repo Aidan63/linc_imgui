@@ -2,3 +2,4 @@
 -main Test.hx
 -cpp cpp/
 -cp ../
+-D HXCPP_FLOAT32

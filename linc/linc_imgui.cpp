@@ -2,7 +2,53 @@
 #include <hxcpp.h>
 #include "./linc_imgui.h"
 
-// MISC
+// Window Wrappers
+
+namespace ImGui
+{
+    namespace linc
+    {
+        // Window Wrappers
+        bool Begin(const char* _name, int _flags)
+        {
+            return ImGui::Begin(_name, NULL, _flags);
+        }
+        bool Begin(const char* _name, bool &_open, int _flags)
+        {
+            return ImGui::Begin(_name, &_open, _flags);
+        }
+        
+        // Text Wrappers
+        void Text(const char* _text)
+        {
+            ImGui::Text("%s", _text);
+        }
+        void TextColored(ImVec4 _col, const char* _text)
+        {
+            ImGui::TextColored(_col, "%s", _text);
+        }
+        void TextDisabled(const char* _text)
+        {
+            ImGui::TextDisabled("%s", _text);
+        }
+        void TextWrapper(const char* _text)
+        {
+            ImGui::TextWrapped("%s", _text);
+        }
+        void LabelText(const char* _label, const char* _text)
+        {
+            ImGui::LabelText(_label, "%s", _text);
+        }
+        void BulletText(const char* _text)
+        {
+            ImGui::BulletText("%s", _text);
+        }
+    }
+}
+
+
+
+// OLD / Needs to be refactored
 
 const char* ImGui::linc::resolveVoidStar(void* _ptr)
 {

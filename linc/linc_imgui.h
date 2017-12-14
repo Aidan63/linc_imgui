@@ -7,6 +7,25 @@ namespace ImGui
 {
     namespace linc
     {
+        // Window Wrappers
+        extern bool Begin(const char* _name, int _flags = 0);
+        extern bool Begin(const char* _name, bool &_open, int _flags = 0);
+
+        // Text Wrappers
+        extern void Text(const char* _text);
+        extern void TextColored(ImVec4 _col, const char* _text);
+        extern void TextDisabled(const char* _text);
+        extern void TextWrapped(const char* _text);
+        extern void LabelText(const char* _label, const char* _text);
+        extern void BulletText(const char* _text);
+
+
+
+
+
+
+        // Old / need to be refactored.
+
         // Misc
         extern const char* resolveVoidStar(void* _ptr);
         extern void* createVoidStar(const char* _data);
