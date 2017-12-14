@@ -14,7 +14,7 @@ import imgui.callback.ImGuiSizeConstraintCallbackData;
 typedef ImU32 = UInt;
 typedef ImGuiID = UInt;
 typedef ImWchar = cpp.UInt16;
-typedef ImTextureID = Pointer<Void>;
+typedef ImTextureID = cpp.RawPointer<cpp.Void>;
 typedef ImGuiCol = Int;
 typedef ImGuiStyleVar = Int;
 typedef ImGuiKey = Int;
@@ -36,7 +36,7 @@ typedef ImGuiSizeConstraintCallback = Callable<Pointer<ImGuiSizeConstraintCallba
 extern class ImGui
 {
     // Misc
-    @:native('ImGui::linc::GetVoidStar') static function getVoidStar(_ptr : Pointer<cpp.Void>) : cpp.ConstCharStar;
+    @:native('ImGui::linc::resolveVoidStar') static function getVoidStar(_ptr : cpp.RawPointer<cpp.Void>) : cpp.ConstCharStar;
 
     // Main
     @:native('ImGui::GetIO') static function getIO() : Reference<ImGuiIO>;
