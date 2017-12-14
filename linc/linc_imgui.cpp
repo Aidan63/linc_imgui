@@ -85,6 +85,48 @@ namespace ImGui
         {
             ImGui::PlotHistogram(_label, &_values[0], _values->length, _valuesOffset, _overlayText, _scaleMin, _scaleMax, _graphSize, _stride);
         }
+
+        // Drag Wrappers
+        bool DragFloat(const char* _label, float &_v, float _speed, float _min, float _max, const char* _displayFormat, float _power)
+        {
+            ImGui::DragFloat(_label, &_v, _speed, _min, _max, _displayFormat, _power);
+        }
+        bool DragFloat2(const char* _label, Array<float> _v, float _speed, float _min, float _max, const char* _displayFormat, float _power)
+        {
+            ImGui::DragFloat2(_label, &_v[0], _speed, _min, _max, _displayFormat, _power);
+        }
+        bool DragFloat3(const char* _label, Array<float> _v, float _speed, float _min, float _max, const char* _displayFormat, float _power)
+        {
+            ImGui::DragFloat3(_label, &_v[0], _speed, _min, _max, _displayFormat, _power);
+        }
+        bool DragFloat4(const char* _label, Array<float> _v, float _speed, float _min, float _max, const char* _displayFormat, float _power)
+        {
+            ImGui::DragFloat4(_label, &_v[0], _speed, _min, _max, _displayFormat, _power);
+        }
+        bool DragFloatRange2(const char* _label, float &_currentMin, float &_currentMax, float _speed, float _min, float _max, const char* _displayFormat, const char* _displayFormatMax, float _power)
+        {
+            ImGui::DragFloatRange2(_label, &_currentMin, &_currentMax, _speed, _min, _max, _displayFormat, _displayFormatMax, _power);
+        }
+        bool DragInt(const char* _label, int &_v, float _speed, int _min, int _max, const char* _displayFormat)
+        {
+            return ImGui::DragInt(_label, &_v, _speed, _min, _max, _displayFormat);
+        }
+        bool DragInt2(const char* _label, Array<int> _v, float _speed, int _min, int _max, const char* _displayFormat)
+        {
+            return ImGui::DragInt(_label, &_v[0], _speed, _min, _max, _displayFormat);
+        }
+        bool DragInt3(const char* _label, Array<int> _v, float _speed, int _min, int _max, const char* _displayFormat)
+        {
+            return ImGui::DragInt(_label, &_v[0], _speed, _min, _max, _displayFormat);
+        }
+        bool DragInt4(const char* _label, Array<int> _v, float _speed, int _min, int _max, const char* _displayFormat)
+        {
+            return ImGui::DragInt(_label, &_v[0], _speed, _min, _max, _displayFormat);
+        }
+        bool DragIntRange2(const char* _label, int &_currentMin, int &_currentMax, float _speed, int _min, int _max, const char* _displayFormat, const char* _displayFormatMax)
+        {
+            return ImGui::DragIntRange2(_label, &_currentMin, &_currentMax, _speed, _min, _max, _displayFormat, _displayFormatMax);
+        }
     }
 }
 

@@ -29,6 +29,18 @@ namespace ImGui
         extern void PlotLines(const char* _label, Array<float> _values, int _valuesOffset = 0, const char* _overlayText = NULL, float _scaleMin = FLT_MIN, float _scaleMax = FLT_MAX, ImVec2 _graphSize = ImVec2(0, 0), int _stide = sizeof(float));
         extern void PlotHistogram(const char* _label, Array<float> _values, int _valuesOffset = 0, const char* _overlayText = NULL, float _scaleMin = FLT_MIN, float _scaleMax = FLT_MAX, ImVec2 _graphSize = ImVec2(0, 0), int _stride = sizeof(float));
 
+        // Drag Widgets
+        extern bool DragFloat (const char* _label, float &_v, float _speed = 1.0f, float _min = 0.0f, float _max = 0.0f, const char* _displayFormat = "%.3f", float _power = 1.0f);
+        extern bool DragFloat2(const char* _label, Array<float> _v, float _speed = 1.0f, float _min = 0.0f, float _max = 0.0f, const char* _displayFormat = "%.3f", float _power = 1.0f);
+        extern bool DragFloat3(const char* _label, Array<float> _v, float _speed = 1.0f, float _min = 0.0f, float _max = 0.0f, const char* _displayFormat = "%.3f", float _power = 1.0f);
+        extern bool DragFloat4(const char* _label, Array<float> _v, float _speed = 1.0f, float _min = 0.0f, float _max = 0.0f, const char* _displayFormat = "%.3f", float _power = 1.0f);
+        extern bool DragFloatRange2(const char* _label, float &_currentMin, float &_currentMax, float _speed = 1.0f, float _min = 0.0f, float _max = 0.0f, const char* _displayFormat = "%.3f", const char* _displayFormatMax = NULL, float _power = 1.0f);
+        extern bool DragInt (const char* _label, int &_v, float _speed = 1.0f, int _min = 0, int _max = 0, const char* _displayFormat = "%.0f");
+        extern bool DragInt2(const char* _label, Array<int> _v, float _speed = 1.0f, int _min = 0, int _max = 0, const char* _displayFormat = "%.0f");
+        extern bool DragInt3(const char* _label, Array<int> _v, float _speed = 1.0f, int _min = 0, int _max = 0, const char* _displayFormat = "%.0f");
+        extern bool DragInt4(const char* _label, Array<int> _v, float _speed = 1.0f, int _min = 0, int _max = 0, const char* _displayFormat = "%.0f");
+        extern bool DragIntRange2(const char* _label, int &_currentMin, int &_currentMax, float _speed = 1.0f, int _min = 0, int _max = 0, const char* _displayFormat = "%.0f", const char* _displayFormatMax = NULL);
+
         // Old / need to be refactored.
 
         // Misc
