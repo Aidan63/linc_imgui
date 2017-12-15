@@ -53,6 +53,19 @@ namespace ImGui
         extern bool InputInt3(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags = 0);
         extern bool InputInt4(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags = 0);
 
+        // Slider Widgets
+        extern bool SliderFloat(const char* _label, float &_v, float _vMin, float _vMax, const char* _displayFormat = "%.3f", float _power = 1.0f);     // adjust display_format to decorate the value with a prefix or a suffix for in-slider labels or unit display. Use power!=1.0 for logarithmic sliders
+        extern bool SliderFloat2(const char* _label, Array<float> _v, float _vMin, float _vMax, const char* _displayFormat = "%.3f", float _power = 1.0f);
+        extern bool SliderFloat3(const char* _label, Array<float> _v, float _vMin, float _vMax, const char* _displayFormat = "%.3f", float _power = 1.0f);
+        extern bool SliderFloat4(const char* _label, Array<float> _v, float _vMin, float _vMax, const char* _displayFormat = "%.3f", float _power = 1.0f);
+        extern bool SliderAngle(const char* _label, float &_vRad, float _vDegreesMin = -360.0f, float _vDegreesMax = +360.0f);
+        extern bool SliderInt(const char* _label, int &_v, int _vMin, int _vMax, const char* _displayFormat = "%.0f");
+        extern bool SliderInt2(const char* _label, Array<int> _v, int _vMin, int _vMax, const char* _displayFormat = "%.0f");
+        extern bool SliderInt3(const char* _label, Array<int> _v, int _vMin, int _vMax, const char* _displayFormat = "%.0f");
+        extern bool SliderInt4(const char* _label, Array<int> _v, int _vMin, int _vMax, const char* _displayFormat = "%.0f");
+        extern bool VSliderFloat(const char* _label, const ImVec2& _size, float &_v, float _vMin, float _vMax, const char* _displayFormat = "%.3f", float _power = 1.0f);
+        extern bool VSliderInt(const char* _label, const ImVec2& _size, int &_v, int _vMin, int _vMax, const char* _displayFormat = "%.0f");
+
         // Old / need to be refactored.
 
         // Misc

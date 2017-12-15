@@ -169,6 +169,52 @@ namespace ImGui
         {
             ImGui::InputInt4(_label, &_v[0], _extraFlags);
         }
+
+        // Slider Wrappers
+        bool SliderFloat(const char* _label, float &_v, float _vMin, float _vMax, const char* _displayFormat, float _power)
+        {
+            return ImGui::SliderFloat(_label, &_v, _vMin, _vMax, _displayFormat, _power);
+        }
+        bool SliderFloat2(const char* _label, Array<float> _v, float _vMin, float _vMax, const char* _displayFormat, float _power)
+        {
+            return ImGui::SliderFloat2(_label, &_v[0], _vMin, _vMax, _displayFormat, _power);
+        }
+        bool SliderFloat3(const char* _label, Array<float> _v, float _vMin, float _vMax, const char* _displayFormat, float _power)
+        {
+            return ImGui::SliderFloat3(_label, &_v[0], _vMin, _vMax, _displayFormat, _power);
+        }
+        bool SliderFloat4(const char* _label, Array<float> _v, float _vMin, float _vMax, const char* _displayFormat, float _power)
+        {
+            return ImGui::SliderFloat4(_label, &_v[0], _vMin, _vMax, _displayFormat, _power);
+        }
+        bool SliderAngle(const char* _label, float &_vRad, float _vDegreesMin, float _vDegreesMax)
+        {
+            return ImGui::SliderAngle(_label, &_vRad, _vDegreesMin, _vDegreesMax);
+        }
+        bool SliderInt(const char* _label, int &_v, int _vMin, int _vMax, const char* _displayFormat)
+        {
+            return ImGui::SliderInt(_label, &_v, _vMin, _vMax, _displayFormat);
+        }
+        bool SliderInt2(const char* _label, Array<int> _v, int _vMin, int _vMax, const char* _displayFormat)
+        {
+            return ImGui::SliderInt2(_label, &_v[0], _vMin, _vMax, _displayFormat);
+        }
+        bool SliderInt3(const char* _label, Array<int> _v, int _vMin, int _vMax, const char* _displayFormat)
+        {
+            return ImGui::SliderInt3(_label, &_v[0], _vMin, _vMax, _displayFormat);
+        }
+        bool SliderInt4(const char* _label, Array<int> _v, int _vMin, int _vMax, const char* _displayFormat)
+        {
+            return ImGui::SliderInt4(_label, &_v[0], _vMin, _vMax, _displayFormat);
+        }
+        bool VSliderFloat(const char* _label, const ImVec2& _size, float &_v, float _vMin, float _vMax, const char* _displayFormat, float _power)
+        {
+            return ImGui::VSliderFloat(_label, _size, &_v, _vMin, _vMax, _displayFormat, _power);
+        }
+        bool VSliderInt(const char* _label, const ImVec2& _size, int &_v, int _vMin, int _vMax, const char* _displayFormat)
+        {
+            return ImGui::VSliderInt(_label, _size, &_v, _vMin, _vMax, _displayFormat);
+        }
     }
 }
 
