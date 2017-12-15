@@ -41,6 +41,16 @@ namespace ImGui
         extern bool DragInt4(const char* _label, Array<int> _v, float _speed = 1.0f, int _min = 0, int _max = 0, const char* _displayFormat = "%.0f");
         extern bool DragIntRange2(const char* _label, int &_currentMin, int &_currentMax, float _speed = 1.0f, int _min = 0, int _max = 0, const char* _displayFormat = "%.0f", const char* _displayFormatMax = NULL);
 
+        // Input Widgets
+        extern bool InputFloat(const char* _label, float &_v, float _step = 0.0f, float _stepFast = 0.0f, int _decimalPrecision = -1, ImGuiInputTextFlags _extraFlags = 0);
+        extern bool InputFloat2(const char* _label, Array<float> _v, int _decimalPrecision = -1, ImGuiInputTextFlags _extraFlags = 0);
+        extern bool InputFloat3(const char* _label, Array<float> _v, int _decimalPrecision = -1, ImGuiInputTextFlags _extraFlags = 0);
+        extern bool InputFloat4(const char* _label, Array<float> _v, int _decimalPrecision = -1, ImGuiInputTextFlags _extraFlags = 0);
+        extern bool InputInt(const char* _label, int &_v, int _step = 1, int _stepFast = 100, ImGuiInputTextFlags _extraFlags = 0);
+        extern bool InputInt2(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags = 0);
+        extern bool InputInt3(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags = 0);
+        extern bool InputInt4(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags = 0);
+
         // Old / need to be refactored.
 
         // Misc

@@ -127,6 +127,50 @@ namespace ImGui
         {
             return ImGui::DragIntRange2(_label, &_currentMin, &_currentMax, _speed, _min, _max, _displayFormat, _displayFormatMax);
         }
+
+        // Input Wrappers
+        bool InputText(const char* _label, Array<int> _buffer, ImGuiInputTextFlags _flags)
+        {
+            char* ptr = reinterpret_cast<char*>(&_buffer[0]);
+            return ImGui::InputText(_label, ptr, 10);
+        }
+        bool InputTextMultiline(const char* _label, Array<int> _buffer, ImVec2 _size, ImGuiInputTextFlags _flags)
+        {
+            char* ptr = reinterpret_cast<char*>(&_buffer[0]);
+            return ImGui::InputTextMultiline(_label, ptr, 10);
+        }
+        bool InputFloat(const char* _label, float &_v, float _step, float _stepFast, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
+        {
+            ImGui::InputFloat(_label, &_v, _step, _stepFast, _decimalPrecision, _extraFlags);
+        }
+        bool InputFloat2(const char* _label, Array<float> _v, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
+        {
+            ImGui::InputFloat2(_label, &_v[0], _decimalPrecision, _extraFlags);
+        }
+        bool InputFloat3(const char* _label, Array<float> _v, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
+        {
+            ImGui::InputFloat3(_label, &_v[0], _decimalPrecision, _extraFlags);
+        }
+        bool InputFloat4(const char* _label, Array<float> _v, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
+        {
+            ImGui::InputFloat4(_label, &_v[0], _decimalPrecision, _extraFlags);
+        }
+        bool InputInt(const char* _label, int &_v, int _step, int _stepFast, ImGuiInputTextFlags _extraFlags)
+        {
+            ImGui::InputInt(_label, &_v, _step, _stepFast, _decimalPrecision, _extraFlags);
+        }
+        bool InputInt2(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags)
+        {
+            ImGui::InputInt2(_label, &_v[0], _decimalPrecision, _extraFlags);
+        }
+        bool InputInt3(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags)
+        {
+            ImGui::InputInt3(_label, &_v[0], _decimalPrecision, _extraFlags);
+        }
+        bool InputInt4(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags)
+        {
+            ImGui::InputInt4(_label, &_v[0], _decimalPrecision, _extraFlags);
+        }
     }
 }
 

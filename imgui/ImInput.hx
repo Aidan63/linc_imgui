@@ -13,16 +13,12 @@ import imgui.util.ImVec2;
 @:include('linc_imgui.h')
 extern class ImInput
 {
-    @:overload(function(_label : ConstCharStar, _buf : Pointer<Char>, _bufSize : SizeT) : Bool {})
-    @:overload(function(_label : ConstCharStar, _buf : Pointer<Char>, _bufSize : SizeT, _flags : ImGuiInputTextFlags) : Bool {})
-    @:overload(function(_label : ConstCharStar, _buf : Pointer<Char>, _bufSize : SizeT, _flags : ImGuiInputTextFlags, _callback : Callable<Pointer<ImGuiTextEditCallbackData>->Int>) : Bool {})
-    @:native('ImGui::InputText') static function inputText(_label : ConstCharStar, _buf : Pointer<Char>, _bufSize : SizeT, _flags : ImGuiInputTextFlags, _callback : Callable<Pointer<ImGuiTextEditCallbackData>->Int>, _userData : RawPointer<cpp.Void>) : Bool;
+    @:overload(function(_label : String, _buffer : Array<Int>) : Bool {})
+    @:native('ImGui::linc::InputText') static function inputText(_label : String, _buffer : Array<Int>, _flags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _buf : Pointer<Char>, _bufSize : SizeT) : Bool {})
-    @:overload(function(_label : ConstCharStar, _buf : Pointer<Char>, _bufSize : SizeT, _size : Reference<ImVec2>) : Bool {})
-    @:overload(function(_label : ConstCharStar, _buf : Pointer<Char>, _bufSize : SizeT, _size : Reference<ImVec2>, _flags : ImGuiInputTextFlags) : Bool {})
-    @:overload(function(_label : ConstCharStar, _buf : Pointer<Char>, _bufSize : SizeT, _size : Reference<ImVec2>, _flags : ImGuiInputTextFlags, _callback : Callable<Pointer<ImGuiTextEditCallbackData>->Int>) : Bool {})
-    @:native('ImGui::InputTextMultiline') static function inputTextMultiline(_label : ConstCharStar, _buf : Pointer<Char>, _bufSize : SizeT, _size : Reference<ImVec2>, _flags : ImGuiInputTextFlags, _callback : Callable<Pointer<ImGuiTextEditCallbackData>->Int>, _userData : RawPointer<cpp.Void>) : Bool;
+    @:overload(function(_label : String, _buffer : Array<Int>) : Bool {})
+    @:overload(function(_label : String, _buffer : Array<Int>, _size : ImVec2) : Bool {})
+    @:native('ImGui::linc::InputTextMultiline') static function inputTextMultiline(_label : String, _buffer : Array<Int>, _size : ImVec2, _flags : ImGuiInputTextFlags) : Bool;
 
     @:overload(function(_label : ConstCharStar, _v : Pointer<Float>) : Bool {})
     @:overload(function(_label : ConstCharStar, _v : Pointer<Float>, _step : Float) : Bool {})
