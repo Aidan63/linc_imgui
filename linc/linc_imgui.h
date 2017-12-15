@@ -42,6 +42,8 @@ namespace ImGui
         extern bool DragIntRange2(const char* _label, int &_currentMin, int &_currentMax, float _speed = 1.0f, int _min = 0, int _max = 0, const char* _displayFormat = "%.0f", const char* _displayFormatMax = NULL);
 
         // Input Widgets
+        extern bool InputText(const char* _label, Array<char> &_buffer, ImGuiInputTextFlags _flags = 0);
+        extern bool InputTextMultiline(const char* _label, Array<char> &_buffer, const ImVec2& _size = ImVec2(0, 0), ImGuiInputTextFlags _flags = 0);
         extern bool InputFloat(const char* _label, float &_v, float _step = 0.0f, float _stepFast = 0.0f, int _decimalPrecision = -1, ImGuiInputTextFlags _extraFlags = 0);
         extern bool InputFloat2(const char* _label, Array<float> _v, int _decimalPrecision = -1, ImGuiInputTextFlags _extraFlags = 0);
         extern bool InputFloat3(const char* _label, Array<float> _v, int _decimalPrecision = -1, ImGuiInputTextFlags _extraFlags = 0);

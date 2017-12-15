@@ -13,44 +13,44 @@ import imgui.util.ImVec2;
 @:include('linc_imgui.h')
 extern class ImInput
 {
-    @:overload(function(_label : String, _buffer : Array<Int>) : Bool {})
-    @:native('ImGui::linc::InputText') static function inputText(_label : String, _buffer : Array<Int>, _flags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _buffer : Array<Char>) : Bool {})
+    @:native('ImGui::linc::InputText') static function inputText(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : String, _buffer : Array<Int>) : Bool {})
-    @:overload(function(_label : String, _buffer : Array<Int>, _size : ImVec2) : Bool {})
-    @:native('ImGui::linc::InputTextMultiline') static function inputTextMultiline(_label : String, _buffer : Array<Int>, _size : ImVec2, _flags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _buffer : Array<Char>) : Bool {})
+    @:overload(function(_label : String, _buffer : Array<Char>, _size : ImVec2) : Bool {})
+    @:native('ImGui::linc::InputTextMultiline') static function inputTextMultiline(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>) : Bool {})
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>, _step : Float) : Bool {})
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>, _step : Float, _stepFast : Float) : Bool {})
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>, _step : Float, _stepFast : Float, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::InputFloat') static function inputFloat(_label : ConstCharStar, _v : Pointer<Float>, _step : Float, _stepFast : Float, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Float) : Bool {})
+    @:overload(function(_label : String, _v : Float, _step : Float) : Bool {})
+    @:overload(function(_label : String, _v : Float, _step : Float, _stepFast : Float) : Bool {})
+    @:overload(function(_label : String, _v : Float, _step : Float, _stepFast : Float, _decimalPrecision : Int) : Bool {})
+    @:native('ImGui::linc::InputFloat') static function inputFloat(_label : String, _v : Float, _step : Float, _stepFast : Float, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>) : Bool {})
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::InputFloat2') static function inputFloat2(_label : ConstCharStar, _v : Pointer<Float>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float>, _decimalPrecision : Int) : Bool {})
+    @:native('ImGui::linc::InputFloat2') static function inputFloat2(_label : String, _v : Array<Float>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>) : Bool {})
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::InputFloat3') static function inputFloat3(_label : ConstCharStar, _v : Pointer<Float>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float>, _decimalPrecision : Int) : Bool {})
+    @:native('ImGui::linc::InputFloat3') static function inputFloat3(_label : String, _v : Array<Float>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>) : Bool {})
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Float>, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::InputFloat4') static function inputFloat4(_label : ConstCharStar, _v : Pointer<Float>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float>, _decimalPrecision : Int) : Bool {})
+    @:native('ImGui::linc::InputFloat4') static function inputFloat4(_label : String, _v : Array<Float>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Int>) : Bool {})
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Int>, _step : Int) : Bool {})
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Int>, _step : Int, _stepFast : Int) : Bool {})
-    @:native('ImGui::InputInt') static function inputInt(_label : ConstCharStar, _v : Pointer<Int>, _step : Int, _stepFast : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Int) : Bool {})
+    @:overload(function(_label : String, _v : Int, _step : Int) : Bool {})
+    @:overload(function(_label : String, _v : Int, _step : Int, _stepFast : Int) : Bool {})
+    @:native('ImGui::linc::InputInt') static function inputInt(_label : String, _v : Int, _step : Int, _stepFast : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Int>) : Bool {})
-    @:native('ImGui::InputInt2') static function inputInt2(_label : ConstCharStar, _v : Pointer<Int>, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Int>) : Bool {})
+    @:native('ImGui::linc::InputInt2') static function inputInt2(_label : String, _v : Array<Int>, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Int>) : Bool {})
-    @:native('ImGui::InputInt3') static function inputInt3(_label : ConstCharStar, _v : Pointer<Int>, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Int>) : Bool {})
+    @:native('ImGui::linc::InputInt3') static function inputInt3(_label : String, _v : Array<Int>, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : ConstCharStar, _v : Pointer<Int>) : Bool {})
-    @:native('ImGui::InputInt4') static function inputInt4(_label : ConstCharStar, _v : Pointer<Int>, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Int>) : Bool {})
+    @:native('ImGui::linc::InputInt4') static function inputInt4(_label : String, _v : Array<Int>, _extraFlags : ImGuiInputTextFlags) : Bool;
 }
 
 @:keep

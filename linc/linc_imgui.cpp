@@ -129,15 +129,13 @@ namespace ImGui
         }
 
         // Input Wrappers
-        bool InputText(const char* _label, Array<int> _buffer, ImGuiInputTextFlags _flags)
+        bool InputText(const char* _label, Array<char> &_buffer, ImGuiInputTextFlags _flags)
         {
-            char* ptr = reinterpret_cast<char*>(&_buffer[0]);
-            return ImGui::InputText(_label, ptr, 10);
+            return ImGui::InputText(_label, &_buffer[0], _buffer->length, _flags);
         }
-        bool InputTextMultiline(const char* _label, Array<int> _buffer, ImVec2 _size, ImGuiInputTextFlags _flags)
+        bool InputTextMultiline(const char* _label, Array<char> &_buffer, ImVec2 _size, ImGuiInputTextFlags _flags)
         {
-            char* ptr = reinterpret_cast<char*>(&_buffer[0]);
-            return ImGui::InputTextMultiline(_label, ptr, 10);
+            return ImGui::InputTextMultiline(_label, &_buffer[0], _buffer->length, _size, _flags);
         }
         bool InputFloat(const char* _label, float &_v, float _step, float _stepFast, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
         {
@@ -157,19 +155,19 @@ namespace ImGui
         }
         bool InputInt(const char* _label, int &_v, int _step, int _stepFast, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputInt(_label, &_v, _step, _stepFast, _decimalPrecision, _extraFlags);
+            ImGui::InputInt(_label, &_v, _step, _stepFast, _extraFlags);
         }
         bool InputInt2(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputInt2(_label, &_v[0], _decimalPrecision, _extraFlags);
+            ImGui::InputInt2(_label, &_v[0], _extraFlags);
         }
         bool InputInt3(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputInt3(_label, &_v[0], _decimalPrecision, _extraFlags);
+            ImGui::InputInt3(_label, &_v[0], _extraFlags);
         }
         bool InputInt4(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputInt4(_label, &_v[0], _decimalPrecision, _extraFlags);
+            ImGui::InputInt4(_label, &_v[0], _extraFlags);
         }
     }
 }
