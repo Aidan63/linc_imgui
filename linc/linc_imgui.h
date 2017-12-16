@@ -66,14 +66,20 @@ namespace ImGui
         extern bool VSliderFloat(const char* _label, const ImVec2& _size, float &_v, float _vMin, float _vMax, const char* _displayFormat = "%.3f", float _power = 1.0f);
         extern bool VSliderInt(const char* _label, const ImVec2& _size, int &_v, int _vMin, int _vMax, const char* _displayFormat = "%.0f");
 
-        // Widgets: Color Editor/Picker (tip: the ColorEdit* functions have a little colored preview square that can be left-clicked to open a picker, and right-clicked to open an option menu.)
-        // Note that a 'float v[X]' function argument is the same as 'float* v', the array syntax is just a way to document the number of elements that are expected to be accessible. You can the pass the address of a first float element out of a contiguous structure, e.g. &myvector.x
+        // Color Warappers
         extern bool ColorEdit3(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags = 0);
         extern bool ColorEdit4(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags = 0);
         extern bool ColorPicker3(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags = 0);
         extern bool ColorPicker4(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags = 0, const float &_refCol = 0);
         extern bool ColorButton(const char* _descId, const ImVec4& _col, ImGuiColorEditFlags _flags = 0, ImVec2 _size = ImVec2(0,0));
-        extern void SetColorEditOptions(ImGuiColorEditFlags _flags);
+
+        // Tree Wrappers
+        extern bool TreeNode(const char* _label);
+        extern bool TreeNode(const char* _strId, const char* _label);
+        extern bool TreeNodeEx(const char* _label, ImGuiTreeNodeFlags _flags = 0);
+        extern bool TreeNodeEx(const char* _strId, ImGuiTreeNodeFlags _flags, const char* _label);
+        extern bool CollapsingHeader(const char* _label, ImGuiTreeNodeFlags _flags = 0);
+        extern bool CollapsingHeader(const char* _label, bool &_open, ImGuiTreeNodeFlags _flags = 0);
 
         // Old / need to be refactored.
 

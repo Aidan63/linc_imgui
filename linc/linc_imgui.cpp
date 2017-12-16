@@ -237,9 +237,31 @@ namespace ImGui
         {
             return ImGui::ColorButton(_descId, _col, _flags, _size);
         }
-        extern void SetColorEditOptions(ImGuiColorEditFlags _flags)
+
+        // Tree Wrappers
+        extern bool TreeNode(const char* _label)
         {
-            ImGui::SetColorEditOptions(_flags);
+            return ImGui::TreeNode(_label);
+        }
+        extern bool TreeNode(const char* _strId, const char* _label)
+        {
+            return ImGui::TreeNode(_strId, "%s", _label);
+        }
+        extern bool TreeNodeEx(const char* _label, ImGuiTreeNodeFlags _flags)
+        {
+            return ImGui::TreeNodeEx(_label, _flags);
+        }
+        extern bool TreeNodeEx(const char* _strId, ImGuiTreeNodeFlags _flags, const char* _label)
+        {
+            return ImGui::TreeNodeEx(_strId, _flags, "%s", _label);
+        }
+        extern bool CollapsingHeader(const char* _label, ImGuiTreeNodeFlags _flags)
+        {
+            return ImGui::CollapsingHeader(_label, _flags);
+        }
+        extern bool CollapsingHeader(const char* _label, bool &_open, ImGuiTreeNodeFlags _flags)
+        {
+            return ImGui::CollapsingHeader(_label, &_open, _flags);
         }
     }
 }
