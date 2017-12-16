@@ -81,6 +81,11 @@ namespace ImGui
         extern bool CollapsingHeader(const char* _label, ImGuiTreeNodeFlags _flags = 0);
         extern bool CollapsingHeader(const char* _label, bool &_open, ImGuiTreeNodeFlags _flags = 0);
 
+        // Selectable wrappers
+        extern bool SelectableSet(const char* _label, bool _selected = false, ImGuiSelectableFlags _flags = 0, const ImVec2& _size = ImVec2(0,0));
+        extern bool SelectableRef(const char* _label, bool &_selected, ImGuiSelectableFlags _flags = 0, const ImVec2& _size = ImVec2(0,0));
+        extern bool ListBox(const char* _label, int &_currentItem, Array<String> _items, int _heightInItems = -1);
+
         // Old / need to be refactored.
 
         // Misc

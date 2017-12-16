@@ -217,51 +217,71 @@ namespace ImGui
         }
 
         // Colour Wrappers
-        extern bool ColorEdit3(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags)
+        bool ColorEdit3(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags)
         {
             return ImGui::ColorEdit3(_label, &_col[0], _flags);
         }
-        extern bool ColorEdit4(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags)
+        bool ColorEdit4(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags)
         {
             return ImGui::ColorEdit4(_label, &_col[0], _flags);
         }
-        extern bool ColorPicker3(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags)
+        bool ColorPicker3(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags)
         {
             return ImGui::ColorPicker3(_label, &_col[0], _flags);
         }
-        extern bool ColorPicker4(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags, const float &_refCol)
+        bool ColorPicker4(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags, const float &_refCol)
         {
             return ImGui::ColorPicker4(_label, &_col[0], _flags, &_refCol);
         }
-        extern bool ColorButton(const char* _descId, const ImVec4& _col, ImGuiColorEditFlags _flags, ImVec2 _size)
+        bool ColorButton(const char* _descId, const ImVec4& _col, ImGuiColorEditFlags _flags, ImVec2 _size)
         {
             return ImGui::ColorButton(_descId, _col, _flags, _size);
         }
 
         // Tree Wrappers
-        extern bool TreeNode(const char* _label)
+        bool TreeNode(const char* _label)
         {
             return ImGui::TreeNode(_label);
         }
-        extern bool TreeNode(const char* _strId, const char* _label)
+        bool TreeNode(const char* _strId, const char* _label)
         {
             return ImGui::TreeNode(_strId, "%s", _label);
         }
-        extern bool TreeNodeEx(const char* _label, ImGuiTreeNodeFlags _flags)
+        bool TreeNodeEx(const char* _label, ImGuiTreeNodeFlags _flags)
         {
             return ImGui::TreeNodeEx(_label, _flags);
         }
-        extern bool TreeNodeEx(const char* _strId, ImGuiTreeNodeFlags _flags, const char* _label)
+        bool TreeNodeEx(const char* _strId, ImGuiTreeNodeFlags _flags, const char* _label)
         {
             return ImGui::TreeNodeEx(_strId, _flags, "%s", _label);
         }
-        extern bool CollapsingHeader(const char* _label, ImGuiTreeNodeFlags _flags)
+        bool CollapsingHeader(const char* _label, ImGuiTreeNodeFlags _flags)
         {
             return ImGui::CollapsingHeader(_label, _flags);
         }
-        extern bool CollapsingHeader(const char* _label, bool &_open, ImGuiTreeNodeFlags _flags)
+        bool CollapsingHeader(const char* _label, bool &_open, ImGuiTreeNodeFlags _flags)
         {
             return ImGui::CollapsingHeader(_label, &_open, _flags);
+        }
+
+        // Selectable Wrappers
+        bool SelectableSet(const char* _label, bool _selected, ImGuiSelectableFlags _flags, const ImVec2& _size)
+        {
+            return ImGui::Selectable(_label, _selected, _flags, _size);
+        }
+        bool SelectableRef(const char* _label, bool &_selected, ImGuiSelectableFlags _flags, const ImVec2& _size)
+        {
+            return ImGui::Selectable(_label, &_selected, _flags, _size);
+        }
+        bool ListBox(const char* _label, int &_currentItem, Array<String> _items, int _heightInItems)
+        {
+            const char* listbox_items[_items->length];
+            for (int i = 0; i < _items->length; i++)
+            {
+                listbox_items[i] = _items[i];
+            }
+
+            return ImGui::ListBox(_label, &_currentItem, listbox_items, _items->length, _heightInItems);
         }
     }
 }
