@@ -12,9 +12,12 @@ extern class ImWindow
 {
     /**
       push window to the stack and start appending to it. see .cpp for details. return false when window is collapsed, so you can early out in your code.
-      'bool* p_open' creates a widget on the upper-right to close the window (which sets your bool to false).
+      'bool _open' creates a widget on the upper-right to close the window (which sets your bool to false).
      */
-    @:native('ImGui::Begin') static function begin(_name : String, _open : Pointer<Bool> = null, _flags : ImGuiWindowFlags = 0) : Bool;
+    @:overload(function(_name : String) : Bool {})
+    @:overload(function(_name : String, _flags : Int) : Bool {})
+    @:overload(function(_name : String, _open : Bool) : Bool {})
+    @:native('ImGui::linc::Begin') static function begin(_name : String, _open : Bool, _flags : ImGuiWindowFlags) : Bool;
 
     /**
       finish appending to current window, pop it off the window stack.
