@@ -299,6 +299,12 @@ namespace ImGui
         {
             ImGui::MenuItem(_label, _shortcut, _selected, _enabled);
         }
+
+        // Popup wrappers
+        bool BeginPopupModal(const char* _name, bool* _open, ImGuiWindowFlags _extraFlags)
+        {
+            return ImGui::BeginPopupModal(_name, _open, _extraFlags);
+        }
     }
 }
 

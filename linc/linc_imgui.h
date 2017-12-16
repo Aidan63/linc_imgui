@@ -93,6 +93,9 @@ namespace ImGui
         extern void MenuItemToggle(const char* _label, const char* _shortcut, bool &_value, bool _enabled = true);
         extern void MenuItem(const char* _label, const char* _shortcut = NULL, bool _selected = false, bool _enabled = true);
 
+        // Popup wrapper
+        extern bool BeginPopupModal(const char* _name, bool* _open = NULL, ImGuiWindowFlags _extraFlags = 0);
+
         // Old / need to be refactored.
 
         // Misc
