@@ -70,6 +70,11 @@ extern class ImGui
     @:overload(function(_strIdBegin : String, _strIdEnd : String) : ImGuiID {})
     @:native('ImGui::GetID') static function getID(_strId : String) : ImGuiID;
 
+    // Value helpers
+    @:overload(function(_prefix : String, _v : Bool ) : Void {})
+    @:overload(function(_prefix : String, _v : Int  ) : Void {})
+    @:overload(function(_prefix : String, _v : Float) : Void {})
+    @:native('ImGui::Value') static function value(_prefix : String, _v : Float, _floatFormat : String) : Void;
 }
 
 //-------//
