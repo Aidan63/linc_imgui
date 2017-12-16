@@ -21,7 +21,6 @@ typedef ImGuiKey = Int;
 typedef ImGuiMouseCursor = Int;
 typedef ImGuiCond = Int;
 typedef ImDrawCornerFlags = Int;
-typedef ImGuiColorEditFlags = Int;
 typedef ImGuiColumnsFlags = Int;
 typedef ImGuiHoveredFlags = Int;
 
@@ -217,37 +216,6 @@ extern class ImGuiColImpl {}
 @:unreflective
 @:native('ImGuiStyleVar_')
 extern class ImGuiStyleVarImpl {}
-
-/**
-  Enumeration for ColorEdit3() / ColorEdit4() / ColorPicker3() / ColorPicker4() / ColorButton()
- */
-@:unreflective
-@:enum extern abstract ImGuiColorEditFlags_(ImGuiColorEditFlagsImpl)
-{
-    @:native('ImGuiColorEditFlags_NoAlpha') var NoAlpha;   //              // ColorEdit, ColorPicker, ColorButton: ignore Alpha component (read 3 components from the input pointer).
-    @:native('ImGuiColorEditFlags_NoPicker') var NoPicker;   //              // ColorEdit: disable picker when clicking on colored square.
-    @:native('ImGuiColorEditFlags_NoOptions') var NoOptions;   //              // ColorEdit: disable toggling options menu when right-clicking on inputs/small preview.
-    @:native('ImGuiColorEditFlags_NoSmallPreview') var NoSmallPreview;   //              // ColorEdit, ColorPicker: disable colored square preview next to the inputs. (e.g. to show only the inputs)
-    @:native('ImGuiColorEditFlags_NoInputs') var NoInputs;   //              // ColorEdit, ColorPicker: disable inputs sliders/text widgets (e.g. to show only the small preview colored square).
-    @:native('ImGuiColorEditFlags_NoTooltip') var NoTooltip;   //              // ColorEdit, ColorPicker, ColorButton: disable tooltip when hovering the preview.
-    @:native('ImGuiColorEditFlags_NoLabel') var NoLabel;   //              // ColorEdit, ColorPicker: disable display of inline text label (the label is still forwarded to the tooltip and picker).
-    @:native('ImGuiColorEditFlags_NoSidePreview') var NoSidePreview;   //              // ColorPicker: disable bigger color preview on right side of the picker, use small colored square preview instead.
-    // User Options (right-click on widget to change some of them). You can set application defaults using SetColorEditOptions(). The idea is that you probably don't want to override them in most of your calls, let the user choose and/or call SetColorEditOptions() during startup.
-    @:native('ImGuiColorEditFlags_AlphaBar') var AlphaBar;  //              // ColorEdit, ColorPicker: show vertical alpha bar/gradient in picker.
-    @:native('ImGuiColorEditFlags_AlphaPreview') var AlphaPreview; //              // ColorEdit, ColorPicker, ColorButton: display preview as a transparent color over a checkerboard, instead of opaque.
-    @:native('ImGuiColorEditFlags_AlphaPreviewHalf') var AlphaPreviewHalf; //              // ColorEdit, ColorPicker, ColorButton: display half opaque / half checkerboard, instead of opaque.
-    @:native('ImGuiColorEditFlags_HDR') var HDR; //              // (WIP) ColorEdit: Currently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use ImGuiColorEditFlags_Float flag as well).
-    @:native('ImGuiColorEditFlags_RGB') var RGB; // [Inputs]     // ColorEdit: choose one among RGB/HSV/HEX. ColorPicker: choose any combination using RGB/HSV/HEX.
-    @:native('ImGuiColorEditFlags_HSV') var HSV; // [Inputs]     // "
-    @:native('ImGuiColorEditFlags_HEX') var HEX; // [Inputs]     // "
-    @:native('ImGuiColorEditFlags_Uint8') var Uint8; // [DataType]   // ColorEdit, ColorPicker, ColorButton: _display_ values formatted as 0..255. 
-    @:native('ImGuiColorEditFlags_Float') var Float; // [DataType]   // ColorEdit, ColorPicker, ColorButton: _display_ values formatted as 0.0f..1.0f floats instead of 0..255 integers. No round-trip of value via integers.
-    @:native('ImGuiColorEditFlags_PickerHueBar') var PickerHueBar; // [PickerMode] // ColorPicker: bar for Hue, rectangle for Sat/Value.
-    @:native('ImGuiColorEditFlags_PickerHueWheel') var PickerHueWheel; // [PickerMode] // ColorPicker: wheel for Hue, triangle for Sat/Value.
-}
-@:unreflective
-@:native('ImGuiColorEditFlags_')
-extern class ImGuiColorEditFlagsImpl {}
 
 /**
   Enumeration for GetMouseCursor()

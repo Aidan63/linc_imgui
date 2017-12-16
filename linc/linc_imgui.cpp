@@ -215,6 +215,32 @@ namespace ImGui
         {
             return ImGui::VSliderInt(_label, _size, &_v, _vMin, _vMax, _displayFormat);
         }
+
+        // Colour Wrappers
+        extern bool ColorEdit3(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags)
+        {
+            return ImGui::ColorEdit3(_label, &_col[0], _flags);
+        }
+        extern bool ColorEdit4(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags)
+        {
+            return ImGui::ColorEdit4(_label, &_col[0], _flags);
+        }
+        extern bool ColorPicker3(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags)
+        {
+            return ImGui::ColorPicker3(_label, &_col[0], _flags);
+        }
+        extern bool ColorPicker4(const char* _label, Array<float> _col, ImGuiColorEditFlags _flags, const float &_refCol)
+        {
+            return ImGui::ColorPicker4(_label, &_col[0], _flags, &_refCol);
+        }
+        extern bool ColorButton(const char* _descId, const ImVec4& _col, ImGuiColorEditFlags _flags, ImVec2 _size)
+        {
+            return ImGui::ColorButton(_descId, _col, _flags, _size);
+        }
+        extern void SetColorEditOptions(ImGuiColorEditFlags _flags)
+        {
+            ImGui::SetColorEditOptions(_flags);
+        }
     }
 }
 
