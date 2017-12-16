@@ -86,7 +86,12 @@ namespace ImGui
         extern bool SelectableRef(const char* _label, bool &_selected, ImGuiSelectableFlags _flags = 0, const ImVec2& _size = ImVec2(0,0));
         extern bool ListBox(const char* _label, int &_currentItem, Array<String> _items, int _heightInItems = -1);
 
+        // Tooltip wrapper
         extern void SetTooltip(const char* _label);
+
+        // Menu Wrapper
+        extern void MenuItemToggle(const char* _label, const char* _shortcut, bool &_value, bool _enabled = true);
+        extern void MenuItem(const char* _label, const char* _shortcut = NULL, bool _selected = false, bool _enabled = true);
 
         // Old / need to be refactored.
 

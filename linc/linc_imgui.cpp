@@ -289,6 +289,16 @@ namespace ImGui
         {
             ImGui::SetTooltip("%s", _text);
         }
+
+        // Menu Wrapper
+        void MenuItemToggle(const char* _label, const char* _shortcut, bool &_selected, bool _enabled)
+        {
+            ImGui::MenuItem(_label, _shortcut, &_selected, _enabled);
+        }
+        void MenuItem(const char* _label, const char* _shortcut, bool _selected, bool _enabled)
+        {
+            ImGui::MenuItem(_label, _shortcut, _selected, _enabled);
+        }
     }
 }
 
