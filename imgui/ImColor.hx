@@ -23,7 +23,7 @@ extern class ImColor
     @:overload(function(_label : String, _color : ImVec4, _flags : ImGuiColorEditFlags) : Bool {})
     @:native('ImGui::linc::ColorButton') static function colorButton(_label : String, _color : ImVec4, _flags : ImGuiColorEditFlags, _size : ImVec2) : Bool;
 
-    @:native('ImGui::linc::SetColorEditOptions') static function setColorEditOptions(_flags : ImGuiColorEditFlags) : Bool;
+    @:native('ImGui::SetColorEditOptions') static function setColorEditOptions(_flags : ImGuiColorEditFlags) : Bool;
 }
 
 /**
