@@ -60,17 +60,15 @@ extern class ImGui
     /**
       push identifier into the ID stack. IDs are hash of the entire stack!
      */
-    @:overload(function(_strIdBegin : ConstCharStar, _strIdEnd : ConstCharStar) : Void {})
-    @:overload(function(_ptrId : ConstCharStar) : Void {})
     @:overload(function(_intId : Int) : Void {})
-    @:native('ImGui::PushID') static function pushID(_strId : ConstCharStar) : Void;
+    @:overload(function(_strIdBegin : String, _strIdEnd : String) : Void {})
+    @:native('ImGui::PushID') static function pushID(_strId : String) : Void;
 
     /**
       calculate unique ID (hash of whole ID stack + given parameter). e.g. if you want to query into ImGuiStorage yourself
      */
-    @:overload(function(_strIdBegin : ConstCharStar, _strIdEnd : ConstCharStar) : ImGuiID {})
-    @:overload(function(_ptrId : ConstPointer<Void>) : ImGuiID {})
-    @:native('ImGui::GetID') static function getID(_strId : ConstCharStar) : ImGuiID;
+    @:overload(function(_strIdBegin : String, _strIdEnd : String) : ImGuiID {})
+    @:native('ImGui::GetID') static function getID(_strId : String) : ImGuiID;
 
 }
 
