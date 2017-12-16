@@ -75,6 +75,11 @@ extern class ImGui
     @:overload(function(_prefix : String, _v : Int  ) : Void {})
     @:overload(function(_prefix : String, _v : Float) : Void {})
     @:native('ImGui::Value') static function value(_prefix : String, _v : Float, _floatFormat : String) : Void;
+
+    // Tooptip functions
+    @:native('ImGui::linc::SetTooltip') static function setTooltip(_text : String) : Void;
+    @:native('ImGui::BeginTooltip') static function beginTooltip() : Void;
+    @:native('ImGui::EndTooltip') static function endTooltip() : Void;
 }
 
 //-------//

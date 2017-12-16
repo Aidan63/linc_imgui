@@ -283,6 +283,12 @@ namespace ImGui
 
             return ImGui::ListBox(_label, &_currentItem, listbox_items, _items->length, _heightInItems);
         }
+
+        // Tooltip wrapper
+        void SetTooltip(const char* _text)
+        {
+            ImGui::SetTooltip("%s", _text);
+        }
     }
 }
 
