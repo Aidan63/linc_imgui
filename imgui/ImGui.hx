@@ -37,7 +37,12 @@ extern class ImGui
     // Misc
     @:native('ImGui::linc::resolveVoidStar') static function getVoidStar(_ptr : cpp.RawPointer<cpp.Void>) : cpp.ConstCharStar;
 
-    // Main
+    //------\\
+    //      \\
+    // Main \\
+    //      \\
+    //------\\
+    
     @:native('ImGui::GetIO') static function getIO() : Reference<ImGuiIO>;
     @:native('ImGui::GetStyle') static function getStyle() : Reference<ImGuiStyle>;
     @:native('ImGui::GetDrawData') static function getDrawData() : Pointer<ImDrawData>;
@@ -46,15 +51,23 @@ extern class ImGui
     @:native('ImGui::EndFrame') static function endFrame() : Void;
     @:native('ImGui::Shutdown') static function shutdown() : Void;
 
-    // Demo / Debug / Info
+    //---------------------\\
+    //                     \\
+    // Demo / Debug / Info \\
+    //                     \\
+    //---------------------\\
+
     @:native('ImGui::ShowTestWindow') static function showTestWindow(_open : Pointer<Bool> = null) : Void;
     @:native('ImGui::ShowMetricsWindow') static function showMetricsWindow(_open : Pointer<Bool> = null) : Void;
     @:native('ImGui::ShowStyleEditor') static function showStyleEditor(_style : Pointer<ImGuiStyle> = null) : Void;
     @:native('ImGui::ShowUserGuide') static function showUserGuide() : Void;
 
-    // ID scopes
-    // If you are creating widgets in a loop you most likely want to push a unique identifier (e.g. object pointer, loop index) so ImGui can differentiate them.
-    // You can also use the "##foobar" syntax within widget label to distinguish them from each others. Read "A primer on the use of labels/IDs" in the FAQ for more details.
+    //-----------\\
+    //           \\
+    // ID Scopes \\
+    //           \\
+    //-----------\\
+
     @:native('ImGui::PopID') static function popID() : Void;
 
     /**
@@ -70,16 +83,39 @@ extern class ImGui
     @:overload(function(_strIdBegin : String, _strIdEnd : String) : ImGuiID {})
     @:native('ImGui::GetID') static function getID(_strId : String) : ImGuiID;
 
-    // Value helpers
+    //-----------------\\
+    //                 \\
+    // Value functions \\
+    //                 \\
+    //-----------------\\
+
     @:overload(function(_prefix : String, _v : Bool ) : Void {})
     @:overload(function(_prefix : String, _v : Int  ) : Void {})
     @:overload(function(_prefix : String, _v : Float) : Void {})
     @:native('ImGui::Value') static function value(_prefix : String, _v : Float, _floatFormat : String) : Void;
 
-    // Tooptip functions
+    //-------------------\\
+    //                   \\
+    // Tooptip functions \\
+    //                   \\
+    //-------------------\\
+    
     @:native('ImGui::linc::SetTooltip') static function setTooltip(_text : String) : Void;
     @:native('ImGui::BeginTooltip') static function beginTooltip() : Void;
     @:native('ImGui::EndTooltip') static function endTooltip() : Void;
+
+    //---------------\\
+    //               \\
+    // Log functions \\
+    //               \\
+    //---------------\\
+
+    @:native('ImGui::LogToTTY') static function logToTTY(_maxDepth : Int = -1) : Void;
+    @:native('ImGui::LogToFile') static function logToFile(_maxDepth : Int = -1, _filename : String = null) : Void;
+    @:native('ImGui::LogToClipboard') static function logToClipboard(_maxDepth : Int = -1) : Void;
+    @:native('ImGui::LogFinish') static function logFinish() : Void;
+    @:native('ImGui::LogButtons') static function logButtons() : Void;
+    @:native('ImGui::linc::LogText') static function logText(_text : String) : Void;
 }
 
 //-------//

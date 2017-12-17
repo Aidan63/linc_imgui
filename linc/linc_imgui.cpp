@@ -284,7 +284,7 @@ namespace ImGui
             return ImGui::ListBox(_label, &_currentItem, listbox_items, _items->length, _heightInItems);
         }
 
-        // Tooltip wrapper
+        // Tooltip Wrapper
         void SetTooltip(const char* _text)
         {
             ImGui::SetTooltip("%s", _text);
@@ -300,10 +300,16 @@ namespace ImGui
             ImGui::MenuItem(_label, _shortcut, _selected, _enabled);
         }
 
-        // Popup wrappers
+        // Popup Wrappers
         bool BeginPopupModal(const char* _name, bool* _open, ImGuiWindowFlags _extraFlags)
         {
             return ImGui::BeginPopupModal(_name, _open, _extraFlags);
+        }
+
+        // Logging Wrappers
+        void LogText(const char* _text)
+        {
+            ImGui::LogText("%s", _text);
         }
     }
 }

@@ -86,7 +86,7 @@ namespace ImGui
         extern bool SelectableRef(const char* _label, bool &_selected, ImGuiSelectableFlags _flags = 0, const ImVec2& _size = ImVec2(0,0));
         extern bool ListBox(const char* _label, int &_currentItem, Array<String> _items, int _heightInItems = -1);
 
-        // Tooltip wrapper
+        // Tooltip Wrapper
         extern void SetTooltip(const char* _label);
 
         // Menu Wrapper
@@ -95,6 +95,9 @@ namespace ImGui
 
         // Popup wrapper
         extern bool BeginPopupModal(const char* _name, bool* _open = NULL, ImGuiWindowFlags _extraFlags = 0);
+
+        // Log Wrapper
+        extern void LogText(const char* _text);
 
         // Old / need to be refactored.
 
