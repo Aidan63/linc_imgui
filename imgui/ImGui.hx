@@ -236,6 +236,15 @@ extern class ImGui
     @:native('ImGui::ColorConvertFloat4ToU32') static function colorConvertFloat4ToU32(_in : ImVec4) : ImU32;
     @:native('ImGui::ColorConvertRGBtoHSV') static function colorConvertRGBtoHSV(_r : Float, _g : Float, _b : Float, _outH : Float, _outS : Float, _outV : Float) : Void;
     @:native('ImGui::ColorConvertHSVtoRGB') static function colorConvertHSVtoRGB(_h : Float, _s : Float, _v : Float, _outR : Float, _outG : Float, _outB : Float) : Void;
+
+    //------------------\\
+    //                  \\
+    // Helper functions \\
+    //                  \\
+    //------------------\\
+
+    @:native('ImGui::GetClipboardText') static function getClipboardText() : String;
+    @:native('ImGui::SetClipboardText') static function setClipboardText(_text : String) : Void;
 }
 
 //-------//
