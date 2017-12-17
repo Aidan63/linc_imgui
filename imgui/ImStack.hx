@@ -15,11 +15,17 @@ extern class ImStack
      */
     @:native('ImGui::PushFont') static function pushFont(_font : Pointer<ImFont>) : Void;
     @:native('ImGui::PopFont') static function popFont() : Void;
+
+    @:overload(function(_idx : ImGuiCol, col : ImVec4) : Void {})
     @:native('ImGui::PushStyleColor') static function pushStyleColorVal(_idx : ImGuiCol, col : ImU32) : Void;
-    @:native('ImGui::PushStyleColor') static function pushStyleColorVec(_idx : ImGuiCol, col : Reference<ImVec4>) : Void;
-    @:native('ImGui::PopStyleColor') static function popStyleColor(_count : Int = 1) : Void;
+
+    @:overload(function() : Void {})
+    @:native('ImGui::PopStyleColor') static function popStyleColor(_count : Int) : Void;
+
+    @:overload(function(_idx : ImGuiStyleVar, _val : ImVec2) : Void {})
     @:native('ImGui::PushStyleVar') static function pushStyleVarVal(_idx : ImGuiStyleVar, _val : Float) : Void;
-    @:native('ImGui::PushStyleVar') static function pushStyleVarVec(_idx : ImGuiStyleVar, _val : Reference<ImVec2>) : Void;
+
+    @:overload(function() : Void {})
     @:native('ImGui::PopStyleVar') static function popStyleVar(_count : Int = 1) : Void;
 
     /**
@@ -30,7 +36,7 @@ extern class ImStack
     /**
       get current font
      */
-    @:native('ImGui::GetFont') static function getFont() : Pointer<ImVec2>;
+    @:native('ImGui::GetFont') static function getFont() : Pointer<ImFont>;
 
     /**
       get current font size (= height in pixels) of current font with current scale applied
@@ -45,17 +51,10 @@ extern class ImStack
     /**
       retrieve given style color with style alpha applied and optional extra alpha multiplier
      */
-    @:native('ImGui::GetColorU32') static function getColorU32(_idx : ImGuiCol, _alphaMul : Float = 1) : ImU32;
-
-    /**
-      retrieve given color with style alpha applied
-     */
-    @:native('ImGui::GetColorU32') static function getColorU32Vec(_col : Reference<ImVec4>) : ImU32;
-
-    /**
-      retrieve given color with style alpha applied
-     */
-    @:native('ImGui::GetColorU32') static function getColorU32Val(_col : ImU32) : ImU32;
+    @:overload(function(_col : ImU32) : ImU32 {})
+    @:overload(function(_col : ImVec4) : ImU32 {})
+    @:overload(function(_idx : ImGuiCol) : ImU32 {})
+    @:native('ImGui::GetColorU32') static function getColorU32(_idx : ImGuiCol, _alphaMul : Float) : ImU32;
 
     // Parameters stacks (current window)
 
@@ -75,7 +74,8 @@ extern class ImStack
       word-wrapping for Text*() commands. < 0.0f: no wrapping; 0.0f: wrap to end of window (or column);
       > 0.0f: wrap at 'wrap_pos_x' position in window local space
      */
-    @:native('ImGui::PushTextWrapPos') static function pushTextWrapPos(_wrapPosX : Int = 0) : Void;
+    @:overload(function(_wrapPosX : Int) : Void {})
+    @:native('ImGui::PushTextWrapPos') static function pushTextWrapPos(_wrapPosX : Int) : Void;
     @:native('ImGui::PopTextWrapPos') static function popTextWrapPos() : Void;
 
     /**
