@@ -116,6 +116,25 @@ extern class ImGui
     @:native('ImGui::LogFinish') static function logFinish() : Void;
     @:native('ImGui::LogButtons') static function logButtons() : Void;
     @:native('ImGui::linc::LogText') static function logText(_text : String) : Void;
+
+    //--------------------\\
+    //                    \\
+    // Clipping functions \\
+    //                    \\
+    //--------------------\\
+
+    @:native('ImGui::PushClipRect') static function pushClipRect(_clipRectMin : ImVec2, _clipRectMax : ImVec2, _intersectWithCurrentClip : Bool) : Void;
+    @:native('ImGui::PopClipRect') static function popClipRect() : Void;
+
+    //--------------------\\
+    //                    \\
+    // Clipping functions \\
+    //                    \\
+    //--------------------\\
+
+    @:native('ImGui::StyleColorsClassic') static function styleColorsClassic(_dst : Pointer<ImGuiStyle> = null) : Void;
+    @:native('ImGui::StyleColorsDark') static function styleColorsDark(_dst : Pointer<ImGuiStyle> = null) : Void;
+    @:native('ImGui::StyleColorsLight') static function styleColorsLight(_dst : Pointer<ImGuiStyle> = null) : Void;
 }
 
 //-------//
