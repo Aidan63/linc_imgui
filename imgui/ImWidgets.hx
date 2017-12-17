@@ -15,24 +15,24 @@ import imgui.util.ImVec4;
 extern class ImWidgets
 {
     // Basic main widget types.
-    @:native('ImGui::SmallButton')     static function smallButton(_label : ConstCharStar) : Bool;
-    @:native('ImGui::InvisibleButton') static function invisibleButton(_strId : ConstCharStar, _size : Reference<ImVec2> = null) : Bool;
+    @:native('ImGui::SmallButton')     static function smallButton(_label : String) : Bool;
+    @:native('ImGui::InvisibleButton') static function invisibleButton(_strId : String, _size : ImVec2 = null) : Bool;
 
-    @:overload(function(_label : ConstCharStar) : Bool {})
-    @:native('ImGui::Button') static function button(_label : ConstCharStar, _size : Reference<ImVec2>) : Bool;
+    @:overload(function(_label : String) : Bool {})
+    @:native('ImGui::Button') static function button(_label : String, _size : ImVec2) : Bool;
 
-    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>) : Void {})
-    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>) : Void {})
-    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>) : Void {})
-    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _tintCol : Reference<ImVec4>) : Void {})
-    @:native('ImGui::linc::Image') static function image(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _tintCol : Reference<ImVec4>, _borderCol : Reference<ImVec4>) : Void;
+    @:overload(function(_userTextureId : String, _size : ImVec2) : Void {})
+    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2) : Void {})
+    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2) : Void {})
+    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _tintCol : ImVec4) : Void {})
+    @:native('ImGui::linc::Image') static function image(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _tintCol : ImVec4, _borderCol : ImVec4) : Void;
 
-    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>) : Bool {})
-    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>) : Bool {})
-    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>) : Bool {})
-    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _framePadding : Int) : Bool {})
-    @:overload(function(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _framePadding : Int, _bgCol : Reference<ImVec4>) : Bool {})
-    @:native('ImGui::linc::ImageButton') static function imageButton(_userTextureId : String, _size : Reference<ImVec2>, _uv0 : Reference<ImVec2>, _uv1 : Reference<ImVec2>, _framePadding : Int, _bgCol : Reference<ImVec4>, _tintCol : Reference<ImVec4>) : Bool;
+    @:overload(function(_userTextureId : String, _size : ImVec2) : Bool {})
+    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2) : Bool {})
+    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2) : Bool {})
+    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _framePadding : Int) : Bool {})
+    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _framePadding : Int, _bgCol : ImVec4) : Bool {})
+    @:native('ImGui::linc::ImageButton') static function imageButton(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _framePadding : Int, _bgCol : ImVec4, _tintCol : ImVec4) : Bool;
 
     @:native('ImGui::linc::Checkbox') static function checkbox(_label : String, _v : Bool) : Bool;
 
@@ -59,6 +59,6 @@ extern class ImWidgets
     @:native('ImGui::linc::PlotHistogram') static function plotHistogram(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float, _scaleMax : Float, _graphSize : ImVec2, _stride : Int) : Void;
 
     @:overload(function(_fraction : Float) : Void {})
-    @:overload(function(_fraction : Float, _sizeArg : Reference<ImVec2>) : Void {})
-    @:native('ImGui::ProgressBar') static function progressBar(_fraction : Float, _sizeArg : Reference<ImVec2>, _overlay : String) : Void;
+    @:overload(function(_fraction : Float, _sizeArg : ImVec2) : Void {})
+    @:native('ImGui::ProgressBar') static function progressBar(_fraction : Float, _sizeArg : ImVec2, _overlay : String) : Void;
 }
