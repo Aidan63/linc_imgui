@@ -99,6 +99,9 @@ namespace ImGui
         // Log Wrapper
         extern void LogText(const char* _text);
 
+        // Utility Wrappers
+        extern void CalcListClipping(int _itemsCount, float _itemsHeight, int &_outItemsDisplayStart, int &_outItemsDisplayEnd);
+
         // Old / need to be refactored.
 
         // Misc

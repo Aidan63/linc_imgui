@@ -5,9 +5,11 @@ import cpp.ConstPointer;
 import cpp.ConstCharStar;
 import cpp.Reference;
 import cpp.Callable;
+import imgui.ImWindow;
 import imgui.draw.ImDrawData;
 import imgui.draw.ImDrawList;
 import imgui.util.ImVec2;
+import imgui.util.ImVec4;
 import imgui.callback.ImGuiSizeConstraintCallbackData;
 
 // Typedefs
@@ -22,7 +24,6 @@ typedef ImGuiMouseCursor = Int;
 typedef ImGuiCond = Int;
 typedef ImDrawCornerFlags = Int;
 typedef ImGuiColumnsFlags = Int;
-typedef ImGuiHoveredFlags = Int;
 
 typedef ImGuiSizeConstraintCallback = Callable<Pointer<ImGuiSizeConstraintCallbackData>->Void>;
 
@@ -135,6 +136,106 @@ extern class ImGui
     @:native('ImGui::StyleColorsClassic') static function styleColorsClassic(_dst : Pointer<ImGuiStyle> = null) : Void;
     @:native('ImGui::StyleColorsDark') static function styleColorsDark(_dst : Pointer<ImGuiStyle> = null) : Void;
     @:native('ImGui::StyleColorsLight') static function styleColorsLight(_dst : Pointer<ImGuiStyle> = null) : Void;
+
+    //---------------------\\
+    //                     \\
+    // Utilities functions \\
+    //                     \\
+    //---------------------\\
+
+    /**
+      is the last item hovered by mouse (and usable)?
+     */
+    @:native('ImGui::IsItemHovered') static function isItemHovered(_flags : ImGuiHoveredFlags = 0) : Bool;
+
+    /**
+      is the last item active? (e.g. button being held, text field being edited- items that don't interact will always return false)
+     */
+    @:native('ImGui::IsItemActive') static function isItemActive() : Bool;
+
+    /**
+      is the last item clicked? (e.g. button/node just clicked on)
+     */
+    @:native('ImGui::IsItemClicked') static function isItemClicked(_mouseButton : Int = 0) : Bool;
+
+    /**
+      is the last item visible? (aka not out of sight due to clipping/scrolling.)
+     */
+    @:native('ImGui::IsItemVisible') static function isItemVisible() : Bool;
+    @:native('ImGui::IsAnyItemHovered') static function isAnyItemHovered() : Bool;
+    @:native('ImGui::IsAnyItemActive') static function isAnyItemActive() : Bool;
+
+    /**
+      get bounding rect of last item in screen space
+     */
+    @:native('ImGui::GetItemRectMin') static function getItemRectMin() : ImVec2;
+    @:native('ImGui::GetItemRectMax') static function getItemRectMax() : ImVec2;
+    @:native('ImGui::GetItemRectSize') static function getItemRectSize() : ImVec2;
+
+    /**
+      allow last item to be overlapped by a subsequent item. sometimes useful with invisible buttons, selectables, etc. to catch unused area.
+     */
+    @:native('ImGui::SetItemAllowOverlap') static function setItemAllowOverlap() : Void;
+
+    /**
+      is current Begin()-ed window focused?
+     */
+    @:native('ImGui::IsWindowFocused') static function isWindowFocused() : Bool;
+
+    /**
+      is current Begin()-ed window hovered (and typically: not blocked by a popup/modal)?
+     */
+    @:native('ImGui::IsWindowHovered') static function isWindowHovered(_flags : ImGuiHoveredFlags = 0) : Bool;
+
+    /**
+      is current Begin()-ed root window focused (root = top-most parent of a child, otherwise self)?
+     */
+    @:native('ImGui::IsRootWindowFocused') static function isRootWindowFocused() : Bool;
+
+    /**
+      is current Begin()-ed root window or any of its child (including current window) focused?
+     */
+    @:native('ImGui::IsRootWindowOrAnyChildFocused') static function isRootWindowOrAnyChildFocused() : Bool;
+
+    /**
+      is mouse hovering any visible window
+     */
+    @:native('ImGui::IsAnyWindowHovered') static function isAnyWindowHovered() : Bool;
+
+    /**
+      test if rectangle (of given size, starting from cursor position) is visible / not clipped.
+
+      test if rectangle (in screen space) is visible / not clipped. to perform coarse clipping on user's side.
+     */
+    @:overload(function(_rectMin : ImVec2, _rectMax : ImVec2) : Bool {})
+    @:native('ImGui::IsRectVisible') static function isRectVisible(_size : ImVec2) : Bool;
+
+    @:native('ImGui::GetTime') static function getTime() : Float;
+    @:native('ImGui::GetFrameCount') static function getFrameCount() : Int;
+    @:native('ImGui::GetOverlayDrawList') static function getOverlayDrawList() : Pointer<ImDrawList>;
+    @:native('ImGui::GetStyleColorName') static function getStyleColorName(_idx : ImGuiCol) : String;
+
+    /**
+      utility to find the closest point the last item bounding rectangle edge. useful to visually link items.
+     */
+    @:native('ImGui::CalcItemRectClosestPoint') static function calcItemRectClosestPoint(_pos : ImVec2, _onEdge : Bool = false, _outward : Float = 0) : ImVec2;
+    @:native('ImGui::CalcTextSize') static function calcTextSize(_text : String, _textEnd : String = null, _hideTextAfterDoubleHash : Bool = false, _wrapWidth : Float = -1) : ImVec2;
+
+    /**
+      calculate coarse clipping for large list of evenly sized items. Prefer using the ImGuiListClipper higher-level helper if you can.
+     */
+    @:native('ImGui::linc::CalcListClipping') static function calcListClipping(_itemsCount : Int, _itemsHeight : Float, _outItemsDisplayStart : Int, _outItemsDisplayEnd : Int) : Void;
+
+    /**
+      helper to create a child window / scrolling region that looks like a normal widget frame
+     */
+    @:native('ImGui::BeginChildFrame') static function beginChildFrame(_id : ImGuiID, _size : ImVec2, _extraFlags : ImGuiWindowFlags = 0) : Bool;
+    @:native('ImGui::EndChildFrame') static function EndChildFrame() : Void;
+
+    @:native('ImGui::ColorConvertU32ToFloat4') static function colorConvertU32ToFloat4(_in : ImU32) : ImVec4;
+    @:native('ImGui::ColorConvertFloat4ToU32') static function colorConvertFloat4ToU32(_in : ImVec4) : ImU32;
+    @:native('ImGui::ColorConvertRGBtoHSV') static function colorConvertRGBtoHSV(_r : Float, _g : Float, _b : Float, _outH : Float, _outS : Float, _outV : Float) : Void;
+    @:native('ImGui::ColorConvertHSVtoRGB') static function colorConvertHSVtoRGB(_h : Float, _s : Float, _v : Float, _outR : Float, _outG : Float, _outB : Float) : Void;
 }
 
 //-------//
@@ -144,20 +245,37 @@ extern class ImGui
 /**
   Flags for ImGui::IsItemHovered(), ImGui::IsWindowHovered()
  */
-@:unreflective
-@:enum extern abstract ImGuiHoveredFlags_(ImGuiHoveredFlagsImpl)
+@:enum abstract ImGuiHoveredFlags(Int) from Int to Int
 {
-    @:native('ImGuiHoveredFlags_Default') var Default; // true if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
-    @:native('ImGuiHoveredFlags_AllowWhenBlockedByPopup') var AllowWhenBlockedByPopup; // Return true even if a popup window is normally blocking access to this item/window
-    @:native('ImGuiHoveredFlags_AllowWhenBlockedByModal') var AllowWhenBlockedByModal; // Return true even if a modal popup window is normally blocking access to this item/window. FIXME-TODO: Unavailable yet.
-    @:native('ImGuiHoveredFlags_AllowWhenBlockedByActiveItem') var AllowWhenBlockedByActiveItem; // Return true even if an active item is blocking access to this item/window
-    @:native('ImGuiHoveredFlags_AllowWhenOverlapped') var AllowWhenOverlapped; // Return true even if the position is overlapped by another window
-    @:native('ImGuiHoveredFlags_FlattenChilds') var FlattenChilds; // Treat all child windows as the same window (for IsWindowHovered())
-    @:native('ImGuiHoveredFlags_RectOnly') var RectOnly;
+    /**
+      true if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
+     */
+    var Default = 0;
+
+    /**
+      Return true even if a popup window is normally blocking access to this item/window
+     */
+    var AllowWhenBlockedByPopup = 1 << 0;
+
+    //var AllowWhenBlockedByModal = 1 << 1; // Return true even if a modal popup window is normally blocking access to this item/window. FIXME-TODO: Unavailable yet.
+
+    /**
+      Return true even if an active item is blocking access to this item/window
+     */
+    var AllowWhenBlockedByActiveItem = 1 << 2;
+
+    /**
+      Return true even if the position is overlapped by another window
+     */
+    var AllowWhenOverlapped = 1 << 3;
+
+    /**
+      Treat all child windows as the same window (for IsWindowHovered())
+     */
+    var FlattenChilds = 1 << 4;
+
+    var RectOnly = 1 << AllowWhenBlockedByPopup | AllowWhenBlockedByActiveItem | AllowWhenOverlapped;
 }
-@:unreflective
-@:native('ImGuiHoveredFlags_')
-extern class ImGuiHoveredFlagsImpl {}
 
 /**
   User fill ImGuiIO.KeyMap[] array with indices into the ImGuiIO.KeysDown[512] array

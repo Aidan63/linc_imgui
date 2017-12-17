@@ -311,6 +311,12 @@ namespace ImGui
         {
             ImGui::LogText("%s", _text);
         }
+
+        // Utility Wrappers
+        void CalcListClipping(int _itemsCount, float _itemsHeight, int &_outItemsDisplayStart, int &_outItemsDisplayEnd)
+        {
+            ImGui::CalcListClipping(_itemsCount, _itemsHeight, &_outItemsDisplayStart, &_outItemsDisplayEnd);
+        }
     }
 }
 
