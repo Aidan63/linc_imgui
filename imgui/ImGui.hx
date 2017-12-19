@@ -17,11 +17,6 @@ typedef ImU32 = UInt;
 typedef ImGuiID = UInt;
 typedef ImWchar = cpp.UInt16;
 typedef ImTextureID = cpp.RawPointer<cpp.Void>;
-typedef ImGuiCol = Int;
-typedef ImGuiStyleVar = Int;
-typedef ImGuiKey = Int;
-typedef ImGuiMouseCursor = Int;
-typedef ImGuiCond = Int;
 typedef ImDrawCornerFlags = Int;
 typedef ImGuiColumnsFlags = Int;
 
@@ -289,87 +284,79 @@ extern class ImGui
 /**
   User fill ImGuiIO.KeyMap[] array with indices into the ImGuiIO.KeysDown[512] array
  */
-@:unreflective
-@:enum extern abstract ImGuiKey_(ImGuiKeyImpl)
+@:enum abstract ImGuiKey(Int) from Int to Int
 {
-    @:native('ImGuiKey_Tab') var Tab;
-    @:native('ImGuiKey_LeftArrow') var LeftArrow;
-    @:native('ImGuiKey_RightArrow') var RightArrow;
-    @:native('ImGuiKey_UpArrow') var UpArrow;
-    @:native('ImGuiKey_DownArrow') var DownArrow;
-    @:native('ImGuiKey_PageUp') var PageUp;
-    @:native('ImGuiKey_PageDown') var PageDown;
-    @:native('ImGuiKey_Home') var Home;
-    @:native('ImGuiKey_End') var End;
-    @:native('ImGuiKey_Delete') var Delete;
-    @:native('ImGuiKey_Backspace') var Backspace;
-    @:native('ImGuiKey_Enter') var Enter;
-    @:native('ImGuiKey_Escape') var Escape;
-    @:native('ImGuiKey_A') var A;
-    @:native('ImGuiKey_C') var C;
-    @:native('ImGuiKey_V') var V;
-    @:native('ImGuiKey_X') var X;
-    @:native('ImGuiKey_Y') var Y;
-    @:native('ImGuiKey_Z') var Z;
-    @:native('ImGuiKey_COUNT') var COUNT;
+    var Tab = 0;
+    var LeftArrow = 1;
+    var RightArrow = 2;
+    var UpArrow = 3;
+    var DownArrow = 4;
+    var PageUp = 5;
+    var PageDown = 6;
+    var Home = 7;
+    var End = 8;
+    var Delete = 9;
+    var Backspace = 10;
+    var Enter = 11;
+    var Escape = 12;
+    var A = 13;
+    var C = 14;
+    var V = 15;
+    var X = 16;
+    var Y = 17;
+    var Z = 18;
+    var COUNT = 19;
 }
-@:unreflective
-@:native('ImGuiKey_')
-extern class ImGuiKeyImpl {}
 
 /**
   Enumeration for PushStyleColor() / PopStyleColor()
  */
-@:unreflective
-@:enum extern abstract ImGuiCol_(ImGuiColImpl)
+@:enum abstract ImGuiCol(Int) from Int to Int
 {
-    @:native('ImGuiCol_Text') var Text;
-    @:native('ImGuiCol_TextDisabled') var TextDisabled;
-    @:native('ImGuiCol_WindowBg') var WindowBg;
-    @:native('ImGuiCol_ChildBg') var ChildBg;
-    @:native('ImGuiCol_PopupBg') var PopupBg;
-    @:native('ImGuiCol_Border') var Border;
-    @:native('ImGuiCol_BorderShadow') var BorderShadow;
-    @:native('ImGuiCol_FrameBg') var FrameBg;
-    @:native('ImGuiCol_FrameBgHovered') var FrameBgHovered;
-    @:native('ImGuiCol_FrameBgActive') var FrameBgActive;
-    @:native('ImGuiCol_TitleBg') var TitleBg;
-    @:native('ImGuiCol_TitleBgActive') var TitleBgActive;
-    @:native('ImGuiCol_TitleBgCollapsed') var TitleBgCollapsed;
-    @:native('ImGuiCol_MenuBarBg') var MenuBarBg;
-    @:native('ImGuiCol_ScrollbarBg') var ScrollbarBg;
-    @:native('ImGuiCol_ScrollbarGrab') var ScrollbarGrab;
-    @:native('ImGuiCol_ScrollbarGrabHovered') var ScrollbarGrabHovered;
-    @:native('ImGuiCol_ScrollbarGrabActive') var ScrollbarGrabActive;
-    @:native('ImGuiCol_CheckMark') var CheckMark;
-    @:native('ImGuiCol_SliderGrab') var SliderGrab;
-    @:native('ImGuiCol_SliderGrabActive') var SliderGrabActive;
-    @:native('ImGuiCol_Button') var Button;
-    @:native('ImGuiCol_ButtonHovered') var ButtonHovered;
-    @:native('ImGuiCol_ButtonActive') var ButtonActive;
-    @:native('ImGuiCol_Header') var Header;
-    @:native('ImGuiCol_HeaderHovered') var HeaderHovered;
-    @:native('ImGuiCol_HeaderActive') var HeaderActive;
-    @:native('ImGuiCol_Separator') var Separator;
-    @:native('ImGuiCol_SeparatorHovered') var SeparatorHovered;
-    @:native('ImGuiCol_SeparatorActive') var SeparatorActive;
-    @:native('ImGuiCol_ResizeGrip') var ResizeGrip;
-    @:native('ImGuiCol_ResizeGripHovered') var ResizeGripHovered;
-    @:native('ImGuiCol_ResizeGripActive') var ResizeGripActive;
-    @:native('ImGuiCol_CloseButton') var CloseButton;
-    @:native('ImGuiCol_CloseButtonHovered') var CloseButtonHovered;
-    @:native('ImGuiCol_CloseButtonActive') var CloseButtonActive;
-    @:native('ImGuiCol_PlotLines') var PlotLines;
-    @:native('ImGuiCol_PlotLinesHovered') var PlotLinesHovered;
-    @:native('ImGuiCol_PlotHistogram') var PlotHistogram;
-    @:native('ImGuiCol_PlotHistogramHovered') var PlotHistogramHovered;
-    @:native('ImGuiCol_TextSelectedBg') var TextSelectedBg;
-    @:native('ImGuiCol_ModalWindowDarkening') var ModalWindowDarkening;
-    @:native('ImGuiCol_COUNT') var COUNT;
+    var Text = 0;
+    var TextDisabled = 1;
+    var WindowBg = 2;
+    var ChildBg = 3;
+    var PopupBg = 4;
+    var Border = 5;
+    var BorderShadow = 6;
+    var FrameBg = 7;
+    var FrameBgHovered = 8;
+    var FrameBgActive = 9;
+    var TitleBg = 10;
+    var TitleBgActive = 11;
+    var TitleBgCollapsed = 12;
+    var MenuBarBg = 13;
+    var ScrollbarBg = 14;
+    var ScrollbarGrab = 15;
+    var ScrollbarGrabHovered = 16;
+    var ScrollbarGrabActive = 17;
+    var CheckMark = 18;
+    var SliderGrab = 19;
+    var SliderGrabActive = 20;
+    var Button = 21;
+    var ButtonHovered = 22;
+    var ButtonActive = 23;
+    var Header = 24;
+    var HeaderHovered = 25;
+    var HeaderActive = 26;
+    var Separator = 27;
+    var SeparatorHovered = 28;
+    var SeparatorActive = 29;
+    var ResizeGrip = 30;
+    var ResizeGripHovered = 31;
+    var ResizeGripActive = 32;
+    var CloseButton = 33;
+    var CloseButtonHovered = 34;
+    var CloseButtonActive = 35;
+    var PlotLines = 36;
+    var PlotLinesHovered = 37;
+    var PlotHistogram = 38;
+    var PlotHistogramHovered = 39;
+    var TextSelectedBg = 40;
+    var ModalWindowDarkening = 41;
+    var COUNT = 42;
 }
-@:unreflective
-@:native('ImGuiCol_')
-extern class ImGuiColImpl {}
 
 /**
   Enumeration for PushStyleVar() / PopStyleVar() to temporarily modify the ImGuiStyle structure.
@@ -380,66 +367,68 @@ extern class ImGuiColImpl {}
   NB: if changing this enum, you need to update the associated internal table GStyleVarInfo[] accordingly.
   This is where we link enum values to members offset/type.
  */
-@:unreflective
-@:enum extern abstract ImGuiStyleVar_(ImGuiStyleVarImpl)
+@:enum abstract ImGuiStyleVar(Int) from Int to Int
 {
-    // Enum name ......................// Member in ImGuiStyle structure (see ImGuiStyle for descriptions)
-    @:native('ImGuiStyleVar_Alpha') var Alpha;                       // float     Alpha
-    @:native('ImGuiStyleVar_WindowPadding') var WindowPadding;       // ImVec2    WindowPadding
-    @:native('ImGuiStyleVar_WindowRounding') var WindowRounding;     // float     WindowRounding
-    @:native('ImGuiStyleVar_WindowBorderSize') var WindowBorderSize; // float     WindowBorderSize
-    @:native('ImGuiStyleVar_WindowMinSize') var WindowMinSize;       // ImVec2    WindowMinSize
-    @:native('ImGuiStyleVar_ChildRounding') var ChildRounding;       // float     ChildRounding
-    @:native('ImGuiStyleVar_ChildBorderSize') var ChildBorderSize;   // float     ChildBorderSize
-    @:native('ImGuiStyleVar_PopupRounding') var PopupRounding;       // float     PopupRounding
-    @:native('ImGuiStyleVar_PopupBorderSize') var PopupBorderSize;   // float     PopupBorderSize
-    @:native('ImGuiStyleVar_FramePadding') var FramePadding;         // ImVec2    FramePadding
-    @:native('ImGuiStyleVar_FrameRounding') var FrameRounding;       // float     FrameRounding
-    @:native('ImGuiStyleVar_FrameBorderSize') var FrameBorderSize;   // float     FrameBorderSize
-    @:native('ImGuiStyleVar_ItemSpacing') var ItemSpacing;           // ImVec2    ItemSpacing
-    @:native('ImGuiStyleVar_ItemInnerSpacing') var ItemInnerSpacing; // ImVec2    ItemInnerSpacing
-    @:native('ImGuiStyleVar_IndentSpacing') var IndentSpacing;       // float     IndentSpacing
-    @:native('ImGuiStyleVar_GrabMinSize') var GrabMinSize;           // float     GrabMinSize
-    @:native('ImGuiStyleVar_ButtonTextAlign') var ButtonTextAlign;   // ImVec2    ButtonTextAlign
-    @:native('ImGuiStyleVar_Count_') var Count_;
+    var Alpha = 0;
+    var WindowPadding = 1;
+    var WindowRounding = 2;
+    var WindowBorderSize = 3;
+    var WindowMinSize = 4;
+    var ChildRounding = 5;
+    var ChildBorderSize = 6;
+    var PopupRounding = 7;
+    var PopupBorderSize = 8;
+    var FramePadding = 9;
+    var FrameRounding = 10;
+    var FrameBorderSize = 11;
+    var ItemSpacing = 12;
+    var ItemInnerSpacing = 13;
+    var IndentSpacing = 14;
+    var GrabMinSize = 15;
+    var ButtonTextAlign = 16;
+    var Count_ = 17;
 }
-@:unreflective
-@:native('ImGuiStyleVar_')
-extern class ImGuiStyleVarImpl {}
 
 /**
   Enumeration for GetMouseCursor()
  */
-@:unreflective
-@:enum extern abstract ImGuiMouseCursor_(ImGuiMouseCursorImpl)
+@:enum abstract ImGuiMouseCursor(Int) from Int to Int
 {
-    @:native('ImGuiMouseCursor_None') var None;
-    @:native('ImGuiMouseCursor_Arrow') var Arrow;
-    @:native('ImGuiMouseCursor_TextInput') var TextInput;         // When hovering over InputText, etc.
-    @:native('ImGuiMouseCursor_Move') var Move;              // Unused
-    @:native('ImGuiMouseCursor_ResizeNS') var ResizeNS;          // Unused
-    @:native('ImGuiMouseCursor_ResizeEW') var ResizeEW;          // When hovering over a column
-    @:native('ImGuiMouseCursor_ResizeNESW') var ResizeNESW;        // When hovering over the bottom-left corner of a window
-    @:native('ImGuiMouseCursor_ResizeNWSE') var ResizeNWSE;        // When hovering over the bottom-right corner of a window
-    @:native('ImGuiMouseCursor_Count_') var Count_;
+    var None = -1;
+    var Arrow = 0;
+    var TextInput = 1;
+    var Move = 2;
+    var ResizeNS = 3;
+    var ResizeEW = 4;
+    var ResizeNESW = 5;
+    var ResizeNWSE = 6;
+    var Count_ = 7;
 }
-@:unreflective
-@:native('ImGuiMouseCursor_')
-extern class ImGuiMouseCursorImpl {}
 
 /**
   Condition for ImGui::SetWindow***(), SetNextWindow***(), SetNextTreeNode***() functions
 
   All those functions treat 0 as a shortcut to ImGuiCond_Always. From the point of view of the user use this as an enum (don't combine multiple values into flags).
  */
-@:unreflective
-@:enum extern abstract ImGuiCond_(ImGuiCondImpl)
+@:enum abstract ImGuiCond(Int) from Int to Int
 {
-    @:native('ImGuiCond_Always') var Always; // Set the variable
-    @:native('ImGuiCond_Once') var Once; // Set the variable once per runtime session (only the first call with succeed)
-    @:native('ImGuiCond_FirstUseEver') var FirstUseEver; // Set the variable if the window has no saved data (if doesn't exist in the .ini file)
-    @:native('ImGuiCond_Appearing') var Appearing; // Set the variable if the window is appearing after being hidden/inactive (or the first time)
+    /**
+      Set the variable
+     */
+    var Always = 1 << 0;
+
+    /**
+      Set the variable once per runtime session (only the first call with succeed)
+     */
+    var Once = 1 << 1;
+
+    /**
+      Set the variable if the window has no saved data (if doesn't exist in the .ini file)
+     */
+    var FirstUseEver = 1 << 2;
+
+    /**
+      Set the variable if the window is appearing after being hidden/inactive (or the first time)
+     */
+    var Appearing = 1 << 3;
 }
-@:unreflective
-@:native('ImGuiCond_')
-extern class ImGuiCondImpl {}
