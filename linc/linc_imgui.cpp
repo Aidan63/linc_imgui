@@ -133,7 +133,7 @@ namespace ImGui
         {
             return ImGui::InputText(_label, &_buffer[0], _buffer->length, _flags);
         }
-        bool InputTextMultiline(const char* _label, Array<char> &_buffer, ImVec2 _size, ImGuiInputTextFlags _flags)
+        bool InputTextMultiline(const char* _label, Array<char> &_buffer, const ImVec2& _size, ImGuiInputTextFlags _flags)
         {
             return ImGui::InputTextMultiline(_label, &_buffer[0], _buffer->length, _size, _flags);
         }
