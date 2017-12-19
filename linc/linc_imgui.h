@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 
 #include <hxcpp.h>
 #include "../lib/imgui/imgui.h"
