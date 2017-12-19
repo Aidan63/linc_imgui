@@ -73,7 +73,7 @@ extern class ImGuiIO
       Map of indices into the KeysDown[512] entries array
       - Default : unset
      */
-    public var KeyMap : Pointer<Int>;
+    public var KeyMap : cpp.RawPointer<Int>;
 
     /**
       When holding a key/button, time before it starts repeating, in seconds (for buttons in Repeat mode, etc.).
@@ -213,6 +213,21 @@ extern class ImGuiIO
       List of characters input (translated by user from keypress+keyboard state). Fill using AddInputCharacter() helper.
      */
     public var InputCharacters : Pointer<ImWchar>;
+
+    /**
+      Add new character into InputCharacters[]
+     */
+    @:native('AddInputCharacter') function addInputCharacters(_c : ImWchar) : Void;
+
+    /**
+      Add new characters into InputCharacters[] from an UTF-8 string
+     */
+    @:native('AddInputCharactersUTF8') function addInputCharactersUTF8(_utf8Chars : String) : Void;
+
+    /**
+      Clear the text input buffer manually
+     */
+    @:native('ClearInputCharacters') function clearInputCharacters() : Void;
 
     // ----------------------------------------------//
     // Settings to retrieve after calling NewFrame() //
