@@ -8,6 +8,7 @@ import cpp.Char;
 import cpp.SizeT;
 import cpp.Callable;
 import cpp.Reference;
+import imgui.ImGui;
 import imgui.util.ImVec2;
 
 @:include('linc_imgui.h')
@@ -51,6 +52,105 @@ extern class ImInput
 
     @:overload(function(_label : String, _v : Array<Int>) : Bool {})
     @:native('ImGui::linc::InputInt4') static function inputInt4(_label : String, _v : Array<Int>, _extraFlags : ImGuiInputTextFlags) : Bool;
+
+    // Imput utils
+
+    /**
+      map ImGuiKey_* values into user's key index. == io.KeyMap[key]
+     */
+    @:native('ImGui::GetKeyIndex') static function getKeyIndex(_imgui_key : ImGuiKey) : Int;
+
+    /**
+      is key being held. == io.KeysDown[user_key_index]. note that imgui doesn't know the semantic of each entry of io.KeyDown[].
+      Use your own indices/enums according to how your backend/engine stored them into KeyDown[]!
+     */
+    @:native('ImGui::IsKeyDown') static function isKeyDown(_userKeyIndex : Int) : Bool;
+
+    /**
+      was key pressed (went from !Down to Down). if repeat=true, uses io.KeyRepeatDelay / KeyRepeatRate
+     */
+    @:native('ImGui::IsKeyPressed') static function isKeyPressed(_userKeyIndex : Int, _repeat : Bool = true) : Bool;
+
+    /**
+      was key released (went from Down to !Down)..
+     */
+    @:native('ImGui::IsKeyReleased') static function isKeyReleased(_userKeyIndex : Int) : Bool;
+
+    /**
+      uses provided repeat rate/delay. return a count, most often 0 or 1 but might be >1 if RepeatRate is small enough that DeltaTime > RepeatRate
+     */
+    @:native('ImGui::GetKeyPressedAmount') static function getKeyPressedAmount(_keyIndex : Int, _repeatDelay : Float, _rate : Float) : Int;
+
+    /**
+      is mouse button held
+     */
+    @:native('ImGui::IsMouseDown') static function isMouseDown(_button : Int) : Bool;
+
+    /**
+      did mouse button clicked (went from !Down to Down)
+     */
+    @:native('ImGui::IsMouseClicked') static function isMouseClicked(_button : Int, _repeat : Bool = false) : Bool;
+
+    /**
+      did mouse button double-clicked. a double-click returns false in IsMouseClicked(). uses io.MouseDoubleClickTime.
+     */
+    @:native('ImGui::IsMouseDoubleClicked') static function isMouseDoubleClicked(_button : Int) : Bool;
+
+    /**
+      did mouse button released (went from Down to !Down)
+     */
+    @:native('ImGui::IsMouseReleased') static function isMouseReleased(_button : Int) : Bool;
+
+    /**
+      is mouse dragging. if lock_threshold < -1.0f uses io.MouseDraggingThreshold
+     */
+    @:native('ImGui::IsMouseDragging') static function isMouseDragging(_button : Int = 0, _lockThreshold : Float = -1.0) : Bool;
+
+    /**
+      is mouse hovering given bounding rect (in screen space). clipped by current clipping settings.
+      disregarding of consideration of focus/window ordering/blocked by a popup.
+     */
+    @:native('ImGui::IsMouseHoveringRect') static function isMouseHoveringRect(_rMin : ImVec2, _rMax : ImVec2, _clip : Bool = true) : Bool;
+    @:native('ImGui::IsMousePosValid') static function isMousePosValid(_mousePos : ImVec2 = null) : Bool;
+
+    /**
+      shortcut to ImGui::GetIO().MousePos provided by user, to be consistent with other calls
+     */
+    @:native('ImGui::GetMousePos') static function getMousePos() : ImVec2;
+
+    /**
+      retrieve backup of mouse positioning at the time of opening popup we have BeginPopup() into
+     */
+    @:native('ImGui::GetMousePosOnOpeningCurrentPopup') static function getMousePosOnOpeningCurrentPopup() : ImVec2;
+
+    /**
+      dragging amount since clicking. if lock_threshold < -1.0f uses io.MouseDraggingThreshold
+     */
+    @:native('ImGui::GetMouseDragDelta') static function getMouseDragDelta(_button : Int = 0, _lockThreshold : Float = -1.0) : ImVec2;
+    @:native('ImGui::ResetMouseDragDelta') static function resetMouseDragDelta(_button : Int = 0) : Void;
+
+    /**
+      get desired cursor type, reset in ImGui::NewFrame(), this is updated during the frame. valid before Render().
+      If you use software rendering by setting io.MouseDrawCursor ImGui will render those for you
+     */
+    @:native('ImGui::GetMouseCursor') static function getMouseCursor() : ImGuiMouseCursor;
+
+    /**
+      set desired cursor type
+     */
+    @:native('ImGui::SetMouseCursor') static function setMouseCursor(_type : ImGuiMouseCursor) : Void;
+
+    /**
+      manually override io.WantCaptureKeyboard flag next frame (said flag is entirely left for your application handle).
+      
+      e.g. force capture keyboard when your widget is being hovered.
+     */
+    @:native('ImGui::CaptureKeyboardFromApp') static function captureKeyboardFromApp(_capture : Bool = true) : Void;
+
+    /**
+      manually override io.WantCaptureMouse flag next frame (said flag is entirely left for your application handle).
+     */
+    @:native('ImGui::CaptureMouseFromApp') static function captureMouseFromApp(_capture : Bool = true) : Void;
 }
 
 @:keep
