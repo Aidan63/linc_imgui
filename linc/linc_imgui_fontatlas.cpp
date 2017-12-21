@@ -18,8 +18,3 @@ unsigned char* ImGui::linc::GetTexDataAsAlpha8(ImFontAtlas* _atlas, int* _outWid
 
     return pixels;
 }
-void ImGui::linc::SetTexID(ImFontAtlas* _atlas, const char* _data)
-{
-    char* str = const_cast<char*>(_data);
-    _atlas->TexID = static_cast<void*>(str);
-}

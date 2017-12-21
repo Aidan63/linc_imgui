@@ -97,7 +97,7 @@ extern class ImGuiIO
       Load and assemble one or more fonts into a single tightly packed texture. Output to Fonts array.
       - Default : auto
      */
-    public var Fonts : Pointer<ImFontAtlas>;
+    public var Fonts : RawPointer<ImFontAtlas>;
 
     /**
       Global scale all fonts.

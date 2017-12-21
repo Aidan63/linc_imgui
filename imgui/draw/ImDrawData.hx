@@ -1,6 +1,7 @@
 package imgui.draw;
 
 import cpp.Pointer;
+import cpp.RawPointer;
 import imgui.util.ImVec2;
 
 @:keep
@@ -11,7 +12,7 @@ import imgui.util.ImVec2;
 extern class ImDrawData
 {
     public var Valid : Bool;
-    public var CmdLists : Pointer<Pointer<ImDrawList>>;
+    public var CmdLists : RawPointer<RawPointer<ImDrawList>>;
     public var CmdListsCount : Int;
     public var TotalVtxCount : Int;
     public var TotalIdxCount : Int;
