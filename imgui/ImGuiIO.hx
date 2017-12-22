@@ -73,7 +73,7 @@ extern class ImGuiIO
       Map of indices into the KeysDown[512] entries array
       - Default : unset
      */
-    public var KeyMap : cpp.RawPointer<Int>;
+    public var KeyMap : RawPointer<Int>;
 
     /**
       When holding a key/button, time before it starts repeating, in seconds (for buttons in Repeat mode, etc.).
@@ -91,7 +91,7 @@ extern class ImGuiIO
       Store your own data for retrieval by callbacks.
       - Default : NULL
      */
-    public var UserData : Pointer<Void>;
+    public var UserData : RawPointer<cpp.Void>;
 
     /**
       Load and assemble one or more fonts into a single tightly packed texture. Output to Fonts array.
@@ -115,7 +115,7 @@ extern class ImGuiIO
       Font to use on NewFrame(). Use NULL to uses Fonts->Fonts[0].
       - Default : NULL
      */
-    public var FontDefault : Pointer<ImFont>;
+    public var FontDefault : RawPointer<ImFont>;
 
     /**
       For retina display or other situations where window coordinates are different from framebuffer coordinates.
@@ -172,7 +172,7 @@ extern class ImGuiIO
       Mouse buttons: left, right, middle + extras. ImGui itself mostly only uses left button (BeginPopupContext** are using right button).
       Others buttons allows us to track if the mouse is being used by your application + available to user as a convenience via IsMouse** API.
      */
-    public var MouseDown : Pointer<Bool>;
+    public var MouseDown : RawPointer<Bool>;
 
     /**
       Mouse wheel: 1 unit scrolls about 5 lines text.
@@ -207,12 +207,12 @@ extern class ImGuiIO
     /**
       Keyboard keys that are pressed (in whatever storage order you naturally have access to keyboard data)
      */
-    public var KeysDown : Pointer<Bool>;
+    public var KeysDown : RawPointer<Bool>;
 
     /**
       List of characters input (translated by user from keypress+keyboard state). Fill using AddInputCharacter() helper.
      */
-    public var InputCharacters : Pointer<ImWchar>;
+    public var InputCharacters : RawPointer<ImWchar>;
 
     /**
       Add new character into InputCharacters[]
