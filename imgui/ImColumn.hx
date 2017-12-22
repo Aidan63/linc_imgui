@@ -5,7 +5,10 @@ import cpp.ConstCharStar;
 @:include('linc_imgui.h')
 extern class ImColumn
 {
-    @:native('ImGui::Columns') static function columns(_count : Int = 1, _id : ConstCharStar = null, _border : Bool = true) : Void;
+    @:overload(function() : Void {})
+    @:overload(function(_count : Int) : Void {})
+    @:overload(function(_count : Int, _id : String) : Void {})
+    @:native('ImGui::Columns') static function columns(_count : Int, _id : String, _border : Bool) : Void;
 
     /**
       next column, defaults to current row or next row if the current row is finished
