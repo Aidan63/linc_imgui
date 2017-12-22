@@ -89,23 +89,23 @@ namespace ImGui
         // Drag Wrappers
         bool DragFloat(const char* _label, float &_v, float _speed, float _min, float _max, const char* _displayFormat, float _power)
         {
-            ImGui::DragFloat(_label, &_v, _speed, _min, _max, _displayFormat, _power);
+            return ImGui::DragFloat(_label, &_v, _speed, _min, _max, _displayFormat, _power);
         }
         bool DragFloat2(const char* _label, Array<float> _v, float _speed, float _min, float _max, const char* _displayFormat, float _power)
         {
-            ImGui::DragFloat2(_label, &_v[0], _speed, _min, _max, _displayFormat, _power);
+            return ImGui::DragFloat2(_label, &_v[0], _speed, _min, _max, _displayFormat, _power);
         }
         bool DragFloat3(const char* _label, Array<float> _v, float _speed, float _min, float _max, const char* _displayFormat, float _power)
         {
-            ImGui::DragFloat3(_label, &_v[0], _speed, _min, _max, _displayFormat, _power);
+            return ImGui::DragFloat3(_label, &_v[0], _speed, _min, _max, _displayFormat, _power);
         }
         bool DragFloat4(const char* _label, Array<float> _v, float _speed, float _min, float _max, const char* _displayFormat, float _power)
         {
-            ImGui::DragFloat4(_label, &_v[0], _speed, _min, _max, _displayFormat, _power);
+            return ImGui::DragFloat4(_label, &_v[0], _speed, _min, _max, _displayFormat, _power);
         }
         bool DragFloatRange2(const char* _label, float &_currentMin, float &_currentMax, float _speed, float _min, float _max, const char* _displayFormat, const char* _displayFormatMax, float _power)
         {
-            ImGui::DragFloatRange2(_label, &_currentMin, &_currentMax, _speed, _min, _max, _displayFormat, _displayFormatMax, _power);
+            return ImGui::DragFloatRange2(_label, &_currentMin, &_currentMax, _speed, _min, _max, _displayFormat, _displayFormatMax, _power);
         }
         bool DragInt(const char* _label, int &_v, float _speed, int _min, int _max, const char* _displayFormat)
         {
@@ -139,35 +139,35 @@ namespace ImGui
         }
         bool InputFloat(const char* _label, float &_v, float _step, float _stepFast, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputFloat(_label, &_v, _step, _stepFast, _decimalPrecision, _extraFlags);
+            return ImGui::InputFloat(_label, &_v, _step, _stepFast, _decimalPrecision, _extraFlags);
         }
         bool InputFloat2(const char* _label, Array<float> _v, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputFloat2(_label, &_v[0], _decimalPrecision, _extraFlags);
+            return ImGui::InputFloat2(_label, &_v[0], _decimalPrecision, _extraFlags);
         }
         bool InputFloat3(const char* _label, Array<float> _v, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputFloat3(_label, &_v[0], _decimalPrecision, _extraFlags);
+            return ImGui::InputFloat3(_label, &_v[0], _decimalPrecision, _extraFlags);
         }
         bool InputFloat4(const char* _label, Array<float> _v, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputFloat4(_label, &_v[0], _decimalPrecision, _extraFlags);
+            return ImGui::InputFloat4(_label, &_v[0], _decimalPrecision, _extraFlags);
         }
         bool InputInt(const char* _label, int &_v, int _step, int _stepFast, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputInt(_label, &_v, _step, _stepFast, _extraFlags);
+            return ImGui::InputInt(_label, &_v, _step, _stepFast, _extraFlags);
         }
         bool InputInt2(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputInt2(_label, &_v[0], _extraFlags);
+            return ImGui::InputInt2(_label, &_v[0], _extraFlags);
         }
         bool InputInt3(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputInt3(_label, &_v[0], _extraFlags);
+            return ImGui::InputInt3(_label, &_v[0], _extraFlags);
         }
         bool InputInt4(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags)
         {
-            ImGui::InputInt4(_label, &_v[0], _extraFlags);
+            return ImGui::InputInt4(_label, &_v[0], _extraFlags);
         }
 
         // Slider Wrappers
