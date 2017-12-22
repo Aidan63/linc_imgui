@@ -3,6 +3,7 @@ import cpp.Pointer;
 import imgui.ImGui;
 import imgui.draw.ImDrawData;
 import imgui.draw.ImDrawList;
+import imgui.ImStack;
 import imgui.font.ImFontAtlas;
 import imgui.util.ImVec2;
 
@@ -18,16 +19,20 @@ class Test
         var io = ImGui.getIO();
         io.DisplaySize = ImVec2.create(640, 480);
         
+        var text  = "TextureID";
+
+        var atlas = Pointer.fromRaw(io.Fonts).ref;
         var width  : Int = 0;
         var height : Int = 0;
         var pixels : Array<Int> = null;
-        ImFontAtlas.getTexDataAsRGBA32(io.Fonts, pixels, width, height);
-        ImFontAtlas.setTexID(io.Fonts, "TextureID");
+        atlas.getTexDataAsRGBA32(pixels, width, height);
+        atlas.TexID = ImGui.createVoidStar(text);
 
         // Update
         ImGui.newFrame();
         
         imgui.ImWindow.begin("Test");
+        var fnt = ImStack.getFont();
         imgui.ImWindow.end();
 
         ImGui.render();

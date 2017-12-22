@@ -109,7 +109,9 @@ namespace ImGui
         extern void* createVoidStar(const char* _data);
 
         // Atlas functions
-        extern unsigned char* GetTexDataAsRGBA32(ImFontAtlas* _atlas, int* _outWidth, int* _outHeight);
-        extern unsigned char* GetTexDataAsAlpha8(ImFontAtlas* _atlas, int* _outWidth, int* _outHeight);
+        //extern void GetTexDataAsRGBA32(ImFontAtlas* _atlas, Array<int> &_outPixels, int &_outWidth, int &_outHeight);
+        //extern void GetTexDataAsAlpha8(ImFontAtlas* _atlas, Array<int> &_outPixels, int &_outWidth, int &_outHeight);
+        extern unsigned char* GetTexDataAsRGBA32(ImFontAtlas* _atlas, int &_outWidth, int &_outHeight);
+        extern unsigned char* GetTexDataAsAlpha8(ImFontAtlas* _atlas, int &_outWidth, int &_outHeight);
     }
 }

@@ -320,8 +320,6 @@ namespace ImGui
     }
 }
 
-
-
 // OLD / Needs to be refactored
 
 const char* ImGui::linc::resolveVoidStar(void* _ptr)
