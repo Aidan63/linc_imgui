@@ -28,8 +28,15 @@ extern class ImWindow
       begin a scrolling region. size==0.0f: use remaining window size, size<0.0f: use remaining window size minus abs(size).
       size>0.0f: fixed size. each axis can use a different mode, e.g. ImVec2(0,400).
      */
-    @:native('ImGui::BeginChild') static function beginChildStr(_strID : String , _size : Reference<ImVec2>, _border : Bool = false, _flags : ImGuiWindowFlags = 0) : Bool;
-    @:native('ImGui::BeginChild') static function beginChildInt(_intID : ImGuiID, _size : Reference<ImVec2>, _border : Bool = false, _flags : ImGuiWindowFlags = 0) : Bool;
+    @:overload(function(_intID : ImGuiID) : Bool {})
+    @:overload(function(_intID : ImGuiID, _size : Reference<ImVec2>) : Bool {})
+    @:overload(function(_intID : ImGuiID, _size : Reference<ImVec2>, _border : Bool) : Bool {})
+    @:overload(function(_intID : ImGuiID, _size : Reference<ImVec2>, _border : Bool, _flags : ImGuiWindowFlags) : Bool {})
+    @:overload(function(_strID : String) : Bool {})
+    @:overload(function(_strID : String, _size : Reference<ImVec2>) : Bool {})
+    @:overload(function(_strID : String, _size : Reference<ImVec2>, _border : Bool = false) : Bool {})
+    @:native('ImGui::BeginChild') static function beginChild(_strID : String, _size : Reference<ImVec2>, _border : Bool, _flags : ImGuiWindowFlags) : Bool;
+    
     @:native('ImGui::EndChild') static function endChild() : Void;
 
     /**
