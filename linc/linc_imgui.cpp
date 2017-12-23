@@ -69,7 +69,7 @@ namespace ImGui
         }
         bool Combo(const char* _label, int &_currentItem, Array<String> _items, int _heightInItems)
         {
-            const char* listbox_items[_items->length];
+            const char** listbox_items = new const char*[_items->length];
             for (int i = 0; i < _items->length; i++)
             {
                 listbox_items[i] = _items[i];
@@ -275,7 +275,7 @@ namespace ImGui
         }
         bool ListBox(const char* _label, int &_currentItem, Array<String> _items, int _heightInItems)
         {
-            const char* listbox_items[_items->length];
+            const char** listbox_items = new const char*[_items->length];
             for (int i = 0; i < _items->length; i++)
             {
                 listbox_items[i] = _items[i];
