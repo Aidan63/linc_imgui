@@ -31,53 +31,76 @@ class Test
         // Update
         ImGui.newFrame();
         
-        imgui.ImWindow.begin("Test");
-        var fnt = ImStack.getFont();
-        imgui.ImWindow.end();
+        ImGui.showTestWindow();
 
         ImGui.render();
 
         // Draw
         /*
-        var data = ImGui.getDrawData();
-        var vtxOffset = 0;
-        var idxOffset = 0;
-        for (i in 0...data.ref.CmdListsCount)
-        {
-            var cmdList = ImDrawData.getDrawList(data, i);
-            for (j in 0...ImDrawList.getCmdSize(cmdList))
-            {
-                var cmd = ImDrawList.getCmdPtr(cmdList, j);
-                trace('CMD', ImGui.getVoidStar(cmd.ref.TextureId));
-                // Bind texture ImGui.getVoidStar(cmd.ref.TextureId)
-                // clip rect
-                // Draw ElemCount / 3 triangles using the idx and vtx offsets
+        var depth = 0;
+        var drawData = cpp.Pointer.fromRaw(_dataRawPtr).ref;
 
-                var it : Int = cast cmd.ref.ElemCount / 3;
+        for(i in 0...drawData.CmdListsCount)
+        {
+            var idxOffset = 0;
+            var cmdList   = cpp.Pointer.fromRaw(drawData.CmdLists[i]).ref;
+            var cmdBuffer = cmdList.getCmdData();
+            var vtxBuffer = cmdList.getVtxData();
+            var idxBuffer = cmdList.getIdxData();
+            for (j in 0...cmdList.getCmdLength())
+            {
+                var cmd  = cmdBuffer[j];
+                var clip = new Rectangle(
+                    cmd.ClipRect.x,
+                    cmd.ClipRect.y,
+                    cmd.ClipRect.z - cmd.ClipRect.x,
+                    cmd.ClipRect.w - cmd.ClipRect.y);
+
+                var g = new Geometry({
+                    texture        : Luxe.resources.texture(ImGui.getVoidStar(cmd.TextureId)),
+                    primitive_type : triangles,
+                    depth     : depth,
+                    immediate : true,
+                    batcher   : batcher
+                });
+
+                var it : Int = cast cmd.ElemCount / 3;
                 for (tri in 0...it)
                 {
-                    var baseIdx = ImDrawList.getIndexPtr(cmdList, idxOffset + (tri * 3));
-                    var vtx1 = ImDrawList.getVertexPointer(cmdList, baseIdx);
-                    var vtx2 = ImDrawList.getVertexPointer(cmdList, baseIdx + 1);
-                    var vtx3 = ImDrawList.getVertexPointer(cmdList, baseIdx + 2);
+                    var baseIdx = idxOffset + (tri * 3);
+                    var idx1 = idxBuffer[baseIdx + 0];
+                    var idx2 = idxBuffer[baseIdx + 1];
+                    var idx3 = idxBuffer[baseIdx + 2];
+                    var vtx1 = vtxBuffer[idx1];
+                    var vtx2 = vtxBuffer[idx2];
+                    var vtx3 = vtxBuffer[idx3];
 
-                    trace('{ ${vtx1.ref.pos.x}, ${vtx1.ref.pos.y} } - { ${vtx2.ref.pos.x}, ${vtx2.ref.pos.y} } - { ${vtx3.ref.pos.x}, ${vtx3.ref.pos.y} }');
-                    trace(col_str(vtx1.ref.col), col_str(vtx2.ref.col), col_str(vtx3.ref.col));
+                    var v1 = new Vertex(new Vector(vtx1.pos.x, vtx1.pos.y), intToColor(vtx1.col));
+                    var v2 = new Vertex(new Vector(vtx2.pos.x, vtx2.pos.y), intToColor(vtx2.col));
+                    var v3 = new Vertex(new Vector(vtx3.pos.x, vtx3.pos.y), intToColor(vtx3.col));
+                    v1.uv.uv0.set_uv(vtx1.uv.x, vtx1.uv.y);
+                    v2.uv.uv0.set_uv(vtx2.uv.x, vtx2.uv.y);
+                    v3.uv.uv0.set_uv(vtx3.uv.x, vtx3.uv.y);
+                    g.add(v1);
+                    g.add(v2);
+                    g.add(v3);
                 }
+                g.clip_rect = clip;
 
-                idxOffset += cmd.ref.ElemCount;
+                idxOffset += cmd.ElemCount;
+                depth++;
             }
-            vtxOffset += ImDrawList.getVertexBufferSize(cmdList);
         }
         */
     }
 
     private function col_str(_col : Int) : String
     {
-        var a = _col >> 24 & 0xFF;
-        var r = _col >> 16 & 0xFF;
-        var g = _col >>  8 & 0xFF;
-        var b = _col & 0xFF;
+        var a = (_col >> 24) & 0xFF;
+        var b = (_col >> 16) & 0xFF;
+        var g = (_col >> 8) & 0xFF;
+        var r = (_col) & 0xFF;
+
         return '$r $g $b $a';
     }
 }
