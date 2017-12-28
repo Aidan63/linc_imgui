@@ -106,11 +106,6 @@ extern class ImWindow
     @:native('ImGui::SetNextWindowContentSize') static function setNextWindowContentSize(_size : Reference<ImVec2>) : Void;
 
     /**
-      set next window content width (enforce the range of horizontal scrollbar). call before Begin()
-     */
-    @:native('ImGui::SetNextWindowContentWidth') static function setNextWindowContentWidth(_width : Float) : Void;
-
-    /**
       set next window collapsed state. call before Begin()
      */
     @:native('ImGui::SetNextWindowCollapsed') static function setNextWindowCollapsed(_collapsed : Bool, _cond : ImGuiCond = 0) : Void;
