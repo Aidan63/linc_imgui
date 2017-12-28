@@ -184,11 +184,6 @@ extern class ImGui
     @:native('ImGui::IsWindowHovered') static function isWindowHovered(_flags : ImGuiHoveredFlags = 0) : Bool;
 
     /**
-      is current Begin()-ed root window or any of its child (including current window) focused?
-     */
-    @:native('ImGui::IsRootWindowOrAnyChildFocused') static function isRootWindowOrAnyChildFocused() : Bool;
-
-    /**
       is mouse hovering any visible window
      */
     @:native('ImGui::IsAnyWindowHovered') static function isAnyWindowHovered() : Bool;
