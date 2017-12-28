@@ -92,6 +92,6 @@ extern class ImLayout
     /**
       distance (in pixels) between 2 consecutive lines of standard height widgets == GetWindowFontSize() + GetStyle().FramePadding.y*2 + GetStyle().ItemSpacing.y
      */
-    @:native('ImGui::GetItemsLineHeightWithSpacing') static function getItemsLineHeightWithSpacing() : Float;
+    @:native('ImGui::GetFrameHeightWithSpacing') static function getFrameHeightWithSpacing() : Float;
 
 }
