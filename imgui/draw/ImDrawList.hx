@@ -1,7 +1,10 @@
 package imgui.draw;
 
 import cpp.Pointer;
+import cpp.RawPointer;
+import cpp.RawConstPointer;
 import cpp.Reference;
+import cpp.Callable;
 
 typedef ImDrawIdx = cpp.UInt16;
 
@@ -35,4 +38,8 @@ extern class ImDrawList
     public inline function getVtxBuffer() : Int {
         return untyped __cpp__('{0}.VtxBuffer.Size', this);
     }
+
+    // Advance
+    @:native('AddCallback') function addCallback(_function : Callable<RawConstPointer<ImDrawList>->RawConstPointer<ImDrawCmd>->Void>, _userData : RawPointer<cpp.Void>) : Void;
+    @:native('AddDrawCmd')  function addDrawCmd() : Void;
 }
