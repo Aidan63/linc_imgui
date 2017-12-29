@@ -168,15 +168,15 @@ extern class ImGui
     /**
       is the last item visible? (aka not out of sight due to clipping/scrolling.)
      */
-    @:native('ImGui::IsItemVisible') static function isItemVisible() : Bool;
+    @:native('ImGui::IsItemVisible')    static function isItemVisible() : Bool;
     @:native('ImGui::IsAnyItemHovered') static function isAnyItemHovered() : Bool;
-    @:native('ImGui::IsAnyItemActive') static function isAnyItemActive() : Bool;
+    @:native('ImGui::IsAnyItemActive')  static function isAnyItemActive() : Bool;
 
     /**
       get bounding rect of last item in screen space
      */
-    @:native('ImGui::GetItemRectMin') static function getItemRectMin() : ImVec2;
-    @:native('ImGui::GetItemRectMax') static function getItemRectMax() : ImVec2;
+    @:native('ImGui::GetItemRectMin')  static function getItemRectMin() : ImVec2;
+    @:native('ImGui::GetItemRectMax')  static function getItemRectMax() : ImVec2;
     @:native('ImGui::GetItemRectSize') static function getItemRectSize() : ImVec2;
 
     /**
@@ -187,17 +187,15 @@ extern class ImGui
     /**
       is current Begin()-ed window focused?
      */
-    @:native('ImGui::IsWindowFocused') static function isWindowFocused() : Bool;
+    @:native('ImGui::IsWindowFocused') static function isWindowFocused(_flags : ImGuiFocusedFlags = 0) : Bool;
 
     /**
       is current Begin()-ed window hovered (and typically: not blocked by a popup/modal)?
      */
     @:native('ImGui::IsWindowHovered') static function isWindowHovered(_flags : ImGuiHoveredFlags = 0) : Bool;
 
-    /**
-      is mouse hovering any visible window
-     */
     @:native('ImGui::IsAnyWindowHovered') static function isAnyWindowHovered() : Bool;
+    @:native('ImGui::IsAnyWindowFocused') static function isAnyWindowFocused() : Bool;
 
     /**
       test if rectangle (of given size, starting from cursor position) is visible / not clipped.
@@ -433,4 +431,19 @@ extern class ImGui
       Set the variable if the window is appearing after being hidden/inactive (or the first time)
      */
     var Appearing = 1 << 3;
+}
+
+@:enum abstract ImGuiFocusedFlags(Int) from Int to Int
+{
+  /**
+    IsWindowFocused(): Return true if any children of the window is focused
+   */
+  var ChildWindows = 1 << 0;
+
+  /**
+    IsWindowFocused(): Test from root window (top most parent of the current hierarchy)
+   */
+  var RootWindow   = 1 << 1;
+
+  var RootAndChildWindows = ChildWindows | RootWindow;
 }
