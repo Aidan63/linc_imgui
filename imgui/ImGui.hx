@@ -8,6 +8,7 @@ import cpp.Callable;
 import imgui.ImWindow;
 import imgui.draw.ImDrawData;
 import imgui.draw.ImDrawList;
+import imgui.draw.ImDrawListSharedData;
 import imgui.util.ImVec2;
 import imgui.util.ImVec4;
 import imgui.callback.ImGuiSizeConstraintCallbackData;
@@ -205,9 +206,10 @@ extern class ImGui
     @:overload(function(_rectMin : ImVec2, _rectMax : ImVec2) : Bool {})
     @:native('ImGui::IsRectVisible') static function isRectVisible(_size : ImVec2) : Bool;
 
-    @:native('ImGui::GetTime') static function getTime() : Float;
+    @:native('ImGui::GetTime')       static function getTime() : Float;
     @:native('ImGui::GetFrameCount') static function getFrameCount() : Int;
-    @:native('ImGui::GetOverlayDrawList') static function getOverlayDrawList() : Pointer<ImDrawList>;
+    @:native('ImGui::GetOverlayDrawList')    static function getOverlayDrawList()    : RawPointer<ImDrawList>;
+    @:native('ImGui::GetDrawListSharedData') static function getDrawListSharedData() : RawPointer<ImDrawListSharedData>;
     @:native('ImGui::GetStyleColorName') static function getStyleColorName(_idx : ImGuiCol) : String;
 
     /**
