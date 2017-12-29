@@ -31,7 +31,7 @@ class Test
         // Update
         ImGui.newFrame();
         
-        ImGui.showTestWindow();
+        ImGui.showDemoWindow();
 
         ImGui.render();
 

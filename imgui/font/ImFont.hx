@@ -33,9 +33,20 @@ extern class ImFont
      */
     public var DisplayOffset : ImVec2;
 
-    //public var Glyphs : ImVector<ImFontGlyph>;
-    //public var IndexAdvanceX : ImVector<Float>;
-    //public var IndexLookup : ImVector<UInt16>;
+    /**
+      All glyphs.
+     */
+    @:native('ImVector<ImFontGlyph>') public var Glyphs : Dynamic;
+
+    /**
+      Sparse. Glyphs->AdvanceX in a directly indexable way (more cache-friendly, for CalcTextSize functions which are often bottleneck in large UI).
+     */
+    @:native('ImVector<float>') public var IndexAdvanceX : Dynamic;
+
+    /**
+      Sparse. Index glyphs by Unicode code-point.
+     */
+    @:native('ImVector<unsigned short>') public var IndexLookup : Dynamic;
 
     /**
       == FindGlyph(FontFallbackChar)
@@ -60,12 +71,12 @@ extern class ImFont
     /**
       Pointer within ContainerAtlas->ConfigData
      */
-    public var ConfigData : Pointer<ImFontConfig>;
+    public var ConfigData : RawPointer<ImFontConfig>;
 
     /**
       What we has been loaded into
      */
-    public var ContainerAtlas : Pointer<ImFontAtlas>;
+    public var ContainerAtlas : RawPointer<ImFontAtlas>;
 
     /**
       distance from top to bottom of e.g. 'A' [0..FontSize]
@@ -84,6 +95,7 @@ extern class ImFont
     @:native('SetFallbackChar')  function setFallbackChar(_c : ImWchar) : Void;
     @:native('GetCharAdvance')   function getCharAdvance(_c : ImWchar) : Float;
     @:native('IsLoaded')         function isLoaded(_c : ImWchar) : Bool;
+    @:native('GetDebugName')     function getDebugName() : String;
 
     @:native('CalcTextSizeA') function calcTextSizeA(_size : Float, _maxWidth : Float, _wrapWidth : Float, _textBegin : ConstCharStar, _textEnd : ConstCharStar = null, _remaining : Pointer<ConstCharStar> = null) : ImVec2;
     @:native('CalcWordWrapPositionA') function calcWordWrapPositionA(_scale : Float, _text : ConstCharStar, _textEnd : ConstCharStar, _wrapWidth : Float) : ConstCharStar;

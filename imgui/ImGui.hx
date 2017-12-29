@@ -1,6 +1,7 @@
 package imgui;
 
 import cpp.Pointer;
+import cpp.RawPointer;
 import cpp.ConstPointer;
 import cpp.ConstCharStar;
 import cpp.Reference;
@@ -8,6 +9,7 @@ import cpp.Callable;
 import imgui.ImWindow;
 import imgui.draw.ImDrawData;
 import imgui.draw.ImDrawList;
+import imgui.draw.ImDrawListSharedData;
 import imgui.util.ImVec2;
 import imgui.util.ImVec4;
 import imgui.callback.ImGuiSizeConstraintCallbackData;
@@ -40,13 +42,13 @@ extern class ImGui
     //      \\
     //------\\
     
-    @:native('ImGui::GetIO') static function getIO() : Reference<ImGuiIO>;
-    @:native('ImGui::GetStyle') static function getStyle() : Reference<ImGuiStyle>;
+    @:native('ImGui::GetIO')       static function getIO() : Reference<ImGuiIO>;
+    @:native('ImGui::GetStyle')    static function getStyle() : Reference<ImGuiStyle>;
     @:native('ImGui::GetDrawData') static function getDrawData() : Pointer<ImDrawData>;
-    @:native('ImGui::NewFrame') static function newFrame() : Void;
-    @:native('ImGui::Render') static function render() : Void;
-    @:native('ImGui::EndFrame') static function endFrame() : Void;
-    @:native('ImGui::Shutdown') static function shutdown() : Void;
+    @:native('ImGui::NewFrame')    static function newFrame() : Void;
+    @:native('ImGui::Render')      static function render() : Void;
+    @:native('ImGui::EndFrame')    static function endFrame() : Void;
+    @:native('ImGui::Shutdown')    static function shutdown() : Void;
 
     //---------------------\\
     //                     \\
@@ -54,10 +56,12 @@ extern class ImGui
     //                     \\
     //---------------------\\
 
-    @:native('ImGui::ShowTestWindow') static function showTestWindow(_open : Pointer<Bool> = null) : Void;
+    @:native('ImGui::ShowDemoWindow')    static function showDemoWindow(_open : Pointer<Bool> = null) : Void;
     @:native('ImGui::ShowMetricsWindow') static function showMetricsWindow(_open : Pointer<Bool> = null) : Void;
-    @:native('ImGui::ShowStyleEditor') static function showStyleEditor(_style : Pointer<ImGuiStyle> = null) : Void;
-    @:native('ImGui::ShowUserGuide') static function showUserGuide() : Void;
+    @:native('ImGui::ShowStyleEditor')   static function showStyleEditor(_style : Pointer<ImGuiStyle> = null) : Void;
+    @:native('ImGui::ShowStyleSelector') static function showStyleSelector(_label : String) : Bool;
+    @:native('ImGui::ShowFontSelector')  static function showFontSelector(_label : String) : Void;
+    @:native('ImGui::ShowUserGuide')     static function showUserGuide() : Void;
 
     //-----------\\
     //           \\
@@ -98,8 +102,8 @@ extern class ImGui
     //-------------------\\
     
     @:native('ImGui::linc::SetTooltip') static function setTooltip(_text : String) : Void;
-    @:native('ImGui::BeginTooltip') static function beginTooltip() : Void;
-    @:native('ImGui::EndTooltip') static function endTooltip() : Void;
+    @:native('ImGui::BeginTooltip')     static function beginTooltip() : Void;
+    @:native('ImGui::EndTooltip')       static function endTooltip() : Void;
 
     //---------------\\
     //               \\
@@ -107,12 +111,12 @@ extern class ImGui
     //               \\
     //---------------\\
 
-    @:native('ImGui::LogToTTY') static function logToTTY(_maxDepth : Int = -1) : Void;
-    @:native('ImGui::LogToFile') static function logToFile(_maxDepth : Int = -1, _filename : String = null) : Void;
+    @:native('ImGui::LogToTTY')       static function logToTTY(_maxDepth : Int = -1) : Void;
+    @:native('ImGui::LogToFile')      static function logToFile(_maxDepth : Int = -1, _filename : String = null) : Void;
     @:native('ImGui::LogToClipboard') static function logToClipboard(_maxDepth : Int = -1) : Void;
-    @:native('ImGui::LogFinish') static function logFinish() : Void;
-    @:native('ImGui::LogButtons') static function logButtons() : Void;
-    @:native('ImGui::linc::LogText') static function logText(_text : String) : Void;
+    @:native('ImGui::LogFinish')      static function logFinish() : Void;
+    @:native('ImGui::LogButtons')     static function logButtons() : Void;
+    @:native('ImGui::linc::LogText')  static function logText(_text : String) : Void;
 
     //--------------------\\
     //                    \\
@@ -121,17 +125,26 @@ extern class ImGui
     //--------------------\\
 
     @:native('ImGui::PushClipRect') static function pushClipRect(_clipRectMin : ImVec2, _clipRectMax : ImVec2, _intersectWithCurrentClip : Bool) : Void;
-    @:native('ImGui::PopClipRect') static function popClipRect() : Void;
+    @:native('ImGui::PopClipRect')  static function popClipRect() : Void;
 
-    //--------------------\\
-    //                    \\
-    // Clipping functions \\
-    //                    \\
-    //--------------------\\
+    //-------------------------\\
+    //                         \\
+    // Style Changer functions \\
+    //                         \\
+    //-------------------------\\
 
     @:native('ImGui::StyleColorsClassic') static function styleColorsClassic(_dst : Pointer<ImGuiStyle> = null) : Void;
-    @:native('ImGui::StyleColorsDark') static function styleColorsDark(_dst : Pointer<ImGuiStyle> = null) : Void;
-    @:native('ImGui::StyleColorsLight') static function styleColorsLight(_dst : Pointer<ImGuiStyle> = null) : Void;
+    @:native('ImGui::StyleColorsDark')    static function styleColorsDark(_dst : Pointer<ImGuiStyle> = null) : Void;
+    @:native('ImGui::StyleColorsLight')   static function styleColorsLight(_dst : Pointer<ImGuiStyle> = null) : Void;
+
+    //-----------------//
+    //                 //
+    // Focus functions //
+    //                 //
+    //-----------------//
+
+    @:native('ImGui::SetItemDefaultFocus')  static function setItemDefaultFocus() : Void;
+    @:native('ImGui::SetKeyboardFocusHere') static function SetKeyboardFocusHere(_offset : Int = 0) : Void;
 
     //---------------------\\
     //                     \\
@@ -157,15 +170,15 @@ extern class ImGui
     /**
       is the last item visible? (aka not out of sight due to clipping/scrolling.)
      */
-    @:native('ImGui::IsItemVisible') static function isItemVisible() : Bool;
+    @:native('ImGui::IsItemVisible')    static function isItemVisible() : Bool;
     @:native('ImGui::IsAnyItemHovered') static function isAnyItemHovered() : Bool;
-    @:native('ImGui::IsAnyItemActive') static function isAnyItemActive() : Bool;
+    @:native('ImGui::IsAnyItemActive')  static function isAnyItemActive() : Bool;
 
     /**
       get bounding rect of last item in screen space
      */
-    @:native('ImGui::GetItemRectMin') static function getItemRectMin() : ImVec2;
-    @:native('ImGui::GetItemRectMax') static function getItemRectMax() : ImVec2;
+    @:native('ImGui::GetItemRectMin')  static function getItemRectMin() : ImVec2;
+    @:native('ImGui::GetItemRectMax')  static function getItemRectMax() : ImVec2;
     @:native('ImGui::GetItemRectSize') static function getItemRectSize() : ImVec2;
 
     /**
@@ -176,27 +189,15 @@ extern class ImGui
     /**
       is current Begin()-ed window focused?
      */
-    @:native('ImGui::IsWindowFocused') static function isWindowFocused() : Bool;
+    @:native('ImGui::IsWindowFocused') static function isWindowFocused(_flags : ImGuiFocusedFlags = 0) : Bool;
 
     /**
       is current Begin()-ed window hovered (and typically: not blocked by a popup/modal)?
      */
     @:native('ImGui::IsWindowHovered') static function isWindowHovered(_flags : ImGuiHoveredFlags = 0) : Bool;
 
-    /**
-      is current Begin()-ed root window focused (root = top-most parent of a child, otherwise self)?
-     */
-    @:native('ImGui::IsRootWindowFocused') static function isRootWindowFocused() : Bool;
-
-    /**
-      is current Begin()-ed root window or any of its child (including current window) focused?
-     */
-    @:native('ImGui::IsRootWindowOrAnyChildFocused') static function isRootWindowOrAnyChildFocused() : Bool;
-
-    /**
-      is mouse hovering any visible window
-     */
     @:native('ImGui::IsAnyWindowHovered') static function isAnyWindowHovered() : Bool;
+    @:native('ImGui::IsAnyWindowFocused') static function isAnyWindowFocused() : Bool;
 
     /**
       test if rectangle (of given size, starting from cursor position) is visible / not clipped.
@@ -206,9 +207,10 @@ extern class ImGui
     @:overload(function(_rectMin : ImVec2, _rectMax : ImVec2) : Bool {})
     @:native('ImGui::IsRectVisible') static function isRectVisible(_size : ImVec2) : Bool;
 
-    @:native('ImGui::GetTime') static function getTime() : Float;
+    @:native('ImGui::GetTime')       static function getTime() : Float;
     @:native('ImGui::GetFrameCount') static function getFrameCount() : Int;
-    @:native('ImGui::GetOverlayDrawList') static function getOverlayDrawList() : Pointer<ImDrawList>;
+    @:native('ImGui::GetOverlayDrawList')    static function getOverlayDrawList()    : RawPointer<ImDrawList>;
+    @:native('ImGui::GetDrawListSharedData') static function getDrawListSharedData() : RawPointer<ImDrawListSharedData>;
     @:native('ImGui::GetStyleColorName') static function getStyleColorName(_idx : ImGuiCol) : String;
 
     /**
@@ -226,7 +228,7 @@ extern class ImGui
       helper to create a child window / scrolling region that looks like a normal widget frame
      */
     @:native('ImGui::BeginChildFrame') static function beginChildFrame(_id : ImGuiID, _size : ImVec2, _extraFlags : ImGuiWindowFlags = 0) : Bool;
-    @:native('ImGui::EndChildFrame') static function EndChildFrame() : Void;
+    @:native('ImGui::EndChildFrame')   static function EndChildFrame() : Void;
 
     @:native('ImGui::ColorConvertU32ToFloat4') static function colorConvertU32ToFloat4(_in : ImU32) : ImVec4;
     @:native('ImGui::ColorConvertFloat4ToU32') static function colorConvertFloat4ToU32(_in : ImVec4) : ImU32;
@@ -432,4 +434,19 @@ extern class ImGui
       Set the variable if the window is appearing after being hidden/inactive (or the first time)
      */
     var Appearing = 1 << 3;
+}
+
+@:enum abstract ImGuiFocusedFlags(Int) from Int to Int
+{
+  /**
+    IsWindowFocused(): Return true if any children of the window is focused
+   */
+  var ChildWindows = 1 << 0;
+
+  /**
+    IsWindowFocused(): Test from root window (top most parent of the current hierarchy)
+   */
+  var RootWindow   = 1 << 1;
+
+  var RootAndChildWindows = ChildWindows | RootWindow;
 }

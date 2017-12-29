@@ -77,7 +77,7 @@ extern class ImTree
     /**
       Hit testing to allow subsequent widgets to overlap this one
      */
-    var AllowOverlapMode = 1 << 2;
+    var AllowItemOverlap = 1 << 2;
 
     /**
       Don't do a TreePush() when open (e.g. for CollapsingHeader) = no extra indent nor pushing on ID stack

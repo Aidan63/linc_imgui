@@ -39,9 +39,6 @@ extern class ImWidgets
     @:overload(function(_label : String, _active : Bool) : Bool {})
     @:native('ImGui::linc::RadioButton') static function radioButton(_label : String, _v : Int, _vButton : Int) : Bool;
 
-    @:overload(function(_label : String, _currentItem : Int, _items : Array<String>) : Bool {})
-    @:native('ImGui::linc::Combo') static function combo(_label : String, _currentItem : Int, _items : Array<String>, _heightInItems : Int) : Bool;
-
     @:overload(function(_label : String, _values : Array<Float>) : Void {})
     @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int) : Void {})
     @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String) : Void {})
