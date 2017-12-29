@@ -1,6 +1,7 @@
 package imgui;
 
 import cpp.Pointer;
+import cpp.RawPointer;
 import cpp.ConstPointer;
 import cpp.ConstCharStar;
 import cpp.Reference;
@@ -227,7 +228,7 @@ extern class ImGui
       helper to create a child window / scrolling region that looks like a normal widget frame
      */
     @:native('ImGui::BeginChildFrame') static function beginChildFrame(_id : ImGuiID, _size : ImVec2, _extraFlags : ImGuiWindowFlags = 0) : Bool;
-    @:native('ImGui::EndChildFrame') static function EndChildFrame() : Void;
+    @:native('ImGui::EndChildFrame')   static function EndChildFrame() : Void;
 
     @:native('ImGui::ColorConvertU32ToFloat4') static function colorConvertU32ToFloat4(_in : ImU32) : ImVec4;
     @:native('ImGui::ColorConvertFloat4ToU32') static function colorConvertFloat4ToU32(_in : ImVec4) : ImU32;
