@@ -54,10 +54,12 @@ extern class ImGui
     //                     \\
     //---------------------\\
 
-    @:native('ImGui::ShowDemoWindow') static function showDemoWindow(_open : Pointer<Bool> = null) : Void;
+    @:native('ImGui::ShowDemoWindow'   ) static function showDemoWindow(_open : Pointer<Bool> = null) : Void;
     @:native('ImGui::ShowMetricsWindow') static function showMetricsWindow(_open : Pointer<Bool> = null) : Void;
-    @:native('ImGui::ShowStyleEditor') static function showStyleEditor(_style : Pointer<ImGuiStyle> = null) : Void;
-    @:native('ImGui::ShowUserGuide') static function showUserGuide() : Void;
+    @:native('ImGui::ShowStyleEditor'  ) static function showStyleEditor(_style : Pointer<ImGuiStyle> = null) : Void;
+    @:native('ImGui::ShowStyleSelector') static function showStyleSelector(_label : String) : Bool;
+    @:native('ImGui::ShowFontSelector' ) static function showFontSelector(_label : String) : Void;
+    @:native('ImGui::ShowUserGuide'    ) static function showUserGuide() : Void;
 
     //-----------\\
     //           \\
