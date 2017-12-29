@@ -95,6 +95,7 @@ extern class ImFont
     @:native('SetFallbackChar')  function setFallbackChar(_c : ImWchar) : Void;
     @:native('GetCharAdvance')   function getCharAdvance(_c : ImWchar) : Float;
     @:native('IsLoaded')         function isLoaded(_c : ImWchar) : Bool;
+    @:native('GetDebugName')     function getDebugName() : String;
 
     @:native('CalcTextSizeA') function calcTextSizeA(_size : Float, _maxWidth : Float, _wrapWidth : Float, _textBegin : ConstCharStar, _textEnd : ConstCharStar = null, _remaining : Pointer<ConstCharStar> = null) : ImVec2;
     @:native('CalcWordWrapPositionA') function calcWordWrapPositionA(_scale : Float, _text : ConstCharStar, _textEnd : ConstCharStar, _wrapWidth : Float) : ConstCharStar;
