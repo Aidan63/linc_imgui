@@ -163,53 +163,55 @@ extern class ImWindow
     /**
       get scrolling amount [0..GetScrollMaxX()]
      */
-    @:native('GetScrollX') static function GetScrollX() : Float;
+    @:native('ImGui::GetScrollX') static function GetScrollX() : Float;
 
     /**
       get scrolling amount [0..GetScrollMaxY()]
      */
-    @:native('GetScrollY') static function GetScrollY() : Float;
+    @:native('ImGui::GetScrollY') static function GetScrollY() : Float;
 
     /**
       get maximum scrolling amount ~~ ContentSize.X - WindowSize.X
      */
-    @:native('GetScrollMaxX') static function GetScrollMaxX() : Float;
+    @:native('ImGui::GetScrollMaxX') static function GetScrollMaxX() : Float;
 
     /**
       get maximum scrolling amount ~~ ContentSize.Y - WindowSize.Y
      */
-    @:native('GetScrollMaxY') static function GetScrollMaxY() : Float;
+    @:native('ImGui::GetScrollMaxY') static function GetScrollMaxY() : Float;
 
     /**
       set scrolling amount [0..GetScrollMaxX()]
      */
-    @:native('SetScrollX') static function SetScrollX(_scrollX : Float) : Void;
+    @:native('ImGui::SetScrollX') static function SetScrollX(_scrollX : Float) : Void;
 
     /**
       set scrolling amount [0..GetScrollMaxY()]
      */
-    @:native('SetScrollY') static function SetScrollY(_scrollY : Float) : Void;
+    @:native('ImGui::SetScrollY') static function SetScrollY(_scrollY : Float) : Void;
 
     /**
       adjust scrolling amount to make current cursor position visible. center_y_ratio=0.0: top, 0.5: center, 1.0: bottom.
      */
-    @:native('SetScrollHere') static function SetScrollHere(_center_y_ratio : Float = 0.5) : Void;
+    @:native('ImGui::SetScrollHere') static function SetScrollHere(_center_y_ratio : Float = 0.5) : Void;
 
     /**
       adjust scrolling amount to make given position valid. use GetCursorPos() or GetCursorStartPos()+offset to get valid positions.
      */
-    @:native('SetScrollFromPosY') static function SetScrollFromPosY(_posY : Float, _center_y_ratio : Float = 0.5) : Void;
+    @:native('ImGui::SetScrollFromPosY') static function SetScrollFromPosY(_posY : Float, _center_y_ratio : Float = 0.5) : Void;
 
     /**
       focus keyboard on the next widget. Use positive 'offset' to access sub components of a multiple component widget. Use -1 to access previous widget.
      */
-    @:native('SetKeyboardFocusHere') static function SetKeyboardFocusHere(_offset : Int = 0) : Void;
+    @:native('ImGui::SetKeyboardFocusHere') static function SetKeyboardFocusHere(_offset : Int = 0) : Void;
+
+    @:native('ImGui::SetItemDefaultFocus') static function setItemDefaultFocus() : Void;
 
     /**
       replace tree state storage with our own (if you want to manipulate it yourself, typically clear subsection of it)
      */
-    @:native('SetStateStorage') static function SetStateStorage(_tree : Pointer<ImGuiStorage>) : Void;
-    @:native('GetStateStorage') static function GetStateStorage() : Pointer<ImGuiStorage>;
+    @:native('ImGui::SetStateStorage') static function SetStateStorage(_tree : Pointer<ImGuiStorage>) : Void;
+    @:native('ImGui::GetStateStorage') static function GetStateStorage() : Pointer<ImGuiStorage>;
 }
 
 /**
