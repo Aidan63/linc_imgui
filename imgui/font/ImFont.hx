@@ -7,6 +7,7 @@ import imgui.util.ImVec4;
 import cpp.UInt16;
 import cpp.ConstPointer;
 import cpp.Pointer;
+import cpp.RawPointer;
 import cpp.ConstCharStar;
 import cpp.Int16;
 import cpp.Reference;
