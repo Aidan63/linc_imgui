@@ -5,6 +5,8 @@ import cpp.RawPointer;
 import cpp.RawConstPointer;
 import cpp.Reference;
 import cpp.Callable;
+import imgui.ImGui;
+import imgui.util.ImVec2;
 
 typedef ImDrawIdx = cpp.UInt16;
 
@@ -39,7 +41,40 @@ extern class ImDrawList
         return untyped __cpp__('{0}.VtxBuffer.Size', this);
     }
 
+    //------------//
+    //            //
+    // Primitives //
+    //            //
+    //------------//
+
+    @:overload(function(_a : ImVec2, _b : ImVec2, _col : ImU32) : Void {})
+    @:native('AddLine') function addLine(_a : ImVec2, _b : ImVec2, _col : ImU32, _thickness : Float) : Void;
+
+    @:overload(function(_a : ImVec2, _b : ImVec2, _col : ImU32) : Void {})
+    @:overload(function(_a : ImVec2, _b : ImVec2, _col : ImU32, _rounding : Float) : Void {})
+    @:overload(function(_a : ImVec2, _b : ImVec2, _col : ImU32, _rounding : Float, _roundingCorners : ImDrawCornerFlags) : Void {})
+    @:native('AddRect') function addRect(_a : ImVec2, _b : ImVec2, _col : ImU32, _rounding : Float, _roundingCorners : ImDrawCornerFlags, _thickness : Float) : Void;
+
+    @:overload(function(_a : ImVec2, _b : ImVec2, _col : ImU32) : Void {})
+    @:overload(function(_a : ImVec2, _b : ImVec2, _col : ImU32, _rounding : Float) : Void {})
+    @:native('AddRectFilled') function addRectFilled(_a : ImVec2, _b : ImVec2, _col : ImU32, _rounding : Float, _roundingCorners : ImDrawCornerFlags) : Void;
+
+    @:native('AddRectFilledMultiColor') function addRectFilledMultiColor(_a : ImVec2, _b : ImVec2, _colUprLeft : ImU32, _colUprRight : ImU32, _colBotLeft : ImU32, _colBotRight : ImU32) : Void;
+
     // Advance
     @:native('AddCallback') function addCallback(_function : Callable<RawConstPointer<ImDrawList>->RawConstPointer<ImDrawCmd>->Void>, _userData : RawPointer<cpp.Void>) : Void;
     @:native('AddDrawCmd')  function addDrawCmd() : Void;
+}
+
+@:enum abstract ImDrawCornerFlags(Int) from Int to Int
+{
+    var TopLeft     = 1 << 0;
+    var TopRight    = 1 << 1;
+    var BottomLeft  = 1 << 2;
+    var BottomRight = 1 << 3;
+    var Top    = TopLeft    | TopRight;
+    var Bottom = BottomLeft | BottomRight;
+    var left   = TopLeft    | BottomLeft;
+    var right  = TopRight   | BottomRight;
+    var All = 0xF;
 }
