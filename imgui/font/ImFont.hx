@@ -33,9 +33,20 @@ extern class ImFont
      */
     public var DisplayOffset : ImVec2;
 
-    //public var Glyphs : ImVector<ImFontGlyph>;
-    //public var IndexAdvanceX : ImVector<Float>;
-    //public var IndexLookup : ImVector<UInt16>;
+    /**
+      All glyphs.
+     */
+    @:native('ImVector<ImFontGlyph>') public var Glyphs : Dynamic;
+
+    /**
+      Sparse. Glyphs->AdvanceX in a directly indexable way (more cache-friendly, for CalcTextSize functions which are often bottleneck in large UI).
+     */
+    @:native('ImVector<float>') public var IndexAdvanceX : Dynamic;
+
+    /**
+      Sparse. Index glyphs by Unicode code-point.
+     */
+    @:native('ImVector<unsigned short>') public var IndexLookup : Dynamic;
 
     /**
       == FindGlyph(FontFallbackChar)
