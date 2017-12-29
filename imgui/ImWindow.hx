@@ -5,6 +5,7 @@ import imgui.draw.ImDrawList;
 import imgui.util.ImVec2;
 import imgui.util.ImGuiStorage;
 import cpp.Pointer;
+import cpp.RawPointer;
 import cpp.Reference;
 
 @:include('linc_imgui.h')
@@ -64,7 +65,7 @@ extern class ImWindow
     /**
       get rendering command-list if you want to append your own draw primitives
      */
-    @:native('ImGui::GetWindowDrawList') static function getWindowDrawList() : Pointer<ImDrawList>;
+    @:native('ImGui::GetWindowDrawList') static function getWindowDrawList() : RawPointer<ImDrawList>;
 
     /**
       get current window position in screen space (useful if you want to do your own drawing via the DrawList api)
