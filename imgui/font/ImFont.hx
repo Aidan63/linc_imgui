@@ -71,12 +71,12 @@ extern class ImFont
     /**
       Pointer within ContainerAtlas->ConfigData
      */
-    public var ConfigData : Pointer<ImFontConfig>;
+    public var ConfigData : RawPointer<ImFontConfig>;
 
     /**
       What we has been loaded into
      */
-    public var ContainerAtlas : Pointer<ImFontAtlas>;
+    public var ContainerAtlas : RawPointer<ImFontAtlas>;
 
     /**
       distance from top to bottom of e.g. 'A' [0..FontSize]
