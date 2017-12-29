@@ -40,13 +40,13 @@ extern class ImGui
     //      \\
     //------\\
     
-    @:native('ImGui::GetIO') static function getIO() : Reference<ImGuiIO>;
-    @:native('ImGui::GetStyle') static function getStyle() : Reference<ImGuiStyle>;
+    @:native('ImGui::GetIO')       static function getIO() : Reference<ImGuiIO>;
+    @:native('ImGui::GetStyle')    static function getStyle() : Reference<ImGuiStyle>;
     @:native('ImGui::GetDrawData') static function getDrawData() : Pointer<ImDrawData>;
-    @:native('ImGui::NewFrame') static function newFrame() : Void;
-    @:native('ImGui::Render') static function render() : Void;
-    @:native('ImGui::EndFrame') static function endFrame() : Void;
-    @:native('ImGui::Shutdown') static function shutdown() : Void;
+    @:native('ImGui::NewFrame')    static function newFrame() : Void;
+    @:native('ImGui::Render')      static function render() : Void;
+    @:native('ImGui::EndFrame')    static function endFrame() : Void;
+    @:native('ImGui::Shutdown')    static function shutdown() : Void;
 
     //---------------------\\
     //                     \\
@@ -54,12 +54,12 @@ extern class ImGui
     //                     \\
     //---------------------\\
 
-    @:native('ImGui::ShowDemoWindow'   ) static function showDemoWindow(_open : Pointer<Bool> = null) : Void;
+    @:native('ImGui::ShowDemoWindow')    static function showDemoWindow(_open : Pointer<Bool> = null) : Void;
     @:native('ImGui::ShowMetricsWindow') static function showMetricsWindow(_open : Pointer<Bool> = null) : Void;
-    @:native('ImGui::ShowStyleEditor'  ) static function showStyleEditor(_style : Pointer<ImGuiStyle> = null) : Void;
+    @:native('ImGui::ShowStyleEditor')   static function showStyleEditor(_style : Pointer<ImGuiStyle> = null) : Void;
     @:native('ImGui::ShowStyleSelector') static function showStyleSelector(_label : String) : Bool;
-    @:native('ImGui::ShowFontSelector' ) static function showFontSelector(_label : String) : Void;
-    @:native('ImGui::ShowUserGuide'    ) static function showUserGuide() : Void;
+    @:native('ImGui::ShowFontSelector')  static function showFontSelector(_label : String) : Void;
+    @:native('ImGui::ShowUserGuide')     static function showUserGuide() : Void;
 
     //-----------\\
     //           \\
@@ -100,8 +100,8 @@ extern class ImGui
     //-------------------\\
     
     @:native('ImGui::linc::SetTooltip') static function setTooltip(_text : String) : Void;
-    @:native('ImGui::BeginTooltip') static function beginTooltip() : Void;
-    @:native('ImGui::EndTooltip') static function endTooltip() : Void;
+    @:native('ImGui::BeginTooltip')     static function beginTooltip() : Void;
+    @:native('ImGui::EndTooltip')       static function endTooltip() : Void;
 
     //---------------\\
     //               \\
@@ -109,12 +109,12 @@ extern class ImGui
     //               \\
     //---------------\\
 
-    @:native('ImGui::LogToTTY') static function logToTTY(_maxDepth : Int = -1) : Void;
-    @:native('ImGui::LogToFile') static function logToFile(_maxDepth : Int = -1, _filename : String = null) : Void;
+    @:native('ImGui::LogToTTY')       static function logToTTY(_maxDepth : Int = -1) : Void;
+    @:native('ImGui::LogToFile')      static function logToFile(_maxDepth : Int = -1, _filename : String = null) : Void;
     @:native('ImGui::LogToClipboard') static function logToClipboard(_maxDepth : Int = -1) : Void;
-    @:native('ImGui::LogFinish') static function logFinish() : Void;
-    @:native('ImGui::LogButtons') static function logButtons() : Void;
-    @:native('ImGui::linc::LogText') static function logText(_text : String) : Void;
+    @:native('ImGui::LogFinish')      static function logFinish() : Void;
+    @:native('ImGui::LogButtons')     static function logButtons() : Void;
+    @:native('ImGui::linc::LogText')  static function logText(_text : String) : Void;
 
     //--------------------\\
     //                    \\
@@ -123,17 +123,26 @@ extern class ImGui
     //--------------------\\
 
     @:native('ImGui::PushClipRect') static function pushClipRect(_clipRectMin : ImVec2, _clipRectMax : ImVec2, _intersectWithCurrentClip : Bool) : Void;
-    @:native('ImGui::PopClipRect') static function popClipRect() : Void;
+    @:native('ImGui::PopClipRect')  static function popClipRect() : Void;
 
-    //--------------------\\
-    //                    \\
-    // Clipping functions \\
-    //                    \\
-    //--------------------\\
+    //-------------------------\\
+    //                         \\
+    // Style Changer functions \\
+    //                         \\
+    //-------------------------\\
 
     @:native('ImGui::StyleColorsClassic') static function styleColorsClassic(_dst : Pointer<ImGuiStyle> = null) : Void;
-    @:native('ImGui::StyleColorsDark') static function styleColorsDark(_dst : Pointer<ImGuiStyle> = null) : Void;
-    @:native('ImGui::StyleColorsLight') static function styleColorsLight(_dst : Pointer<ImGuiStyle> = null) : Void;
+    @:native('ImGui::StyleColorsDark')    static function styleColorsDark(_dst : Pointer<ImGuiStyle> = null) : Void;
+    @:native('ImGui::StyleColorsLight')   static function styleColorsLight(_dst : Pointer<ImGuiStyle> = null) : Void;
+
+    //-----------------//
+    //                 //
+    // Focus functions //
+    //                 //
+    //-----------------//
+
+    @:native('ImGui::SetItemDefaultFocus')  static function setItemDefaultFocus() : Void;
+    @:native('ImGui::SetKeyboardFocusHere') static function SetKeyboardFocusHere(_offset : Int = 0) : Void;
 
     //---------------------\\
     //                     \\

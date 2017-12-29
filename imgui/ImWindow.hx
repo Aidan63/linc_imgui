@@ -201,13 +201,6 @@ extern class ImWindow
     @:native('ImGui::SetScrollFromPosY') static function SetScrollFromPosY(_posY : Float, _center_y_ratio : Float = 0.5) : Void;
 
     /**
-      focus keyboard on the next widget. Use positive 'offset' to access sub components of a multiple component widget. Use -1 to access previous widget.
-     */
-    @:native('ImGui::SetKeyboardFocusHere') static function SetKeyboardFocusHere(_offset : Int = 0) : Void;
-
-    @:native('ImGui::SetItemDefaultFocus') static function setItemDefaultFocus() : Void;
-
-    /**
       replace tree state storage with our own (if you want to manipulate it yourself, typically clear subsection of it)
      */
     @:native('ImGui::SetStateStorage') static function SetStateStorage(_tree : Pointer<ImGuiStorage>) : Void;
