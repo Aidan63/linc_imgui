@@ -100,12 +100,6 @@ namespace ImGui
         // Utility Wrappers
         extern void CalcListClipping(int _itemsCount, float _itemsHeight, int &_outItemsDisplayStart, int &_outItemsDisplayEnd);
 
-        // Old / need to be refactored.
-
-        // Misc
-        extern const char* resolveVoidStar(void* _ptr);
-        extern void* createVoidStar(const char* _data);
-
         // Atlas functions
         //extern void GetTexDataAsRGBA32(ImFontAtlas* _atlas, Array<int> &_outPixels, int &_outWidth, int &_outHeight);
         //extern void GetTexDataAsAlpha8(ImFontAtlas* _atlas, Array<int> &_outPixels, int &_outWidth, int &_outHeight);

@@ -26,7 +26,7 @@ class Test
         var height : Int = 0;
         var pixels : Array<Int> = null;
         atlas.getTexDataAsRGBA32(pixels, width, height);
-        atlas.TexID = ImGui.createVoidStar(text);
+        atlas.TexID = Pointer.addressOf(text).rawCast();
 
         // Update
         ImGui.newFrame();

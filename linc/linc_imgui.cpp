@@ -308,15 +308,3 @@ namespace ImGui
         }
     }
 }
-
-// OLD / Needs to be refactored
-
-const char* ImGui::linc::resolveVoidStar(void* _ptr)
-{
-    return static_cast<const char*>(_ptr);
-}
-void* ImGui::linc::createVoidStar(const char* _data)
-{
-    char* str = const_cast<char*>(_data);
-    return static_cast<void*>(str);
-}
