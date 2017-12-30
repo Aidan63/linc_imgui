@@ -99,7 +99,7 @@ extern class ImWindow
     /**
       set next window size limits. use -1,-1 on either X/Y axis to preserve the current size. Use callback to apply non-trivial programmatic constraints.
      */
-    @:native('ImGui::SetNextWindowSizeConstraints') static function setNextWindowSizeConstraints(_sizeMin : Reference<ImVec2>, _sizeMax : Reference<ImVec2>, _customCallback : ImGuiSizeConstraintCallback = null, _customCallbackData : Pointer<Void> = null) : Void;
+    @:native('ImGui::SetNextWindowSizeConstraints') static function setNextWindowSizeConstraints(_sizeMin : Reference<ImVec2>, _sizeMax : Reference<ImVec2>, _customCallback : ImGuiSizeConstraintCallback = null, _customCallbackData : RawPointer<cpp.Void> = null) : Void;
 
     /**
       set next window content size (enforce the range of scrollbars). set axis to 0.0f to leave it automatic. call before Begin()
