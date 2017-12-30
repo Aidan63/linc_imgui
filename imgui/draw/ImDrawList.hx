@@ -1,12 +1,15 @@
 package imgui.draw;
 
 import cpp.Pointer;
+import cpp.ConstPointer;
 import cpp.RawPointer;
 import cpp.RawConstPointer;
 import cpp.Reference;
 import cpp.Callable;
 import imgui.ImGui;
 import imgui.util.ImVec2;
+import imgui.util.ImVec4;
+import imgui.font.ImFont;
 
 typedef ImDrawIdx = cpp.UInt16;
 
@@ -77,6 +80,34 @@ extern class ImDrawList
 
     @:overload(function(_centre : ImVec2, _radius : Float, _col : ImU32) : Void {})
     @:native('AddCircleFilled') function addCircleFilled(_centre : ImVec2, _radius : Float, _col : ImU32, _numSegments : Int) : Void;
+
+    @:overload(function(_font : ConstPointer<ImFont>, _fontSize : Float, _pos : ImVec2, _col : ImU32, _textBegin : String) : Void {})
+    @:overload(function(_font : ConstPointer<ImFont>, _fontSize : Float, _pos : ImVec2, _col : ImU32, _textBegin : String, _textEnd : String) : Void {})
+    @:overload(function(_font : ConstPointer<ImFont>, _fontSize : Float, _pos : ImVec2, _col : ImU32, _textBegin : String, _textEnd : String, _wrapWidth : Float) : Void {})
+    @:overload(function(_font : ConstPointer<ImFont>, _fontSize : Float, _pos : ImVec2, _col : ImU32, _textBegin : String, _textEnd : String, _wrapWidth : Float, _cpuFineClipRect : ImVec4) : Void {})
+    @:overload(function(_pos : ImVec2, _col : ImU32, _textBegin : String) : Void {})
+    @:native('AddText') function addText(_pos : ImVec2, _col : ImU32, _textBegin : String, _textEnd : String) : Void;
+
+    @:overload(function(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2) : Void {})
+    @:overload(function(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _uvA : ImVec2) : Void {})
+    @:overload(function(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _uvA : ImVec2, _uvB : ImVec2) : Void {})
+    @:native('AddImage') function addImage(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _uvA : ImVec2, _uvB : ImVec2, _col : ImU32) : Void;
+
+    @:overload(function(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _c : ImVec2, _d : ImVec2) : Void {})
+    @:overload(function(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _c : ImVec2, _d : ImVec2, _uvA : ImVec2) : Void {})
+    @:overload(function(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _c : ImVec2, _d : ImVec2, _uvA : ImVec2, _uvB : ImVec2) : Void {})
+    @:overload(function(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _c : ImVec2, _d : ImVec2, _uvA : ImVec2, _uvB : ImVec2, _uvC : ImVec2) : Void {})
+    @:overload(function(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _c : ImVec2, _d : ImVec2, _uvA : ImVec2, _uvB : ImVec2, _uvC : ImVec2, _uvD : ImVec2) : Void {})
+    @:native('AddImageQuad') function addImageQuad(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _c : ImVec2, _d : ImVec2, _uvA : ImVec2, _uvB : ImVec2, _uvC : ImVec2, _uvD : ImVec2, _col : ImU32) : Void;
+
+    @:overload(function(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _uvA : ImVec2, _uvB : ImVec2, _col : ImU32, _rounding : Float) : Void {})
+    @:native('AddImageRounded') function addImageRounded(_userTextureID : ImTextureID, _a : ImVec2, _b : ImVec2, _uvA : ImVec2, _uvB : ImVec2, _col : ImU32, _rounding : Float, _roundingCorners : ImDrawCornerFlags) : Void;
+
+    @:native('AddPolyline')         function addPolyline(_points : ConstPointer<ImVec2>, _numPoints : Int, col : ImU32, _closed : Bool, _thickness : Float) : Void;
+    @:native('AddConvexPolyFilled') function addConvexPolyFilled(_points : ConstPointer<ImVec2>, _numPoints : Int, _col : ImU32) : Void;
+
+    @:overload(function(_pos0 : ImVec2, _cp0 : ImVec2, _cp1 : ImVec2, _pos1 : ImVec2, _col : ImU32, _thickness : Float) : Void {})
+    @:native('AddBezierCurve') function addBezierCurve(_pos0 : ImVec2, _cp0 : ImVec2, _cp1 : ImVec2, _pos1 : ImVec2, _col : ImU32, _thickness : Float, _numSegments : Int) : Void;
 
     // Advance
     @:native('AddCallback') function addCallback(_function : Callable<RawConstPointer<ImDrawList>->RawConstPointer<ImDrawCmd>->Void>, _userData : RawPointer<cpp.Void>) : Void;
