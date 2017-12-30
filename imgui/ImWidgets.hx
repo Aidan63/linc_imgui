@@ -21,18 +21,18 @@ extern class ImWidgets
     @:overload(function(_label : String) : Bool {})
     @:native('ImGui::Button') static function button(_label : String, _size : ImVec2) : Bool;
 
-    @:overload(function(_userTextureId : String, _size : ImVec2) : Void {})
-    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2) : Void {})
-    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2) : Void {})
-    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _tintCol : ImVec4) : Void {})
-    @:native('ImGui::linc::Image') static function image(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _tintCol : ImVec4, _borderCol : ImVec4) : Void;
+    @:overload(function(_userTextureId : ImTextureID, _size : ImVec2) : Void {})
+    @:overload(function(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2) : Void {})
+    @:overload(function(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2) : Void {})
+    @:overload(function(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _tintCol : ImVec4) : Void {})
+    @:native('ImGui::Image') static function image(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _tintCol : ImVec4, _borderCol : ImVec4) : Void;
 
-    @:overload(function(_userTextureId : String, _size : ImVec2) : Bool {})
-    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2) : Bool {})
-    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2) : Bool {})
-    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _framePadding : Int) : Bool {})
-    @:overload(function(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _framePadding : Int, _bgCol : ImVec4) : Bool {})
-    @:native('ImGui::linc::ImageButton') static function imageButton(_userTextureId : String, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _framePadding : Int, _bgCol : ImVec4, _tintCol : ImVec4) : Bool;
+    @:overload(function(_userTextureId : ImTextureID, _size : ImVec2) : Bool {})
+    @:overload(function(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2) : Bool {})
+    @:overload(function(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2) : Bool {})
+    @:overload(function(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _framePadding : Int) : Bool {})
+    @:overload(function(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _framePadding : Int, _bgCol : ImVec4) : Bool {})
+    @:native('ImGui::ImageButton') static function imageButton(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2, _framePadding : Int, _bgCol : ImVec4, _tintCol : ImVec4) : Bool;
 
     @:native('ImGui::linc::Checkbox') static function checkbox(_label : String, _v : Bool) : Bool;
 
