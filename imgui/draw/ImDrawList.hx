@@ -109,7 +109,38 @@ extern class ImDrawList
     @:overload(function(_pos0 : ImVec2, _cp0 : ImVec2, _cp1 : ImVec2, _pos1 : ImVec2, _col : ImU32, _thickness : Float) : Void {})
     @:native('AddBezierCurve') function addBezierCurve(_pos0 : ImVec2, _cp0 : ImVec2, _cp1 : ImVec2, _pos1 : ImVec2, _col : ImU32, _thickness : Float, _numSegments : Int) : Void;
 
-    // Advance
+    //----------//
+    //          //
+    // Path API //
+    //          //
+    //----------//
+
+    @:native('PathClear') function pathClear() : Void;
+    @:native('PathLineTo') function pathLineTo(_pos : ImVec2) : Void;
+    @:native('PathLineToMergeDuplicate') function pathLineToMergeDuplicate(_pos : ImVec2) : Void;
+    @:native('PathFillConvex') function pathFillConvex(_col : ImU32) : Void;
+
+    @:overload(function(_col : ImU32, _closed : Bool) : Void {})
+    @:native('PathStroke') function pathStroke(_col : ImU32, _closed : Bool, _thickness : Float) : Void;
+
+    @:overload(function(_centre : ImVec2, _radius : Float, _aMin : Float, _aMax : Float) : Void {})
+    @:native('PathArcTo') function pathArcTo(_centre : ImVec2, _radius : Float, _aMin : Float, _aMax : Float, _numSegments : Int) : Void;
+
+    @:native('PathArcToFast') function pathArcToFast(_centre : ImVec2, _radius : Float, _aMinOf12 : Int, _aMaxOf12 : Int) : Void;
+
+    @:overload(function(_p1 : ImVec2, _p2 : ImVec2, _p3 : ImVec2, _numSegments : Int) : Void {})
+    @:native('PathBezierCurveTo') function pathBezierCurveTo(_p1 : ImVec2, _p2 : ImVec2, _p3 : ImVec2, _numSegments : Int) : Void;
+
+    @:overload(function(_rectMin : ImVec2, _rectMax : ImVec2) : Void {})
+    @:overload(function(_rectMin : ImVec2, _rectMax : ImVec2, _rounding : Float) : Void {})
+    @:native('PathRect') function pathRect(_rectMin : ImVec2, _rectMax : ImVec2, _rounding : Float, _roundingCornersFlags : ImDrawCornerFlags) : Void;
+
+    //---------//
+    //         //
+    // Advance //
+    //         //
+    //---------//
+    
     @:native('AddCallback') function addCallback(_function : Callable<RawConstPointer<ImDrawList>->RawConstPointer<ImDrawCmd>->Void>, _userData : RawPointer<cpp.Void>) : Void;
     @:native('AddDrawCmd')  function addDrawCmd() : Void;
 }
