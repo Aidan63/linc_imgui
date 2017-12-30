@@ -135,12 +135,22 @@ extern class ImDrawList
     @:overload(function(_rectMin : ImVec2, _rectMax : ImVec2, _rounding : Float) : Void {})
     @:native('PathRect') function pathRect(_rectMin : ImVec2, _rectMax : ImVec2, _rounding : Float, _roundingCornersFlags : ImDrawCornerFlags) : Void;
 
+    //----------//
+    //          //
+    // Channels //
+    //          //
+    //----------//
+
+    @:native('ChannelsSplit') function channelsSplit(_channelsCount : Int) : Void;
+    @:native('ChannelsMerge') function channelsMerge() : Void;
+    @:native('ChannelsSetCurrent') function channelsSetCurrent(_channelsIndex : Int) : Void;
+
     //---------//
     //         //
     // Advance //
     //         //
     //---------//
-    
+
     @:native('AddCallback') function addCallback(_function : Callable<RawConstPointer<ImDrawList>->RawConstPointer<ImDrawCmd>->Void>, _userData : RawPointer<cpp.Void>) : Void;
     @:native('AddDrawCmd')  function addDrawCmd() : Void;
 }
