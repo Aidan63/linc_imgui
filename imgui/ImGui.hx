@@ -19,7 +19,6 @@ typedef ImU32 = UInt;
 typedef ImGuiID = UInt;
 typedef ImWchar = cpp.UInt16;
 typedef ImTextureID = cpp.RawPointer<cpp.Void>;
-typedef ImDrawCornerFlags = Int;
 typedef ImGuiColumnsFlags = Int;
 
 typedef ImGuiSizeConstraintCallback = Callable<Pointer<ImGuiSizeConstraintCallbackData>->Void>;
