@@ -61,6 +61,23 @@ extern class ImDrawList
 
     @:native('AddRectFilledMultiColor') function addRectFilledMultiColor(_a : ImVec2, _b : ImVec2, _colUprLeft : ImU32, _colUprRight : ImU32, _colBotLeft : ImU32, _colBotRight : ImU32) : Void;
 
+    @:overload(function(_a : ImVec2, _b : ImVec2, _c : ImVec2, _d : ImVec2, _col : ImU32) : Void {})
+    @:native('AddQuad') function addQuad(_a : ImVec2, _b : ImVec2, _c : ImVec2, _d : ImVec2, _col : ImU32, _thickness : Float) : Void;
+
+    @:native('AddQuadFilled') function addQuadFilled(_a : ImVec2, _b : ImVec2, _c : ImVec2, _d : ImVec2, _col : ImU32) : Void;
+
+    @:overload(function(_a : ImVec2, _b : ImVec2, _c : ImVec2, _col : ImU32) : Void {})
+    @:native('AddTriangle') function addTriangle(_a : ImVec2, _b : ImVec2, _c : ImVec2, _col : ImU32, _thickness : Float) : Void;
+
+    @:native('AddTriangleFilled') function addTriangleFilled(_a : ImVec2, _b : ImVec2, _c : ImVec2, _col : ImU32) : Void;
+
+    @:overload(function(_centre : ImVec2, _radius : Float, _col : ImU32) : Void {})
+    @:overload(function(_centre : ImVec2, _radius : Float, _col : ImU32, _numSegments : Int) : Void {})
+    @:native('AddCircle') function addCircle(_centre : ImVec2, _radius : Float, _col : ImU32, _numSegments : Int, _thickness : Float) : Void;
+
+    @:overload(function(_centre : ImVec2, _radius : Float, _col : ImU32) : Void {})
+    @:native('AddCircleFilled') function addCircleFilled(_centre : ImVec2, _radius : Float, _col : ImU32, _numSegments : Int) : Void;
+
     // Advance
     @:native('AddCallback') function addCallback(_function : Callable<RawConstPointer<ImDrawList>->RawConstPointer<ImDrawCmd>->Void>, _userData : RawPointer<cpp.Void>) : Void;
     @:native('AddDrawCmd')  function addDrawCmd() : Void;
