@@ -1,18 +1,16 @@
 package imgui.util;
 
-import cpp.Pointer;
-
 @:include('linc_imgui.h')
 @:native('ImGuiListClipper')
 @:structAccess
 extern class ImGuiListClipper
 {
-    public var StartPosY : Float;
-    public var ItemsHeight : Float;
-    public var ItemsCount : Int;
-    public var StepNo : Int;
-    public var DisplayStart : Int;
-    public var DisplayEnd : Int;
+    @:native('StartPosY')    public var startPosY : Float;
+    @:native('ItemsHeight')  public var itemsHeight : Float;
+    @:native('ItemsCount')   public var itemsCount : Int;
+    @:native('StepNo')       public var stepNo : Int;
+    @:native('DisplayStart') public var displayStart : Int;
+    @:native('DisplayEnd')   public var displayEnd : Int;
 
     /**
       If you don't specify an items_height, you NEED to call Step().

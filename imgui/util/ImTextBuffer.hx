@@ -1,7 +1,6 @@
 package imgui.util;
 
 import cpp.Char;
-import cpp.Pointer;
 import StringBuf;
 
 class ImTextBuffer

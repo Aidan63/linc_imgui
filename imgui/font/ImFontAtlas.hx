@@ -5,9 +5,7 @@ import cpp.UInt8;
 import cpp.Pointer;
 import cpp.ConstPointer;
 import cpp.ConstCharStar;
-import cpp.RawPointer;
 import cpp.Reference;
-import cpp.Char;
 
 @:include('linc_imgui.h')
 @:native('ImFontAtlas')
@@ -20,19 +18,19 @@ extern class ImFontAtlas
 
       It is passed back to you during rendering via the ImDrawCmd structure.
      */
-    public var TexID : ImTextureID;
+    @:native('TexID') public var texID : ImTextureID;
 
     /**
       Texture width desired by user before Build(). Must be a power-of-two.
 
       If have many glyphs your graphics API have texture size restrictions you may want to increase texture width to decrease height.
      */
-    public var TexDesiredWidth : Int;
+    @:native('TexDesiredWidth') public var texDesiredWidth : Int;
 
     /**
       Padding between glyphs within texture in pixels. Defaults to 1.
      */
-    public var TexGlyphPadding : Int;
+    @:native('TexGlyphPadding') public var texGlyphPadding : Int;
 
     //-----------------------------//
     // Constructor and Destructors //
@@ -77,8 +75,6 @@ extern class ImFontAtlas
     // ------------------------------//
 
     @:native('Build') function build() : Void;
-    //@:native('ImGui::linc::GetTexDataAsRGBA32') static function _getTexDataAsRGBA32(_atlas : Pointer<ImFontAtlas>, _outPixels : Array<Int>, _outWidth : Int, _outHeight : Int) : Void;
-    //@:native('ImGui::linc::GetTexDataAsAlpha8') static function _getTexDataAsAlpha8(_atlas : Pointer<ImFontAtlas>, _outPixels : Array<Int>, _outWidth : Int, _outHeight : Int) : Void;
     @:native('ImGui::linc::GetTexDataAsRGBA32') private static function _getTexDataAsRGBA32(_atlas : Pointer<ImFontAtlas>, _outWidth : Int, _outHeight : Int) : Pointer<UInt8>;
     @:native('ImGui::linc::GetTexDataAsAlpha8') private static function _getTexDataAsAlpha8(_atlas : Pointer<ImFontAtlas>, _outWidth : Int, _outHeight : Int) : Pointer<UInt8>;
 
@@ -92,20 +88,11 @@ extern class ImFontAtlas
     }
 
     /*
-    static inline function getTexDataAsRGBA32(_atlas : RawPointer<ImFontAtlas>, _pixels : Reference<Array<Int>>, _outWidth : Int, _outHeight : Int) : Void {
-        var ptr = _getTexDataAsRGBA32(_atlas, Pointer.addressOf(_outWidth), Pointer.addressOf(_outHeight));
-        _pixels = cast ptr.toUnmanagedArray((_outWidth * _outHeight) * 4);
-    }
-    static inline function getTexDataAsAlpha8(_atlas : RawPointer<ImFontAtlas>, _pixels : Reference<Array<Int>>, _outWidth : Int, _outHeight : Int) : Void {
-        var ptr = _getTexDataAsAlpha8(_atlas, Pointer.addressOf(_outWidth), Pointer.addressOf(_outHeight));
-        _pixels = cast ptr.toUnmanagedArray(_outWidth * _outHeight);
-    }
-    */
-
     @:native('ImGui::linc::SetTexID') private static function _setTexID(_atlas : RawPointer<ImFontAtlas>, _data : String) : RawPointer<cpp.Void>;
     inline function setTexID(_data : String) : RawPointer<cpp.Void> {
         return _setTexID(RawPointer.addressOf(this), _data);
     }
+    */
 
     //--------------//
     // Glyph Ranges //
@@ -146,5 +133,4 @@ extern class ImFontAtlas
       @return ConstPointer<ImWchar>
      */
     @:native('GetGlyphRangesThai') function getGlyphRangesThai() : ConstPointer<ImWchar>;
-
 }

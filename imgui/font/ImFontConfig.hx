@@ -12,19 +12,19 @@ import imgui.util.ImVec2;
 @:unreflective
 extern class ImFontConfig
 {
-    public var FontData : Pointer<Void>;
-    public var FontDataSize : Int;
-    public var FontDataOwnedByAtas : Bool;
-    public var FontNo : Int;
-    public var SizePixels : Float;
-    public var OversampleH : Int;
-    public var OversampleV : Int;
-    public var GlyphExtraSpacing : ImVec2;
-    public var GlyphOffset : ImVec2;
-    public var GlyphRanges : ConstPointer<ImWchar>;
-    public var MergeMode : Bool;
-    public var RasterizerFlags : UInt;
-    public var RasterizerMultiply : Float;
+    @:native('FontData')            public var fontData : Pointer<Void>;
+    @:native('FontDataSize')        public var fontDataSize : Int;
+    @:native('FontDataOwnedByAtas') public var fontDataOwnedByAtas : Bool;
+    @:native('FontNo')              public var fontNo : Int;
+    @:native('SizePixels')          public var sizePixels : Float;
+    @:native('OversampleH')         public var oversampleH : Int;
+    @:native('OversampleV')         public var oversampleV : Int;
+    @:native('GlyphExtraSpacing')   public var glyphExtraSpacing : ImVec2;
+    @:native('GlyphOffset')         public var glyphOffset : ImVec2;
+    @:native('GlyphRanges')         public var glyphRanges : ConstPointer<ImWchar>;
+    @:native('MergeMode')           public var mergeMode : Bool;
+    @:native('RasterizerFlags')     public var rasterizerFlags : UInt;
+    @:native('RasterizerMultiply')  public var rasterizerMultiply : Float;
 
     @:native('new ImFontConfig') static function create() : Pointer<ImFontConfig>;
 }

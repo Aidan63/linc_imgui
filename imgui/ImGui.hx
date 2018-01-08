@@ -2,7 +2,6 @@ package imgui;
 
 import cpp.Pointer;
 import cpp.RawPointer;
-import cpp.ConstPointer;
 import cpp.ConstCharStar;
 import cpp.Reference;
 import cpp.Callable;

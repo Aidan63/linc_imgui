@@ -12,7 +12,6 @@ import cpp.ConstCharStar;
 import cpp.Int16;
 import cpp.Reference;
 
-@:keep
 @:include('linc_imgui.h')
 @:native('ImFont')
 @:structAccess
@@ -22,73 +21,73 @@ extern class ImFont
     /**
       Height of characters, set during loading (don't change after loading)
      */
-    public var FontSize : Float;
+    @:native('FontSize') public var fontSize : Float;
 
     /**
       Base font scale, multiplied by the per-window font scale which you can adjust with SetFontScale()
      */
-    public var Scale : Float;
+    @:native('Scale') public var scale : Float;
 
     /**
       Offset font rendering by xx pixels
      */
-    public var DisplayOffset : ImVec2;
+    @:native('DisplayOffset') public var displayOffset : ImVec2;
 
     /**
       All glyphs.
      */
-    @:native('ImVector<ImFontGlyph>') public var Glyphs : Dynamic;
+    @:native('Glyphs') public var glyphs : Dynamic;
 
     /**
       Sparse. Glyphs->AdvanceX in a directly indexable way (more cache-friendly, for CalcTextSize functions which are often bottleneck in large UI).
      */
-    @:native('ImVector<float>') public var IndexAdvanceX : Dynamic;
+    @:native('IndexAdvanceX') public var indexAdvanceX : Dynamic;
 
     /**
       Sparse. Index glyphs by Unicode code-point.
      */
-    @:native('ImVector<unsigned short>') public var IndexLookup : Dynamic;
+    @:native('IndexLookup') public var indexLookup : Dynamic;
 
     /**
       == FindGlyph(FontFallbackChar)
      */
-    public var FallbackGlyph : ConstPointer<ImFontGlyph>;
+    @:native('FallbackGlyph') public var fallbackGlyph : ConstPointer<ImFontGlyph>;
 
     /**
       == FallbackGlyph->AdvanceX
      */
-    public var FallbackAdvanceX : Float;
+    @:native('FallbackAdvanceX') public var fallbackAdvanceX : Float;
 
     /**
       Replacement glyph if one isn't found. Only set via SetFallbackChar()
      */
-    public var FallbackChar : ImWchar;
+    @:native('FallbackChar') public var fallbackChar : ImWchar;
 
     /**
       Number of ImFontConfig involved in creating this font. Bigger than 1 when merging multiple font sources into one ImFont.
      */
-    public var ConfigDataCount : Int16;
+    @:native('ConfigDataCount') public var configDataCount : Int16;
 
     /**
       Pointer within ContainerAtlas->ConfigData
      */
-    public var ConfigData : RawPointer<ImFontConfig>;
+    @:native('ConfigData') public var configData : RawPointer<ImFontConfig>;
 
     /**
       What we has been loaded into
      */
-    public var ContainerAtlas : RawPointer<ImFontAtlas>;
+    @:native('ContainerAtlas') public var containerAtlas : RawPointer<ImFontAtlas>;
 
     /**
       distance from top to bottom of e.g. 'A' [0..FontSize]
      */
-    public var Ascent : Float;
-    public var Descent : Float;
+    @:native('Ascent') public var ascent : Float;
+    @:native('Descent') public var descent : Float;
 
     /**
       Total surface in pixels to get an idea of the font rasterization/texture cost (not exact, we approximate the cost of padding between glyphs)
      */
-    public var MetricsTotalSurface : Int;
+    @:native('MetricsTotalSurface') public var metricsTotalSurface : Int;
 
     @:native('ClearOutputData')  function clearOutputData() : Void;
     @:native('BuildLookupTable') function buildLookupTable() : Void;
@@ -112,50 +111,50 @@ extern class ImFontGlyph
     /**
       0x0000..0xFFFF
      */
-    public var Codepoint : ImWchar;
+    @:native('Codepoint') public var codepoint : ImWchar;
 
     /**
       Distance to next character (= data from font + ImFontConfig::GlyphExtraSpacing.x baked in)
      */
-    public var AdvanceX : Float;
+    @:native('AdvanceX') public var advanceX : Float;
 
     /**
       Top left x glyph position
      */
-    public var X0 : Float;
+    @:native('X0') public var x0 : Float;
 
     /**
       Top left y glyph position
      */
-    public var Y0 : Float;
+    @:native('Y0') public var y0 : Float;
 
     /**
       Bottom right x glyph position
      */
-    public var X1 : Float;
+    @:native('X1') public var x1 : Float;
 
     /**
       Bottom right y glyph position
      */
-    public var Y1 : Float;
+    @:native('Y1') public var y1 : Float;
 
     /**
       Top left x texture position
      */
-    public var U0 : Float;
+    @:native('U0') public var u0 : Float;
 
     /**
       Top left y texture position
      */
-    public var V0 : Float;
+    @:native('V0') public var v0 : Float;
 
     /**
       Bottom right x texture position
      */
-    public var U1 : Float;
+    @:native('U1') public var u1 : Float;
 
     /**
       Bottom right y texture position
      */
-    public var V1 : Float;
+    @:native('V1') public var v1 : Float;
 }
