@@ -1,6 +1,4 @@
-
--main Test.hx
--cpp cpp/
--cp ../
+-main Main
+-cpp cpp
+-cp ../../
 -D HXCPP_FLOAT32
--lib linc_imgui
