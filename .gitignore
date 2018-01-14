@@ -1,2 +1,4 @@
 test/cli/cpp
+test/luxe/bin
+test/haxeflixel/export
 .vscode

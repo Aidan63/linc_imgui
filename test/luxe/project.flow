@@ -1,0 +1,24 @@
+{
+    project : {
+        name    : 'empty',
+        version : '1.0.0',
+        author  : 'luxeengine',
+
+        app : {
+            name    : 'luxe_empty',
+            package : 'com.luxeengine.empty'
+        },
+
+        build : {
+            defines : [ 'HXCPP_FLOAT32' ],
+            dependencies : {
+                luxe : '*',
+                linc_imgui : '*'
+            }
+        },
+
+        files : {
+            assets : 'assets/'
+        }
+    }
+}
