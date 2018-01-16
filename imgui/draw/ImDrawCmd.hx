@@ -3,7 +3,6 @@ package imgui.draw;
 import imgui.ImGui;
 import imgui.util.ImVec4;
 import imgui.util.ImVector;
-import cpp.Pointer;
 import cpp.ConstPointer;
 import cpp.Void;
 import cpp.Callable;
