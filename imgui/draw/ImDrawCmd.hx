@@ -20,29 +20,29 @@ extern class ImDrawCmd
       
       Vertices are stored in the callee ImDrawList's vtx_buffer[] array, indices in idx_buffer[].
      */
-    public var ElemCount : UInt;
+    @:native('ElemCount') public var elemCount : UInt;
 
     /**
       Clipping rectangle (x1, y1, x2, y2)
      */
-    public var ClipRect : ImVec4;
+    @:native('ClipRect') public var clipRect : ImVec4;
 
     /**
       User-provided texture ID. Set by user in ImfontAtlas::SetTexID() for fonts or passed to Image*() functions.
       
       Ignore if never using images or multiple fonts atlas.
      */
-    public var TextureId : ImTextureID;
+    @:native('TextureId') public var textureID : ImTextureID;
 
     /**
       If != NULL, call the function instead of rendering the vertices. clip_rect and texture_id will be set normally.
      */
-    public var UserCallback : Callable<ConstPointer<ImDrawList>->ConstPointer<ImDrawCmd>->Void>;
+    @:native('UserCallback') public var userCallback : Callable<ConstPointer<ImDrawList>->ConstPointer<ImDrawCmd>->Void>;
 
     /**
       The draw callback code can access this.
      */
-    public var UserCallbackData : Pointer<Void>;
+    @:native('UserCallbackData') public var userCallbackData : cpp.RawPointer<cpp.Void>;
 }
 
 @:native('ImVector<ImDrawCmd>')
