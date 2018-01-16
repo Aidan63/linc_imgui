@@ -11,11 +11,11 @@ import imgui.util.ImVec2;
 @:unreflective
 extern class ImDrawData
 {
-    public var Valid : Bool;
-    public var CmdLists : RawPointer<RawPointer<ImDrawList>>;
-    public var CmdListsCount : Int;
-    public var TotalVtxCount : Int;
-    public var TotalIdxCount : Int;
+    @:native('Valid') public var valid : Bool;
+    @:native('CmdLists') public var cmdLists : RawPointer<RawPointer<ImDrawList>>;
+    @:native('CmdListsCount') public var cmdListsCount : Int;
+    @:native('TotalVtxCount') public var totalVtxCount : Int;
+    @:native('TotalIdxCount') public var totalIdxCount : Int;
 
     @:native('ImDrawData') static function create() : Pointer<ImDrawData>;
     @:native('ImGui::linc::GetDrawList') static function getDrawList(_data : Pointer<ImDrawData>, _index : Int) : Pointer<ImDrawList>;
