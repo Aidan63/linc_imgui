@@ -1,17 +1,16 @@
 package imgui.draw;
 
-import cpp.Pointer;
 import cpp.ConstPointer;
 import cpp.RawPointer;
 import cpp.RawConstPointer;
-import cpp.Reference;
 import cpp.Callable;
 import imgui.ImGui;
+import imgui.draw.ImDrawCmd;
+import imgui.draw.ImDrawIdx;
+import imgui.draw.ImDrawVert;
+import imgui.font.ImFont;
 import imgui.util.ImVec2;
 import imgui.util.ImVec4;
-import imgui.font.ImFont;
-
-typedef ImDrawIdx = cpp.UInt16;
 
 @:keep
 @:include('linc_imgui.h')
@@ -20,29 +19,9 @@ typedef ImDrawIdx = cpp.UInt16;
 @:unreflective
 extern class ImDrawList
 {
-    @:native('ImVector<ImDrawCmd>' ) var CmdBuffer : Dynamic;
-    @:native('ImVector<ImDrawIdx>' ) var IdxBuffer : Dynamic;
-    @:native('ImVector<ImDrawVert>') var VtxBuffer : Dynamic;
-
-    public inline function getCmdData() : cpp.RawPointer<ImDrawCmd> {
-        return untyped __cpp__('{0}.CmdBuffer.Data', this);
-    }
-    public inline function getIdxData() : cpp.RawPointer<ImDrawIdx> {
-        return untyped __cpp__('{0}.IdxBuffer.Data', this);
-    }
-    public inline function getVtxData() : cpp.RawPointer<ImDrawVert> {
-        return untyped __cpp__('{0}.VtxBuffer.Data', this);
-    }
-
-    public inline function getCmdLength() : Int {
-        return untyped __cpp__('{0}.CmdBuffer.Size', this);
-    }
-    public inline function getIdxLength() : Int {
-        return untyped __cpp__('{0}.IdxBuffer.Size', this);
-    }
-    public inline function getVtxBuffer() : Int {
-        return untyped __cpp__('{0}.VtxBuffer.Size', this);
-    }
+    @:native('CmdBuffer') public var cmdBuffer : ImDrawCmdVector;
+    @:native('IdxBuffer') public var idxBuffer : ImDrawIdxVector;
+    @:native('VtxBuffer') public var vtxBuffer : ImDrawVertVector;
 
     //------------//
     //            //
