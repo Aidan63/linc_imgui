@@ -1,6 +1,7 @@
 package imgui.font;
 
 import imgui.ImGui;
+import imgui.util.ImVector;
 import cpp.UInt8;
 import cpp.Pointer;
 import cpp.ConstPointer;
@@ -128,4 +129,22 @@ extern class ImFontAtlas
       @return ConstPointer<ImWchar>
      */
     @:native('GetGlyphRangesThai') function getGlyphRangesThai() : ConstPointer<ImWchar>;
+}
+
+@:native('ImFontAtlas::GlyphRangesBuilder')
+@:structAccess
+@:unreflective
+extern class GlyphRangesBuilder
+{
+  @:native('UsedChars') public var usedChars : ImVectorImWchar;
+
+  @:native('new ImFontAtlas::GlyphRangesBuilder') public static function create() : Pointer<GlyphRangesBuilder>;
+  @:native('GetBit') public function getBit(_n : Int) : Bool;
+  @:native('SetBit') public function setBit(_n : Int) : Void;
+
+  @:overload(function(_text : String) : Void {})
+  @:native('AddText') public function addText(_text : String, _textEnd : String) : Void;
+
+  @:native('AddRanges') public function addRanges(_ranges : ConstPointer<ImWchar>) : Void;
+  @:native('BuildRanges') public function buildRanges(_outRanges : Pointer<ImVectorImWchar>) : Void;
 }
