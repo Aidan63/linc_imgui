@@ -2,6 +2,7 @@ package imgui.font;
 
 import imgui.ImGui;
 import imgui.draw.ImDrawList;
+import imgui.font.ImFontGlyph;
 import imgui.util.ImVec2;
 import imgui.util.ImVec4;
 import cpp.UInt16;
@@ -36,17 +37,17 @@ extern class ImFont
     /**
       All glyphs.
      */
-    @:native('Glyphs') public var glyphs : Dynamic;
+    @:native('Glyphs') public var glyphs : ImVectorImFontGlyph;
 
     /**
       Sparse. Glyphs->AdvanceX in a directly indexable way (more cache-friendly, for CalcTextSize functions which are often bottleneck in large UI).
      */
-    @:native('IndexAdvanceX') public var indexAdvanceX : Dynamic;
+    @:native('IndexAdvanceX') public var indexAdvanceX : ImVectorFloat;
 
     /**
       Sparse. Index glyphs by Unicode code-point.
      */
-    @:native('IndexLookup') public var indexLookup : Dynamic;
+    @:native('IndexLookup') public var indexLookup : ImVectorInt;
 
     /**
       == FindGlyph(FontFallbackChar)

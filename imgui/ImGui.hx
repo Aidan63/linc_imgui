@@ -1265,6 +1265,22 @@ extern class ImVectorImWchar extends ImVector<ImWchar>
   //
 }
 
+@:native('ImVector<float>')
+@:structAccess
+@:unreflective
+extern class ImVectorFloat extends ImVector<Float>
+{
+  //
+}
+
+@:native('ImVector<unsigned short>')
+@:structAccess
+@:unreflective
+extern class ImVectorInt extends ImVector<cpp.UInt16>
+{
+  //
+}
+
 //-------//
 // Enums //
 //-------//

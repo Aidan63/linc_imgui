@@ -1,6 +1,7 @@
 package imgui.font;
 
 import imgui.ImGui;
+import imgui.util.ImVector;
 
 @:native('ImFontGlyph')
 @:include('linc_imgui.h')
@@ -57,4 +58,12 @@ extern class ImFontGlyph
       Bottom right y texture position
      */
     @:native('V1') public var v1 : Float;
+}
+
+@:native('ImVector<ImFontGlyph>')
+@:structAccess
+@:unreflective
+extern class ImVectorImFontGlyph extends ImVector<ImFontGlyph>
+{
+  //
 }
