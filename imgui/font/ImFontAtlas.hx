@@ -87,12 +87,7 @@ extern class ImFontAtlas
         _pixels = cast ptr.toUnmanagedArray(_outWidth * _outHeight);
     }
 
-    /*
-    @:native('ImGui::linc::SetTexID') private static function _setTexID(_atlas : RawPointer<ImFontAtlas>, _data : String) : RawPointer<cpp.Void>;
-    inline function setTexID(_data : String) : RawPointer<cpp.Void> {
-        return _setTexID(RawPointer.addressOf(this), _data);
-    }
-    */
+    @:native('SetTexID') function setTexID(_id : ImTextureID) : Void;
 
     //--------------//
     // Glyph Ranges //
