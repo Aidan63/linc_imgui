@@ -19,7 +19,7 @@ import imgui.util.ImVec4;
 @:unreflective
 extern class ImDrawList
 {
-    @:native('CmdBuffer') public var cmdBuffer : ImDrawCmdVector;
+    @:native('CmdBuffer') public var cmdBuffer : ImVectorImDrawCmd;
     @:native('IdxBuffer') public var idxBuffer : ImDrawIdxVector;
     @:native('VtxBuffer') public var vtxBuffer : ImDrawVertVector;
 

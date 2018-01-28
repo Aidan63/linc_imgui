@@ -46,7 +46,8 @@ extern class ImDrawCmd
 
 @:native('ImVector<ImDrawCmd>')
 @:structAccess
-extern class ImDrawCmdVector extends ImVector<ImDrawCmd>
+@:unreflective
+extern class ImVectorImDrawCmd extends ImVector<ImDrawCmd>
 {
-  //
+  @:native('ImVector<ImDrawCmd>') public static function create() : ImVectorImDrawCmd;
 }
