@@ -21,7 +21,7 @@ extern class ImDrawList
 {
     @:native('CmdBuffer') public var cmdBuffer : ImVectorImDrawCmd;
     @:native('IdxBuffer') public var idxBuffer : ImVectorImDrawIdx;
-    @:native('VtxBuffer') public var vtxBuffer : ImDrawVertVector;
+    @:native('VtxBuffer') public var vtxBuffer : ImVectorImDrawVert;
 
     //------------//
     //            //
