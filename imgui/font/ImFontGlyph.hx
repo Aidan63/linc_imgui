@@ -65,5 +65,5 @@ extern class ImFontGlyph
 @:unreflective
 extern class ImVectorImFontGlyph extends ImVector<ImFontGlyph>
 {
-  //
+  @:native('ImVector<ImFontGlyph>') public static function create() : ImVectorImFontGlyph;
 }

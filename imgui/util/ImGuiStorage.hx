@@ -63,5 +63,5 @@ extern class Pair
 @:unreflective
 extern class ImVectorPair extends ImVector<Pair>
 {
-    //
+    @:native('ImVector<ImGuiStorage::Pair>') public static function create() : ImVectorPair;
 }

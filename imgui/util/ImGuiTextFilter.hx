@@ -51,5 +51,5 @@ extern class TextRange
 @:unreflective
 extern class ImVectorTextRange extends ImVector<TextRange>
 {
-    //
+    @:native('ImVector<ImGuiTextFilter::TextRange>') public static function create() : ImVectorTextRange;
 }
