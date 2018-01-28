@@ -20,7 +20,7 @@ import imgui.util.ImVec4;
 extern class ImDrawList
 {
     @:native('CmdBuffer') public var cmdBuffer : ImVectorImDrawCmd;
-    @:native('IdxBuffer') public var idxBuffer : ImDrawIdxVector;
+    @:native('IdxBuffer') public var idxBuffer : ImVectorImDrawIdx;
     @:native('VtxBuffer') public var vtxBuffer : ImDrawVertVector;
 
     //------------//

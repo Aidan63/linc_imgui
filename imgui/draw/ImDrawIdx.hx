@@ -6,7 +6,8 @@ typedef ImDrawIdx = cpp.UInt16;
 
 @:native('ImVector<ImDrawIdx>')
 @:structAccess
-extern class ImDrawIdxVector extends ImVector<ImDrawIdx>
+@:unreflective
+extern class ImVectorImDrawIdx extends ImVector<ImDrawIdx>
 {
-  //
+  @:native('ImVector<ImDrawIdx>') public static function create() : ImVectorImDrawIdx;
 }
