@@ -1255,6 +1255,32 @@ extern class ImGui
     @:native('ImGui::SetClipboardText') static function setClipboardText(_text : String) : Void;
 }
 
+// Globally User ImVector wrappers
+
+@:native('ImVector<ImWchar>')
+@:structAccess
+@:unreflective
+extern class ImVectorImWchar extends ImVector<ImWchar>
+{
+  //
+}
+
+@:native('ImVector<float>')
+@:structAccess
+@:unreflective
+extern class ImVectorFloat extends ImVector<Float>
+{
+  //
+}
+
+@:native('ImVector<unsigned short>')
+@:structAccess
+@:unreflective
+extern class ImVectorInt extends ImVector<cpp.UInt16>
+{
+  //
+}
+
 //-------//
 // Enums //
 //-------//

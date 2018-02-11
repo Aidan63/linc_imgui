@@ -1,6 +1,7 @@
 package imgui.font;
 
 import imgui.ImGui;
+import imgui.util.ImVec2;
 import cpp.UInt8;
 import cpp.Pointer;
 import cpp.ConstPointer;
@@ -70,9 +71,9 @@ extern class ImFontAtlas
      */
     @:native('Clear') function clear() : Void;
 
-    // ------------------------------//
+    //-------------------------------//
     // Build and retrieve pixel data //
-    // ------------------------------//
+    //-------------------------------//
 
     @:native('Build') function build() : Void;
     @:native('ImGui::linc::GetTexDataAsRGBA32') private static function _getTexDataAsRGBA32(_atlas : Pointer<ImFontAtlas>, _outWidth : Int, _outHeight : Int) : Pointer<UInt8>;
@@ -87,12 +88,7 @@ extern class ImFontAtlas
         _pixels = cast ptr.toUnmanagedArray(_outWidth * _outHeight);
     }
 
-    /*
-    @:native('ImGui::linc::SetTexID') private static function _setTexID(_atlas : RawPointer<ImFontAtlas>, _data : String) : RawPointer<cpp.Void>;
-    inline function setTexID(_data : String) : RawPointer<cpp.Void> {
-        return _setTexID(RawPointer.addressOf(this), _data);
-    }
-    */
+    @:native('SetTexID') function setTexID(_id : ImTextureID) : Void;
 
     //--------------//
     // Glyph Ranges //
@@ -133,4 +129,52 @@ extern class ImFontAtlas
       @return ConstPointer<ImWchar>
      */
     @:native('GetGlyphRangesThai') function getGlyphRangesThai() : ConstPointer<ImWchar>;
+
+    //--------------------------------//
+    // Custom Rectangles / Glyphs API //
+    //--------------------------------//
+
+    @:native('AddCustomRectRegular') public function addCustomRectRegular(_id : Int, _width : Int, _height : Int) : Int;
+
+    @:overload(function(_font : Pointer<ImFont>, _id : ImWchar, _width : Int, _height : Int, _advanceX : Float) : Int {})
+    @:native('AddCustomRectFontGlyph') public function AddCustomRectFontGlyph(_font : Pointer<ImFont>, _id : ImWchar, _width : Int, _height : Int, _advanceX : Float, _offset : ImVec2) : Int;
+
+    @:native('CalcCustomRectUV') public function calcCustomRectUV(_rect : ConstPointer<CustomRect>, _outUVMin : Pointer<ImVec2>, _outUVMax : Pointer<ImVec2>) : Void;
+    @:native('GetCustomRectByIndex') public function getCustomRectByIndex(_index : Int) : ConstPointer<CustomRect>;
+}
+
+@:native('ImFontAtlas::GlyphRangesBuilder')
+@:structAccess
+@:unreflective
+extern class GlyphRangesBuilder
+{
+  @:native('UsedChars') public var usedChars : ImVectorImWchar;
+
+  @:native('new ImFontAtlas::GlyphRangesBuilder') public static function create() : Pointer<GlyphRangesBuilder>;
+  @:native('GetBit') public function getBit(_n : Int) : Bool;
+  @:native('SetBit') public function setBit(_n : Int) : Void;
+
+  @:overload(function(_text : String) : Void {})
+  @:native('AddText') public function addText(_text : String, _textEnd : String) : Void;
+
+  @:native('AddRanges') public function addRanges(_ranges : ConstPointer<ImWchar>) : Void;
+  @:native('BuildRanges') public function buildRanges(_outRanges : Pointer<ImVectorImWchar>) : Void;
+}
+
+@:native('ImFontAtlas::CustomRect')
+@:structAccess
+@:unreflective
+extern class CustomRect
+{
+  @:native('ID')     public var id     : Int;
+  @:native('Width')  public var width  : Int;
+  @:native('Height') public var height : Int;
+  @:native('X') public var x : Int;
+  @:native('Y') public var y : Int;
+  @:native('GlyphAdvanceX') public var glyphAdvanceX : Float;
+  @:native('GlyphOffset')   public var glyphOffset   : ImVec2;
+  @:native('Font') public var font : cpp.RawPointer<ImVec2>;
+
+  @:native('new ImFontAtlas::CustomRect') public static function create() : Pointer<CustomRect>;
+  @:native('IsPacked') public function isPacked() : Bool;
 }

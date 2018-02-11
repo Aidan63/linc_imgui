@@ -186,23 +186,23 @@ class LuxeImGui
         var depth = 0;
         var drawData = Pointer.fromRaw(_dataRawPtr).ref;
 
-        for(i in 0...drawData.CmdListsCount)
+        for(i in 0...drawData.cmdListsCount)
         {
             var idxOffset = 0;
-            var cmdList   = Pointer.fromRaw(drawData.CmdLists[i]).ref;
-            var cmdBuffer = cmdList.getCmdData();
-            var vtxBuffer = cmdList.getVtxData();
-            var idxBuffer = cmdList.getIdxData();
-            for (j in 0...cmdList.getCmdLength())
+            var cmdList   = Pointer.fromRaw(drawData.cmdLists[i]).ref;
+            var cmdBuffer = cmdList.cmdBuffer.data;
+            var vtxBuffer = cmdList.vtxBuffer.data;
+            var idxBuffer = cmdList.idxBuffer.data;
+            for (j in 0...cmdList.cmdBuffer.size)
             {
                 var cmd  = cmdBuffer[j];
                 var clip = new Rectangle(
-                    cmd.ClipRect.x,
-                    cmd.ClipRect.y,
-                    cmd.ClipRect.z - cmd.ClipRect.x,
-                    cmd.ClipRect.w - cmd.ClipRect.y);
+                    cmd.clipRect.x,
+                    cmd.clipRect.y,
+                    cmd.clipRect.z - cmd.clipRect.x,
+                    cmd.clipRect.w - cmd.clipRect.y);
 
-                var tex : Pointer<String> = Pointer.fromRaw(cmd.TextureId).reinterpret();
+                var tex : Pointer<String> = Pointer.fromRaw(cmd.textureID).reinterpret();
 
                 var g = new Geometry({
                     texture        : Luxe.resources.texture(tex.ref),
@@ -212,7 +212,7 @@ class LuxeImGui
                     batcher   : batcher
                 });
 
-                var it : Int = cast cmd.ElemCount / 3;
+                var it : Int = cast cmd.elemCount / 3;
                 for (tri in 0...it)
                 {
                     var baseIdx = idxOffset + (tri * 3);
@@ -235,7 +235,7 @@ class LuxeImGui
                 }
                 g.clip_rect = clip;
 
-                idxOffset += cmd.ElemCount;
+                idxOffset += cmd.elemCount;
                 depth++;
             }
         }

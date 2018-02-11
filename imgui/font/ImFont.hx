@@ -2,6 +2,7 @@ package imgui.font;
 
 import imgui.ImGui;
 import imgui.draw.ImDrawList;
+import imgui.font.ImFontGlyph;
 import imgui.util.ImVec2;
 import imgui.util.ImVec4;
 import cpp.UInt16;
@@ -36,17 +37,17 @@ extern class ImFont
     /**
       All glyphs.
      */
-    @:native('Glyphs') public var glyphs : Dynamic;
+    @:native('Glyphs') public var glyphs : ImVectorImFontGlyph;
 
     /**
       Sparse. Glyphs->AdvanceX in a directly indexable way (more cache-friendly, for CalcTextSize functions which are often bottleneck in large UI).
      */
-    @:native('IndexAdvanceX') public var indexAdvanceX : Dynamic;
+    @:native('IndexAdvanceX') public var indexAdvanceX : ImVectorFloat;
 
     /**
       Sparse. Index glyphs by Unicode code-point.
      */
-    @:native('IndexLookup') public var indexLookup : Dynamic;
+    @:native('IndexLookup') public var indexLookup : ImVectorInt;
 
     /**
       == FindGlyph(FontFallbackChar)
@@ -101,60 +102,4 @@ extern class ImFont
     @:native('CalcWordWrapPositionA') function calcWordWrapPositionA(_scale : Float, _text : ConstCharStar, _textEnd : ConstCharStar, _wrapWidth : Float) : ConstCharStar;
     @:native('RenderChar') function renderChar(_drawList : Pointer<ImDrawList>, _size : Float, _pos : ImVec2, _col : ImU32, _c : UInt16) : Void;
     @:native('RenderText') function renderText(_drawList : Pointer<ImDrawList>, _size : Float, _pos : ImVec2, _col : ImU32, _clipRect : Reference<ImVec4>, _textBegin : ConstCharStar, _textEnd : ConstCharStar, _wrapWidth : Float = 0.0, _cpuFineClip : Bool = false) : Void;
-}
-
-@:native('ImFont')
-@:structAccess
-@:unreflective
-extern class ImFontGlyph
-{
-    /**
-      0x0000..0xFFFF
-     */
-    @:native('Codepoint') public var codepoint : ImWchar;
-
-    /**
-      Distance to next character (= data from font + ImFontConfig::GlyphExtraSpacing.x baked in)
-     */
-    @:native('AdvanceX') public var advanceX : Float;
-
-    /**
-      Top left x glyph position
-     */
-    @:native('X0') public var x0 : Float;
-
-    /**
-      Top left y glyph position
-     */
-    @:native('Y0') public var y0 : Float;
-
-    /**
-      Bottom right x glyph position
-     */
-    @:native('X1') public var x1 : Float;
-
-    /**
-      Bottom right y glyph position
-     */
-    @:native('Y1') public var y1 : Float;
-
-    /**
-      Top left x texture position
-     */
-    @:native('U0') public var u0 : Float;
-
-    /**
-      Top left y texture position
-     */
-    @:native('V0') public var v0 : Float;
-
-    /**
-      Bottom right x texture position
-     */
-    @:native('U1') public var u1 : Float;
-
-    /**
-      Bottom right y texture position
-     */
-    @:native('V1') public var v1 : Float;
 }
