@@ -21,7 +21,7 @@ extern class ImGuiTextBuffer
     @:native('size')    public function size() : Int;
     @:native('empty')   public function empty() : Bool;
     @:native('clear')   public function clear() : Void;
-    @:native('reserve') public function reserve() : Void;
+    @:native('reserve') public function reserve(_capacity : Int) : Void;
     @:native('c_str')   public function c_str() : cpp.ConstCharStar;
     public inline function append(_string : String) : Void {
         untyped __cpp__('{0}.appendf("%s", {1}.c_str())', this, _string);
