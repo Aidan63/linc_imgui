@@ -171,18 +171,18 @@ class FlxImGui
         group = new FlxSpriteGroup();
 
 		var drawData = Pointer.fromRaw(_drawRawPtr).ref;
-		for (i in 0...drawData.CmdListsCount)
+		for (i in 0...drawData.cmdListsCount)
 		{
 			var idxOffset = 0;
-			var cmdList   = Pointer.fromRaw(drawData.CmdLists[i]).ref;
-			var cmdBuffer = cmdList.getCmdData();
-			var vtxBuffer = cmdList.getVtxData();
-			var idxBuffer = cmdList.getIdxData();
+			var cmdList   = Pointer.fromRaw(drawData.cmdLists[i]).ref;
+			var cmdBuffer = cmdList.cmdBuffer.data;
+            var vtxBuffer = cmdList.vtxBuffer.data;
+            var idxBuffer = cmdList.idxBuffer.data;
 
-			for (j in 0...cmdList.getCmdLength())
+			for (j in 0...cmdList.cmdBuffer.size)
 			{
 				var cmd = cmdBuffer[j];
-				var tex : Pointer<FlxSprite> = Pointer.fromRaw(cmd.TextureId).reinterpret();
+				var tex : Pointer<FlxSprite> = Pointer.fromRaw(cmd.textureID).reinterpret();
 
 				var stripIdx = 0;
 				var strip = new FlxStrip();
@@ -193,7 +193,7 @@ class FlxImGui
 				strip.indices  = new openfl.Vector<Int>();
 				strip.colors   = new openfl.Vector<Int>();
 
-				var it : Int = cast cmd.ElemCount / 3;
+				var it : Int = cast cmd.elemCount / 3;
 				for (tri in 0...it)
 				{
                     var baseIdx = idxOffset + (tri * 3);
@@ -228,10 +228,10 @@ class FlxImGui
 					strip.indices.push(stripIdx++);
 				}
 
-				strip.clipRect = FlxRect.get(cmd.ClipRect.x, cmd.ClipRect.y, cmd.ClipRect.z - cmd.ClipRect.x, cmd.ClipRect.w - cmd.ClipRect.y);
+				strip.clipRect = FlxRect.get(cmd.clipRect.x, cmd.clipRect.y, cmd.clipRect.z - cmd.clipRect.x, cmd.clipRect.w - cmd.clipRect.y);
 				group.add(strip);
 
-				idxOffset += cmd.ElemCount;
+				idxOffset += cmd.elemCount;
 			}
 		}
 
