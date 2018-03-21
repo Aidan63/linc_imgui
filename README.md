@@ -12,13 +12,11 @@ This library works with the Haxe cpp target only.
 
 `haxelib git linc_imgui https://github.com/Aidan63/linc_imgui`
 
-Add the `HXCPP_FLOAT32` define in whatever haxe related build file you are using.
-
-ImGui uses C++ floats and by default HxCPP converts haxe floats into C++ doubles. This will make HxCPP convert haxe floats into C++ floats. In the future I may make wrappers to remove needing this define.
-
 ### Usage
 
 The API follows the ImGui C++ API will most functions and attributes having a haxe equivalent with the same name. When the API wants a ImTextureID (c++ void*) you can use the cpp.Pointer class and rawCast() / reinterpret() to convert to and from whatever classes your framework uses.
+
+For functions which take and modify a float (e.g. colour edits, float inputs / sliders) the float must be a cpp.Float32 type, not a default Haxe float. When creating types such as Vec2 and Vec4 the floats passed to the create method do not need to be explicitly defined as a cpp.Float32 since it is not permanently modifying that variable.
 
 There's a CLI, Luxe, and Haxeflixel demo in the tests folder. The Luxe and haxeflixel tests contain a class which handles all of the setting keyboard, mouse, and rendering callbacks for you.
 

@@ -5,6 +5,7 @@ import imgui.util.ImVec2;
 import imgui.font.ImFontAtlas;
 import imgui.font.ImFont;
 import imgui.draw.ImDrawData;
+import cpp.Float32;
 import cpp.RawPointer;
 import cpp.ConstCharStar;
 import cpp.Callable;
@@ -29,13 +30,13 @@ extern class ImGuiIO
       Time elapsed since last frame, in seconds.
       - Default : 1.0f / 60.f
      */
-    @:native('DeltaTime') public var deltaTime : Float;
+    @:native('DeltaTime') public var deltaTime : Float32;
 
     /**
       Maximum time between saving positions/sizes to .ini file, in seconds.
       - Default : 5.0f
      */
-    @:native('IniSavingRate') public var iniSavingRate : Float;
+    @:native('IniSavingRate') public var iniSavingRate : Float32;
 
     /**
       Path to .ini file. NULL to disable .ini saving.
@@ -53,19 +54,19 @@ extern class ImGuiIO
       Time for a double-click, in seconds.
       - Default : 0.30f
      */
-    @:native('MouseDoubleClickTime') public var mouseDoubleClickTime : Float;
+    @:native('MouseDoubleClickTime') public var mouseDoubleClickTime : Float32;
 
     /**
       Distance threshold to stay in to validate a double-click, in pixels.
       - Default : 6.0f
      */
-    @:native('MouseDoubleClickMaxDist') public var mouseDoubleClickMaxDist : Float;
+    @:native('MouseDoubleClickMaxDist') public var mouseDoubleClickMaxDist : Float32;
 
     /**
       Distance threshold before considering we are dragging
       - Default : 6.0f
      */
-    @:native('MouseDragThreshold') public var mouseDragThreshold : Float;
+    @:native('MouseDragThreshold') public var mouseDragThreshold : Float32;
 
     /**
       Map of indices into the KeysDown[512] entries array
@@ -77,13 +78,13 @@ extern class ImGuiIO
       When holding a key/button, time before it starts repeating, in seconds (for buttons in Repeat mode, etc.).
       - Default : 0.250f
      */
-    @:native('KeyRepeatDelay') public var keyRepeatDelay : Float;
+    @:native('KeyRepeatDelay') public var keyRepeatDelay : Float32;
 
     /**
       When holding a key/button, rate at which it repeats, in seconds.
       - Default : 0.050f
      */
-    @:native('KeyRepeatRate') public var keyRepeatRate : Float;
+    @:native('KeyRepeatRate') public var keyRepeatRate : Float32;
 
     /**
       Store your own data for retrieval by callbacks.
@@ -101,7 +102,7 @@ extern class ImGuiIO
       Global scale all fonts.
       - Default : 1.0f
      */
-    @:native('FontGlobalScale') public var fontGlobalScale : Float;
+    @:native('FontGlobalScale') public var fontGlobalScale : Float32;
 
     /**
       Allow user scaling text of individual window with CTRL+Wheel.
@@ -175,7 +176,7 @@ extern class ImGuiIO
     /**
       Mouse wheel: 1 unit scrolls about 5 lines text.
      */
-    @:native('MouseWheel') public var mouseWheel : Float;
+    @:native('MouseWheel') public var mouseWheel : Float32;
 
     /**
       Request ImGui to draw a mouse cursor for you (if you are on a platform without a mouse cursor).
@@ -260,7 +261,7 @@ extern class ImGuiIO
     /**
       Application framerate estimation, in frame per second. Solely for convenience. Rolling average estimation based on IO.DeltaTime over 120 frames.
      */
-    @:native('Framerate') public var framerate : Float;
+    @:native('Framerate') public var framerate : Float32;
 
     /**
       Number of active memory allocations.

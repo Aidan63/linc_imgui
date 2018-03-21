@@ -1,5 +1,6 @@
 package imgui.util;
 
+import cpp.Float32;
 import imgui.ImGui;
 import imgui.util.ImVector;
 
@@ -24,9 +25,9 @@ extern class ImGuiStorage
     @:native('GetBool') public function getBool(_key : ImGuiID, _defaultValue : Bool) : Bool;
     @:native('SetBool') public function setBool(_key : ImGuiID, _value : Bool) : Void;
 
-    @:overload(function(_key : ImGuiID) : Float {})
-    @:native('GetFloat') public function getFloat(_key : ImGuiID, _defaultValue : Float) : Float;
-    @:native('SetFloat') public function setFloat(_key : ImGuiID, _value : Float) : Void;
+    @:overload(function(_key : ImGuiID) : Float32 {})
+    @:native('GetFloat') public function getFloat(_key : ImGuiID, _defaultValue : Float32) : Float32;
+    @:native('SetFloat') public function setFloat(_key : ImGuiID, _value : Float32) : Void;
 
     @:native('GetVoidPtr') public function getVoidPtr(_key : ImGuiID) : cpp.RawPointer<cpp.Void>;
     @:native('SetVoidPtr') public function setVoidPtr(_key : ImGuiID, _value : cpp.RawPointer<cpp.Void>) : Void;
@@ -50,11 +51,11 @@ extern class Pair
     public var key : ImGuiID;
 
     public var val_i : Int;
-    public var val_float : Float;
+    public var val_float : Float32;
     public var val_p : cpp.RawPointer<cpp.Void>;
 
     @:overload(function(_key : ImGuiID, _val_p : cpp.RawPointer<cpp.Void>) : Pair {})
-    @:overload(function(_key : ImGuiID, _val_f : Float) : Pair {})
+    @:overload(function(_key : ImGuiID, _val_f : Float32) : Pair {})
     @:native('ImGuiStorage::Pair') public static function create(_key : ImGuiID, _val_i : Int) : Pair;
 }
 

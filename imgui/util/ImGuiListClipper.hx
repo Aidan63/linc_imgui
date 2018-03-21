@@ -1,12 +1,14 @@
 package imgui.util;
 
+import cpp.Float32;
+
 @:include('linc_imgui.h')
 @:native('ImGuiListClipper')
 @:structAccess
 extern class ImGuiListClipper
 {
-    @:native('StartPosY')    public var startPosY : Float;
-    @:native('ItemsHeight')  public var itemsHeight : Float;
+    @:native('StartPosY')    public var startPosY : Float32;
+    @:native('ItemsHeight')  public var itemsHeight : Float32;
     @:native('ItemsCount')   public var itemsCount : Int;
     @:native('StepNo')       public var stepNo : Int;
     @:native('DisplayStart') public var displayStart : Int;
@@ -19,7 +21,7 @@ extern class ImGuiListClipper
       @param _itemsHeight Use -1.0f to be calculated automatically on first step. Otherwise pass in the distance between your items, typically GetTextLineHeightWithSpacing() or GetFrameHeightWithSpacing().
       @return ImGuiListClipper
      */
-    @:native('ImGuiListClipper') static function create(_itemsCount : Int = -1, _itemsHeight : Float = -1) : ImGuiListClipper;
+    @:native('ImGuiListClipper') static function create(_itemsCount : Int = -1, _itemsHeight : Float32 = -1) : ImGuiListClipper;
 
     /**
       Call until it returns false. The DisplayStart/DisplayEnd fields will be set and you can process/draw those items.
@@ -31,7 +33,7 @@ extern class ImGuiListClipper
       @param _itemsCount 
       @param _itemsHeight 
      */
-    @:native('Begin') function Begin(_itemsCount : Int, _itemsHeight : Float = -1) : Void;
+    @:native('Begin') function Begin(_itemsCount : Int, _itemsHeight : Float32 = -1) : Void;
 
     /**
       Automatically called on the last call of Step() that returns false.

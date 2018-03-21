@@ -1,5 +1,6 @@
 package imgui;
 
+import cpp.Float32;
 import cpp.Pointer;
 import cpp.RawPointer;
 import cpp.ConstCharStar;
@@ -104,7 +105,7 @@ extern class ImGui
       == GetContentRegionMax() - GetCursorPos()
      */
     @:native('ImGui::GetContentRegionAvail') static function getContentRegionAvail() : ImVec2;
-    @:native('ImGui::GetContentRegionAvailWidth') static function getContentRegionAvailWidth() : Float;
+    @:native('ImGui::GetContentRegionAvailWidth') static function getContentRegionAvailWidth() : Float32;
 
     /**
       content boundaries min (roughly (0,0)-Scroll), in window coordinates
@@ -115,7 +116,7 @@ extern class ImGui
       content boundaries max (roughly (0,0)+Size-Scroll) where Size can be override with SetNextWindowContentSize(), in window coordinates
      */
     @:native('ImGui::GetWindowContentRegionMax') static function getWindowContentRegionMax() : ImVec2;
-    @:native('ImGui::GetWindowContentRegionWidth') static function getWindowContentRegionWidth() : Float;
+    @:native('ImGui::GetWindowContentRegionWidth') static function getWindowContentRegionWidth() : Float32;
 
     /**
       get rendering command-list if you want to append your own draw primitives
@@ -127,15 +128,15 @@ extern class ImGui
      */
     @:native('ImGui::GetWindowPos') static function getWindowPos() : ImVec2;
     @:native('ImGui::GetWindowSize') static function getWindowSize() : ImVec2;
-    @:native('ImGui::GetWindowWidth') static function getWindowWidth() : Float;
-    @:native('ImGui::GetWindowHeight') static function getWindowHeight() : Float;
+    @:native('ImGui::GetWindowWidth') static function getWindowWidth() : Float32;
+    @:native('ImGui::GetWindowHeight') static function getWindowHeight() : Float32;
     @:native('ImGui::IsWindowCollapsed') static function isWindowCollapsed() : Bool;
     @:native('ImGui::IsWindowAppearing') static function isWindowAppearing() : Bool;
 
     /**
       per-window font scale. Adjust IO.FontGlobalScale if you want to scale all windows
      */
-    @:native('ImGui::SetWindowFontScale') static function setWindowFontScale(_scale : Float) : Void;
+    @:native('ImGui::SetWindowFontScale') static function setWindowFontScale(_scale : Float32) : Void;
 
     //----------------//
     // Window Setters //
@@ -215,42 +216,42 @@ extern class ImGui
     /**
       get scrolling amount [0..GetScrollMaxX()]
      */
-    @:native('ImGui::GetScrollX') static function GetScrollX() : Float;
+    @:native('ImGui::GetScrollX') static function GetScrollX() : Float32;
 
     /**
       get scrolling amount [0..GetScrollMaxY()]
      */
-    @:native('ImGui::GetScrollY') static function GetScrollY() : Float;
+    @:native('ImGui::GetScrollY') static function GetScrollY() : Float32;
 
     /**
       get maximum scrolling amount ~~ ContentSize.X - WindowSize.X
      */
-    @:native('ImGui::GetScrollMaxX') static function GetScrollMaxX() : Float;
+    @:native('ImGui::GetScrollMaxX') static function GetScrollMaxX() : Float32;
 
     /**
       get maximum scrolling amount ~~ ContentSize.Y - WindowSize.Y
      */
-    @:native('ImGui::GetScrollMaxY') static function GetScrollMaxY() : Float;
+    @:native('ImGui::GetScrollMaxY') static function GetScrollMaxY() : Float32;
 
     /**
       set scrolling amount [0..GetScrollMaxX()]
      */
-    @:native('ImGui::SetScrollX') static function SetScrollX(_scrollX : Float) : Void;
+    @:native('ImGui::SetScrollX') static function SetScrollX(_scrollX : Float32) : Void;
 
     /**
       set scrolling amount [0..GetScrollMaxY()]
      */
-    @:native('ImGui::SetScrollY') static function SetScrollY(_scrollY : Float) : Void;
+    @:native('ImGui::SetScrollY') static function SetScrollY(_scrollY : Float32) : Void;
 
     /**
       adjust scrolling amount to make current cursor position visible. center_y_ratio=0.0: top, 0.5: center, 1.0: bottom.
      */
-    @:native('ImGui::SetScrollHere') static function SetScrollHere(_center_y_ratio : Float = 0.5) : Void;
+    @:native('ImGui::SetScrollHere') static function SetScrollHere(_center_y_ratio : Float32 = 0.5) : Void;
 
     /**
       adjust scrolling amount to make given position valid. use GetCursorPos() or GetCursorStartPos()+offset to get valid positions.
      */
-    @:native('ImGui::SetScrollFromPosY') static function SetScrollFromPosY(_posY : Float, _center_y_ratio : Float = 0.5) : Void;
+    @:native('ImGui::SetScrollFromPosY') static function SetScrollFromPosY(_posY : Float32, _center_y_ratio : Float32 = 0.5) : Void;
 
     /**
       replace tree state storage with our own (if you want to manipulate it yourself, typically clear subsection of it)
@@ -277,7 +278,7 @@ extern class ImGui
     @:native('ImGui::PopStyleColor') static function popStyleColor(_count : Int) : Void;
 
     @:overload(function(_idx : ImGuiStyleVar, _val : ImVec2) : Void {})
-    @:native('ImGui::PushStyleVar') static function pushStyleVarVal(_idx : ImGuiStyleVar, _val : Float) : Void;
+    @:native('ImGui::PushStyleVar') static function pushStyleVarVal(_idx : ImGuiStyleVar, _val : Float32) : Void;
 
     @:overload(function() : Void {})
     @:native('ImGui::PopStyleVar') static function popStyleVar(_count : Int = 1) : Void;
@@ -295,7 +296,7 @@ extern class ImGui
     /**
       get current font size (= height in pixels) of current font with current scale applied
      */
-    @:native('ImGui::GetFontSize') static function getFontSize() : Float;
+    @:native('ImGui::GetFontSize') static function getFontSize() : Float32;
 
     /**
       get UV coordinate for a while pixel, useful to draw custom shapes via the ImDrawList API
@@ -308,7 +309,7 @@ extern class ImGui
     @:overload(function(_col : ImU32) : ImU32 {})
     @:overload(function(_col : ImVec4) : ImU32 {})
     @:overload(function(_idx : ImGuiCol) : ImU32 {})
-    @:native('ImGui::GetColorU32') static function getColorU32(_idx : ImGuiCol, _alphaMul : Float) : ImU32;
+    @:native('ImGui::GetColorU32') static function getColorU32(_idx : ImGuiCol, _alphaMul : Float32) : ImU32;
 
     //---------------------------------//
     //                                 //
@@ -320,13 +321,13 @@ extern class ImGui
       width of items for the common item+label case, pixels. 0.0f = default to ~2/3 of windows width, >0.0f: width in pixels,
       <0.0f align xx pixels to the right of window (so -1.0f always align width to the right side)
      */
-    @:native('ImGui::PushItemWidth') static function pushItemWidth(_itemWidth : Float) : Void;
+    @:native('ImGui::PushItemWidth') static function pushItemWidth(_itemWidth : Float32) : Void;
     @:native('ImGui::PopItemWidth') static function popItemWidth() : Void;
 
     /**
       width of item given pushed settings and current cursor position
      */
-    @:native('ImGui::CalcItemWidth') static function calcItemWidth() : Float;
+    @:native('ImGui::CalcItemWidth') static function calcItemWidth() : Float32;
 
     /**
       word-wrapping for Text*() commands. < 0.0f: no wrapping; 0.0f: wrap to end of window (or column);
@@ -364,7 +365,7 @@ extern class ImGui
     /**
       call between widgets or groups to layout them horizontally
      */
-    @:native('ImGui::SameLine') static function sameLine(_posX : Float = 0, _spacingW : Float = -1) : Void;
+    @:native('ImGui::SameLine') static function sameLine(_posX : Float32 = 0, _spacingW : Float32 = -1) : Void;
 
     /**
       undo a SameLine()
@@ -384,12 +385,12 @@ extern class ImGui
     /**
       move content position toward the right, by style.IndentSpacing or indent_w if >0
      */
-    @:native('ImGui::Indent') static function indent(_indexW : Float = 0) : Void;
+    @:native('ImGui::Indent') static function indent(_indexW : Float32 = 0) : Void;
 
     /**
       move content position back to the left, by style.IndentSpacing or indent_w if >0
      */
-    @:native('ImGui::Unindent') static function unindent(_indentW : Float = 0) : Void;
+    @:native('ImGui::Unindent') static function unindent(_indentW : Float32 = 0) : Void;
 
     /**
       lock horizontal starting position + capture group bounding box into one "item" (so you can use IsItemHovered() or layout primitives such as SameLine() on whole group, etc.)
@@ -401,11 +402,11 @@ extern class ImGui
       cursor position is relative to window position
      */
     @:native('ImGui::GetCursorPos') static function getCursorPos() : ImVec2;
-    @:native('ImGui::GetCursorPosX') static function getCursorPosX() : Float;
-    @:native('ImGui::GetCursorPosY') static function getCursorPosY() : Float;
+    @:native('ImGui::GetCursorPosX') static function getCursorPosX() : Float32;
+    @:native('ImGui::GetCursorPosY') static function getCursorPosY() : Float32;
     @:native('ImGui::SetCursorPos') static function setCursorPos(_localPos : Reference<ImVec2>) : Void;
-    @:native('ImGui::SetCursorPosX') static function setCursorPosX(_x : Float) : Void;
-    @:native('ImGui::SetCursorPosY') static function setCursorPosY(_y : Float) : Void;
+    @:native('ImGui::SetCursorPosX') static function setCursorPosX(_x : Float32) : Void;
+    @:native('ImGui::SetCursorPosY') static function setCursorPosY(_y : Float32) : Void;
 
     /**
       initial cursor position
@@ -430,17 +431,17 @@ extern class ImGui
     /**
       height of font == GetWindowFontSize()
      */
-    @:native('ImGui::GetTextLineHeight') static function getTextLineHeight() : Float;
+    @:native('ImGui::GetTextLineHeight') static function getTextLineHeight() : Float32;
 
     /**
       distance (in pixels) between 2 consecutive lines of text == GetWindowFontSize() + GetStyle().ItemSpacing.y
      */
-    @:native('ImGui::GetTextLineHeightWithSpacing') static function getTextLineHeightWithSpacing() : Float;
+    @:native('ImGui::GetTextLineHeightWithSpacing') static function getTextLineHeightWithSpacing() : Float32;
 
     /**
       distance (in pixels) between 2 consecutive lines of standard height widgets == GetWindowFontSize() + GetStyle().FramePadding.y*2 + GetStyle().ItemSpacing.y
      */
-    @:native('ImGui::GetFrameHeightWithSpacing') static function getFrameHeightWithSpacing() : Float;
+    @:native('ImGui::GetFrameHeightWithSpacing') static function getFrameHeightWithSpacing() : Float32;
 
     //---------//
     //         //
@@ -462,24 +463,24 @@ extern class ImGui
     /**
       get column width (in pixels). pass -1 to use current column
      */
-    @:native('ImGui::GetColumnWidth') static function getColumnWidth(_columnIndex : Int = -1) : Float;
+    @:native('ImGui::GetColumnWidth') static function getColumnWidth(_columnIndex : Int = -1) : Float32;
 
     /**
       set column width (in pixels). pass -1 to use current column
      */
-    @:native('ImGui::SetColumnWidth') static function setColumnWidth(_columnIndex : Int, _width : Float) : Void;
+    @:native('ImGui::SetColumnWidth') static function setColumnWidth(_columnIndex : Int, _width : Float32) : Void;
 
     /**
       get position of column line (in pixels, from the left side of the contents region).
 
       pass -1 to use current column, otherwise 0..GetColumnsCount() inclusive. column 0 is typically 0.0f
      */
-    @:native('ImGui::GetColumnOffset') static function getColumnOffset(_columnIndex : Int = -1) : Float;
+    @:native('ImGui::GetColumnOffset') static function getColumnOffset(_columnIndex : Int = -1) : Float32;
 
     /**
       set position of column line (in pixels, from the left side of the contents region). pass -1 to use current column
      */
-    @:native('ImGui::SetColumnOffset') static function setColumnOffset(_columnIndex : Int, _offsetX : Float) : Void;
+    @:native('ImGui::SetColumnOffset') static function setColumnOffset(_columnIndex : Int, _offsetX : Float32) : Void;
     @:native('ImGui::GetColumnsCount') static function getColumnsCount() : Int;
 
     //-----------\\
@@ -581,25 +582,25 @@ extern class ImGui
     @:overload(function(_label : String, _active : Bool) : Bool {})
     @:native('ImGui::linc::RadioButton') static function radioButton(_label : String, _v : Int, _vButton : Int) : Bool;
 
-    @:overload(function(_label : String, _values : Array<Float>) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float, _scaleMax : Float) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float, _scaleMax : Float, _graphSize : ImVec2) : Void {})
-    @:native('ImGui::linc::PlotLines') static function plotLines(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float, _scaleMax : Float, _graphSize : ImVec2, _stride : Int) : Void;
+    @:overload(function(_label : String, _values : Array<Float32>) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float32) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float32, _scaleMax : Float32) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float32, _scaleMax : Float32, _graphSize : ImVec2) : Void {})
+    @:native('ImGui::linc::PlotLines') static function plotLines(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float32, _scaleMax : Float32, _graphSize : ImVec2, _stride : Int) : Void;
 
-    @:overload(function(_label : String, _values : Array<Float>) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float, _scaleMax : Float) : Void {})
-    @:overload(function(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float, _scaleMax : Float, _graphSize : ImVec2) : Void {})
-    @:native('ImGui::linc::PlotHistogram') static function plotHistogram(_label : String, _values : Array<Float>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float, _scaleMax : Float, _graphSize : ImVec2, _stride : Int) : Void;
+    @:overload(function(_label : String, _values : Array<Float32>) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float32) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float32, _scaleMax : Float32) : Void {})
+    @:overload(function(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float32, _scaleMax : Float32, _graphSize : ImVec2) : Void {})
+    @:native('ImGui::linc::PlotHistogram') static function plotHistogram(_label : String, _values : Array<Float32>, _valuesOffset : Int, _overlayText : String, _scaleMin : Float32, _scaleMax : Float32, _graphSize : ImVec2, _stride : Int) : Void;
 
-    @:overload(function(_fraction : Float) : Void {})
-    @:overload(function(_fraction : Float, _sizeArg : ImVec2) : Void {})
-    @:native('ImGui::ProgressBar') static function progressBar(_fraction : Float, _sizeArg : ImVec2, _overlay : String) : Void;
+    @:overload(function(_fraction : Float32) : Void {})
+    @:overload(function(_fraction : Float32, _sizeArg : ImVec2) : Void {})
+    @:native('ImGui::ProgressBar') static function progressBar(_fraction : Float32, _sizeArg : ImVec2, _overlay : String) : Void;
 
     //---------------------//
     //                     //
@@ -618,72 +619,72 @@ extern class ImGui
     //                 //
     //-----------------//
 
-    @:overload(function(_label : String, _value : Float) : Bool {})
-    @:overload(function(_label : String, _value : Float, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _value : Float, _vSpeed : Float, _vMin : Float) : Bool {})
-    @:overload(function(_label : String, _value : Float, _vSpeed : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, _value : Float, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::DragFloat')  static function dragFloat(_label : String, _value : Float, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _power : Float) : Bool;
+    @:overload(function(_label : String, _value : Float32) : Bool {})
+    @:overload(function(_label : String, _value : Float32, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _value : Float32, _vSpeed : Float32, _vMin : Float32) : Bool {})
+    @:overload(function(_label : String, _value : Float32, _vSpeed : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, _value : Float32, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::DragFloat')  static function dragFloat(_label : String, _value : Float32, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
 
-    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : ConstCharStar) : Bool {})
-    @:native('ImGui::linc::DragFloat2') static function dragFloat2(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _power : Float) : Bool;
+    @:overload(function(_label : String, _v : Array<Float32>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : ConstCharStar) : Bool {})
+    @:native('ImGui::linc::DragFloat2') static function dragFloat2(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
 
-    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : ConstCharStar) : Bool {})
-    @:native('ImGui::linc::DragFloat3') static function dragFloat3(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _power : Float) : Bool;
+    @:overload(function(_label : String, _v : Array<Float32>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : ConstCharStar) : Bool {})
+    @:native('ImGui::linc::DragFloat3') static function dragFloat3(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
 
-    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : ConstCharStar) : Bool {})
-    @:native('ImGui::linc::DragFloat4') static function dragFloat4(_label : String, _v : Array<Float>, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _power : Float) : Bool;
+    @:overload(function(_label : String, _v : Array<Float32>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : ConstCharStar) : Bool {})
+    @:native('ImGui::linc::DragFloat4') static function dragFloat4(_label : String, _v : Array<Float32>, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
 
-    @:overload(function(_label : String, _vCurrentMin : Float, _vCurrentMax : Float) : Bool {})
-    @:overload(function(_label : String, _vCurrentMin : Float, _vCurrentMax : Float, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _vCurrentMin : Float, _vCurrentMax : Float, _vSpeed : Float, _vMin : Float) : Bool {})
-    @:overload(function(_label : String, _vCurrentMin : Float, _vCurrentMax : Float, _vSpeed : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, _vCurrentMin : Float, _vCurrentMax : Float, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : String) : Bool {})
-    @:overload(function(_label : String, _vCurrentMin : Float, _vCurrentMax : Float, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _displayFormatMax : String) : Bool {})
-    @:native('ImGui::linc::DragFloatRange2') static function dragFloatRange2(_label : String, _vCurrentMin : Float, _vCurrentMax : Float, _vSpeed : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _displayFormatMax : String, _power : Float) : Bool;
+    @:overload(function(_label : String, _vCurrentMin : Float32, _vCurrentMax : Float32) : Bool {})
+    @:overload(function(_label : String, _vCurrentMin : Float32, _vCurrentMax : Float32, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _vCurrentMin : Float32, _vCurrentMax : Float32, _vSpeed : Float32, _vMin : Float32) : Bool {})
+    @:overload(function(_label : String, _vCurrentMin : Float32, _vCurrentMax : Float32, _vSpeed : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, _vCurrentMin : Float32, _vCurrentMax : Float32, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:overload(function(_label : String, _vCurrentMin : Float32, _vCurrentMax : Float32, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _displayFormatMax : String) : Bool {})
+    @:native('ImGui::linc::DragFloatRange2') static function dragFloatRange2(_label : String, _vCurrentMin : Float32, _vCurrentMax : Float32, _vSpeed : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _displayFormatMax : String, _power : Float32) : Bool;
 
     @:overload(function(_label : String, _v : Int) : Bool {})
-    @:overload(function(_label : String, _v : Int, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _v : Int, _vSpeed : Float, _vMin : Int) : Bool {})
-    @:overload(function(_label : String, _v : Int, _vSpeed : Float, _vMin : Int, _vMax : Int) : Bool {})
-    @:native('ImGui::linc::DragInt')  static function dragInt(_label : String, _v : Int, _vSpeed : Float, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
+    @:overload(function(_label : String, _v : Int, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Int, _vSpeed : Float32, _vMin : Int) : Bool {})
+    @:overload(function(_label : String, _v : Int, _vSpeed : Float32, _vMin : Int, _vMax : Int) : Bool {})
+    @:native('ImGui::linc::DragInt')  static function dragInt(_label : String, _v : Int, _vSpeed : Float32, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
 
     @:overload(function(_label : String, _v : Array<Int>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float, _vMin : Int) : Bool {})
-    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float, _vMin : Int, _vMax : Int) : Bool {})
-    @:native('ImGui::linc::DragInt2') static function dragInt2(_label : String, _v : Array<Int>, _vSpeed : Float, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
+    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float32, _vMin : Int) : Bool {})
+    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float32, _vMin : Int, _vMax : Int) : Bool {})
+    @:native('ImGui::linc::DragInt2') static function dragInt2(_label : String, _v : Array<Int>, _vSpeed : Float32, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
 
     @:overload(function(_label : String, _v : Array<Int>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float, _vMin : Int) : Bool {})
-    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float, _vMin : Int, _vMax : Int) : Bool {})
-    @:native('ImGui::linc::DragInt3')  static function dragInt3(_label : String, _v : Array<Int>, _vSpeed : Float, _vMin : Int, _vMax : Int, _displayFormat : ConstCharStar) : Bool;
+    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float32, _vMin : Int) : Bool {})
+    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float32, _vMin : Int, _vMax : Int) : Bool {})
+    @:native('ImGui::linc::DragInt3')  static function dragInt3(_label : String, _v : Array<Int>, _vSpeed : Float32, _vMin : Int, _vMax : Int, _displayFormat : ConstCharStar) : Bool;
 
     @:overload(function(_label : String, _v : Array<Int>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float, _vMin : Int) : Bool {})
-    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float, _vMin : Int, _vMax : Int) : Bool {})
-    @:native('ImGui::linc::DragInt4') static function dragInt4(_label : String, _v : Array<Int>, _vSpeed : Float, _vMin : Int, _vMax : Int, _displayFormat : ConstCharStar) : Bool;
+    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float32, _vMin : Int) : Bool {})
+    @:overload(function(_label : String, _v : Array<Int>, _vSpeed : Float32, _vMin : Int, _vMax : Int) : Bool {})
+    @:native('ImGui::linc::DragInt4') static function dragInt4(_label : String, _v : Array<Int>, _vSpeed : Float32, _vMin : Int, _vMax : Int, _displayFormat : ConstCharStar) : Bool;
 
     @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int) : Bool {})
-    @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float) : Bool {})
-    @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float, _vMin : Int) : Bool {})
-    @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float, _vMin : Int, _vMax : Int) : Bool {})
-    @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::DragIntRange2') static function dragIntRange2(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float, _vMin : Int, _vMax : Int, _displayFormat : String, _displayFormatMax : String) : Bool;
+    @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float32, _vMin : Int) : Bool {})
+    @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float32, _vMin : Int, _vMax : Int) : Bool {})
+    @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float32, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::DragIntRange2') static function dragIntRange2(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float32, _vMin : Int, _vMax : Int, _displayFormat : String, _displayFormatMax : String) : Bool;
 
     //-------------------------------//
     //                               //
@@ -698,23 +699,23 @@ extern class ImGui
     @:overload(function(_label : String, _buffer : Array<Char>, _size : ImVec2) : Bool {})
     @:native('ImGui::linc::InputTextMultiline') static function inputTextMultiline(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : String, _v : Float) : Bool {})
-    @:overload(function(_label : String, _v : Float, _step : Float) : Bool {})
-    @:overload(function(_label : String, _v : Float, _step : Float, _stepFast : Float) : Bool {})
-    @:overload(function(_label : String, _v : Float, _step : Float, _stepFast : Float, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::linc::InputFloat') static function inputFloat(_label : String, _v : Float, _step : Float, _stepFast : Float, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Float32, _step : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Float32, _step : Float32, _stepFast : Float32) : Bool {})
+    @:overload(function(_label : String, _v : Float32, _step : Float32, _stepFast : Float32, _decimalPrecision : Int) : Bool {})
+    @:native('ImGui::linc::InputFloat') static function inputFloat(_label : String, _v : Float32, _step : Float32, _stepFast : Float32, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::linc::InputFloat2') static function inputFloat2(_label : String, _v : Array<Float>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Float32>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _decimalPrecision : Int) : Bool {})
+    @:native('ImGui::linc::InputFloat2') static function inputFloat2(_label : String, _v : Array<Float32>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::linc::InputFloat3') static function inputFloat3(_label : String, _v : Array<Float>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Float32>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _decimalPrecision : Int) : Bool {})
+    @:native('ImGui::linc::InputFloat3') static function inputFloat3(_label : String, _v : Array<Float32>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
 
-    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float>, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::linc::InputFloat4') static function inputFloat4(_label : String, _v : Array<Float>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Float32>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float32>, _decimalPrecision : Int) : Bool {})
+    @:native('ImGui::linc::InputFloat4') static function inputFloat4(_label : String, _v : Array<Float32>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
 
     @:overload(function(_label : String, _v : Int) : Bool {})
     @:overload(function(_label : String, _v : Int, _step : Int) : Bool {})
@@ -754,7 +755,7 @@ extern class ImGui
     /**
       uses provided repeat rate/delay. return a count, most often 0 or 1 but might be >1 if RepeatRate is small enough that DeltaTime > RepeatRate
      */
-    @:native('ImGui::GetKeyPressedAmount') static function getKeyPressedAmount(_keyIndex : Int, _repeatDelay : Float, _rate : Float) : Int;
+    @:native('ImGui::GetKeyPressedAmount') static function getKeyPressedAmount(_keyIndex : Int, _repeatDelay : Float32, _rate : Float32) : Int;
 
     /**
       is mouse button held
@@ -779,7 +780,7 @@ extern class ImGui
     /**
       is mouse dragging. if lock_threshold < -1.0f uses io.MouseDraggingThreshold
      */
-    @:native('ImGui::IsMouseDragging') static function isMouseDragging(_button : Int = 0, _lockThreshold : Float = -1.0) : Bool;
+    @:native('ImGui::IsMouseDragging') static function isMouseDragging(_button : Int = 0, _lockThreshold : Float32 = -1.0) : Bool;
 
     /**
       is mouse hovering given bounding rect (in screen space). clipped by current clipping settings.
@@ -801,7 +802,7 @@ extern class ImGui
     /**
       dragging amount since clicking. if lock_threshold < -1.0f uses io.MouseDraggingThreshold
      */
-    @:native('ImGui::GetMouseDragDelta') static function getMouseDragDelta(_button : Int = 0, _lockThreshold : Float = -1.0) : ImVec2;
+    @:native('ImGui::GetMouseDragDelta') static function getMouseDragDelta(_button : Int = 0, _lockThreshold : Float32 = -1.0) : ImVec2;
     @:native('ImGui::ResetMouseDragDelta') static function resetMouseDragDelta(_button : Int = 0) : Void;
 
     /**
@@ -833,25 +834,25 @@ extern class ImGui
     //                  //
     //------------------//
 
-    @:overload(function(_label : String, v : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, v : Float, _vMin : Float, _vMax : Float, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::SliderFloat') static function sliderFloat(_label : String, v : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _power : Float) : Bool;
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::SliderFloat') static function sliderFloat(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
     
-    @:overload(function(_label : String, v : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, v : Float, _vMin : Float, _vMax : Float, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::SliderFloat2') static function sliderFloat2(_label : String, v : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _power : Float) : Bool;
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::SliderFloat2') static function sliderFloat2(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
 
-    @:overload(function(_label : String, v : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, v : Float, _vMin : Float, _vMax : Float, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::SliderFloat3') static function sliderFloat3(_label : String, v : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _power : Float) : Bool;
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::SliderFloat3') static function sliderFloat3(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
 
-    @:overload(function(_label : String, v : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, v : Float, _vMin : Float, _vMax : Float, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::SliderFloat4') static function sliderFloat4(_label : String, v : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _power : Float) : Bool;
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::SliderFloat4') static function sliderFloat4(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
 
-    @:overload(function(_label : String, _vRad : Float) : Bool {})
-    @:overload(function(_label : String, _vRad : Float, _vDegreesMin : Float) : Bool {})
-    @:native('ImGui::linc::SliderAngle') static function sliderAngle(_label : String, _vRad : Float, _vDegreesMin : Float, _vDegreesMax : Float) : Bool;
+    @:overload(function(_label : String, _vRad : Float32) : Bool {})
+    @:overload(function(_label : String, _vRad : Float32, _vDegreesMin : Float32) : Bool {})
+    @:native('ImGui::linc::SliderAngle') static function sliderAngle(_label : String, _vRad : Float32, _vDegreesMin : Float32, _vDegreesMax : Float32) : Bool;
 
     @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
     @:native('ImGui::linc::SliderInt') static function sliderInt(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
@@ -865,9 +866,9 @@ extern class ImGui
     @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
     @:native('ImGui::linc::SliderInt4') static function sliderInt4(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
 
-    @:overload(function(_label : String, _size : ImVec2, _v : Float, _vMin : Float, _vMax : Float) : Bool {})
-    @:overload(function(_label : String, _size : ImVec2, _v : Float, _vMin : Float, _vMax : Float, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::VSliderFloat') static function vSliderFloat(_label : String, _size : ImVec2, _v : Float, _vMin : Float, _vMax : Float, _displayFormat : String, _power : Float) : Bool;
+    @:overload(function(_label : String, _size : ImVec2, _v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, _size : ImVec2, _v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::VSliderFloat') static function vSliderFloat(_label : String, _size : ImVec2, _v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
 
     @:overload(function(_label : String, _size : ImVec2, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
     @:native('ImGui::linc::VSliderInt') static function vSliderInt(_label : String, _size : ImVec2, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
@@ -878,18 +879,18 @@ extern class ImGui
     //                                   //
     //-----------------------------------//
 
-    @:overload(function(_label : String, _color : Array<Float>) : Bool {})
-    @:native('ImGui::linc::ColorEdit3') static function colorEdit3(_label : String, _color : Array<Float>, _flags : ImGuiColorEditFlags) : Bool;
+    @:overload(function(_label : String, _color : Array<Float32>) : Bool {})
+    @:native('ImGui::linc::ColorEdit3') static function colorEdit3(_label : String, _color : Array<Float32>, _flags : ImGuiColorEditFlags) : Bool;
 
-    @:overload(function(_label : String, _color : Array<Float>) : Bool {})
-    @:native('ImGui::linc::ColorEdit4') static function colorEdit4(_label : String, _color : Array<Float>, _flags : ImGuiColorEditFlags) : Bool;
+    @:overload(function(_label : String, _color : Array<Float32>) : Bool {})
+    @:native('ImGui::linc::ColorEdit4') static function colorEdit4(_label : String, _color : Array<Float32>, _flags : ImGuiColorEditFlags) : Bool;
 
-    @:overload(function(_label : String, _color : Array<Float>) : Bool {})
-    @:native('ImGui::linc::ColorPicker3') static function colorPicker3(_label : String, _color : Array<Float>, _flags : ImGuiColorEditFlags) : Bool;
+    @:overload(function(_label : String, _color : Array<Float32>) : Bool {})
+    @:native('ImGui::linc::ColorPicker3') static function colorPicker3(_label : String, _color : Array<Float32>, _flags : ImGuiColorEditFlags) : Bool;
 
-    @:overload(function(_label : String, _color : Array<Float>) : Bool {})
-    @:overload(function(_label : String, _color : Array<Float>, _flags : ImGuiColorEditFlags) : Bool {})
-    @:native('ImGui::linc::ColorPicker4') static function colorPicker4(_label : String, _color : Array<Float>, _flags : ImGuiColorEditFlags, _refCol : Float) : Bool;
+    @:overload(function(_label : String, _color : Array<Float32>) : Bool {})
+    @:overload(function(_label : String, _color : Array<Float32>, _flags : ImGuiColorEditFlags) : Bool {})
+    @:native('ImGui::linc::ColorPicker4') static function colorPicker4(_label : String, _color : Array<Float32>, _flags : ImGuiColorEditFlags, _refCol : Float32) : Bool;
 
     @:overload(function(_label : String, _color : ImVec4) : Bool {})
     @:overload(function(_label : String, _color : ImVec4, _flags : ImGuiColorEditFlags) : Bool {})
@@ -933,7 +934,7 @@ extern class ImGui
     /**
       horizontal distance preceding label when using TreeNode*() or Bullet() == (g.FontSize + style.FramePadding.x*2) for a regular unframed TreeNode
      */
-    @:native('ImGui::GetTreeNodeToLabelSpacing') static function getTreeNodeToLabelSpacing() : Float;
+    @:native('ImGui::GetTreeNodeToLabelSpacing') static function getTreeNodeToLabelSpacing() : Float32;
 
     /**
       set next TreeNode/CollapsingHeader open state.
@@ -994,8 +995,8 @@ extern class ImGui
 
     @:overload(function(_prefix : String, _v : Bool ) : Void {})
     @:overload(function(_prefix : String, _v : Int  ) : Void {})
-    @:overload(function(_prefix : String, _v : Float) : Void {})
-    @:native('ImGui::Value') static function value(_prefix : String, _v : Float, _floatFormat : String) : Void;
+    @:overload(function(_prefix : String, _v : Float32) : Void {})
+    @:native('ImGui::Value') static function value(_prefix : String, _v : Float32, _floatFormat : String) : Void;
 
     //-------------------\\
     //                   \\
@@ -1217,7 +1218,7 @@ extern class ImGui
     @:overload(function(_rectMin : ImVec2, _rectMax : ImVec2) : Bool {})
     @:native('ImGui::IsRectVisible') static function isRectVisible(_size : ImVec2) : Bool;
 
-    @:native('ImGui::GetTime')       static function getTime() : Float;
+    @:native('ImGui::GetTime')       static function getTime() : Float32;
     @:native('ImGui::GetFrameCount') static function getFrameCount() : Int;
     @:native('ImGui::GetOverlayDrawList')    static function getOverlayDrawList()    : RawPointer<ImDrawList>;
     @:native('ImGui::GetDrawListSharedData') static function getDrawListSharedData() : RawPointer<ImDrawListSharedData>;
@@ -1226,13 +1227,13 @@ extern class ImGui
     /**
       utility to find the closest point the last item bounding rectangle edge. useful to visually link items.
      */
-    @:native('ImGui::CalcItemRectClosestPoint') static function calcItemRectClosestPoint(_pos : ImVec2, _onEdge : Bool = false, _outward : Float = 0) : ImVec2;
-    @:native('ImGui::CalcTextSize') static function calcTextSize(_text : String, _textEnd : String = null, _hideTextAfterDoubleHash : Bool = false, _wrapWidth : Float = -1) : ImVec2;
+    @:native('ImGui::CalcItemRectClosestPoint') static function calcItemRectClosestPoint(_pos : ImVec2, _onEdge : Bool = false, _outward : Float32 = 0) : ImVec2;
+    @:native('ImGui::CalcTextSize') static function calcTextSize(_text : String, _textEnd : String = null, _hideTextAfterDoubleHash : Bool = false, _wrapWidth : Float32 = -1) : ImVec2;
 
     /**
       calculate coarse clipping for large list of evenly sized items. Prefer using the ImGuiListClipper higher-level helper if you can.
      */
-    @:native('ImGui::linc::CalcListClipping') static function calcListClipping(_itemsCount : Int, _itemsHeight : Float, _outItemsDisplayStart : Int, _outItemsDisplayEnd : Int) : Void;
+    @:native('ImGui::linc::CalcListClipping') static function calcListClipping(_itemsCount : Int, _itemsHeight : Float32, _outItemsDisplayStart : Int, _outItemsDisplayEnd : Int) : Void;
 
     /**
       helper to create a child window / scrolling region that looks like a normal widget frame
@@ -1242,8 +1243,8 @@ extern class ImGui
 
     @:native('ImGui::ColorConvertU32ToFloat4') static function colorConvertU32ToFloat4(_in : ImU32) : ImVec4;
     @:native('ImGui::ColorConvertFloat4ToU32') static function colorConvertFloat4ToU32(_in : ImVec4) : ImU32;
-    @:native('ImGui::ColorConvertRGBtoHSV') static function colorConvertRGBtoHSV(_r : Float, _g : Float, _b : Float, _outH : Float, _outS : Float, _outV : Float) : Void;
-    @:native('ImGui::ColorConvertHSVtoRGB') static function colorConvertHSVtoRGB(_h : Float, _s : Float, _v : Float, _outR : Float, _outG : Float, _outB : Float) : Void;
+    @:native('ImGui::ColorConvertRGBtoHSV') static function colorConvertRGBtoHSV(_r : Float32, _g : Float32, _b : Float32, _outH : Float32, _outS : Float32, _outV : Float32) : Void;
+    @:native('ImGui::ColorConvertHSVtoRGB') static function colorConvertHSVtoRGB(_h : Float32, _s : Float32, _v : Float32, _outR : Float32, _outG : Float32, _outB : Float32) : Void;
 
     //------------------\\
     //                  \\
@@ -1265,10 +1266,10 @@ extern class ImVectorImWchar extends ImVector<ImWchar>
   //
 }
 
-@:native('ImVector<float>')
+@:native('ImVector<Float32>')
 @:structAccess
 @:unreflective
-extern class ImVectorFloat extends ImVector<Float>
+extern class ImVectorFloat extends ImVector<Float32>
 {
   //
 }
@@ -1622,7 +1623,7 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
     /**
       ColorEdit, ColorPicker, ColorButton: _display_ values formatted as 0.0f..1.0f floats instead of 0..255 integers. No round-trip of value via integers.
      */
-    var Float = 1 << 17;
+    var Float32 = 1 << 17;
 
     /**
       ColorPicker: bar for Hue, rectangle for Sat/Value.

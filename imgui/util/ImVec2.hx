@@ -1,12 +1,14 @@
 package imgui.util;
 
+import cpp.Float32;
+
 @:include('linc_imgui.h')
 @:native('ImVec2')
 @:structAccess
 extern class ImVec2
 {
-    public var x : Float;
-    public var y : Float;
+    public var x : Float32;
+    public var y : Float32;
 
-    @:native('ImVec2') static function create(_x : Float = 0, _y : Float = 0) : ImVec2;
+    @:native('ImVec2') static function create(_x : Float32 = 0, _y : Float32 = 0) : ImVec2;
 }

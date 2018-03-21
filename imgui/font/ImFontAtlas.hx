@@ -2,6 +2,7 @@ package imgui.font;
 
 import imgui.ImGui;
 import imgui.util.ImVec2;
+import cpp.Float32;
 import cpp.UInt8;
 import cpp.Pointer;
 import cpp.ConstPointer;
@@ -46,10 +47,10 @@ extern class ImFontAtlas
 
     @:native('AddFont')              function addFont(_fontCfg : ConstPointer<ImFontConfig>) : Pointer<ImFont>;
     @:native('AddFontDefault')       function addFontDefault(_fontCfg : ConstPointer<ImFontConfig> = null) : Pointer<ImFont>;
-    @:native('AddFontFromFileTTF')   function addFontFromFileTTF(_filename : ConstCharStar, _sizePixels : Float, _fontCfg : ConstPointer<ImFontConfig> = null, _glyphRanges : ConstPointer<ImWchar> = null) : Pointer<ImFont>;
-    @:native('AddFontFromMemoryTTF') function addFontFromMemoryTTF(_fontData : Pointer<Void>, _fontSize : Int, _sizePixels : Float, _fontCfg : ConstPointer<ImFontConfig> = null, _glyphRanges : ConstPointer<ImWchar> = null) : Pointer<ImFont>;
-    @:native('AddFontFromMemoryCompressedTTF')       function addFontFromMemoryCompressedTTF(_fontData : Pointer<Void>, _fontSize : Int, _sizePixels : Float, _fontCfg : ConstPointer<ImFontConfig> = null, _glyphRanges : ConstPointer<ImWchar> = null) : Pointer<ImFont>;
-    @:native('AddFontFromMemoryCompressedBase85TTF') function addFontFromMemoryCompressedBase85TTF(_fontData : Pointer<Void>, _sizePixels : Float, _fontCfg : ConstPointer<ImFontConfig> = null, _glyphRanges : ConstPointer<ImWchar> = null) : Pointer<ImFont>;
+    @:native('AddFontFromFileTTF')   function addFontFromFileTTF(_filename : ConstCharStar, _sizePixels : Float32, _fontCfg : ConstPointer<ImFontConfig> = null, _glyphRanges : ConstPointer<ImWchar> = null) : Pointer<ImFont>;
+    @:native('AddFontFromMemoryTTF') function addFontFromMemoryTTF(_fontData : Pointer<Void>, _fontSize : Int, _sizePixels : Float32, _fontCfg : ConstPointer<ImFontConfig> = null, _glyphRanges : ConstPointer<ImWchar> = null) : Pointer<ImFont>;
+    @:native('AddFontFromMemoryCompressedTTF')       function addFontFromMemoryCompressedTTF(_fontData : Pointer<Void>, _fontSize : Int, _sizePixels : Float32, _fontCfg : ConstPointer<ImFontConfig> = null, _glyphRanges : ConstPointer<ImWchar> = null) : Pointer<ImFont>;
+    @:native('AddFontFromMemoryCompressedBase85TTF') function addFontFromMemoryCompressedBase85TTF(_fontData : Pointer<Void>, _sizePixels : Float32, _fontCfg : ConstPointer<ImFontConfig> = null, _glyphRanges : ConstPointer<ImWchar> = null) : Pointer<ImFont>;
 
     /**
       Clear the CPU-size texture data. Saves RAM once the texture has been copied to graphics memory.
@@ -136,8 +137,8 @@ extern class ImFontAtlas
 
     @:native('AddCustomRectRegular') public function addCustomRectRegular(_id : Int, _width : Int, _height : Int) : Int;
 
-    @:overload(function(_font : Pointer<ImFont>, _id : ImWchar, _width : Int, _height : Int, _advanceX : Float) : Int {})
-    @:native('AddCustomRectFontGlyph') public function AddCustomRectFontGlyph(_font : Pointer<ImFont>, _id : ImWchar, _width : Int, _height : Int, _advanceX : Float, _offset : ImVec2) : Int;
+    @:overload(function(_font : Pointer<ImFont>, _id : ImWchar, _width : Int, _height : Int, _advanceX : Float32) : Int {})
+    @:native('AddCustomRectFontGlyph') public function AddCustomRectFontGlyph(_font : Pointer<ImFont>, _id : ImWchar, _width : Int, _height : Int, _advanceX : Float32, _offset : ImVec2) : Int;
 
     @:native('CalcCustomRectUV') public function calcCustomRectUV(_rect : ConstPointer<CustomRect>, _outUVMin : Pointer<ImVec2>, _outUVMax : Pointer<ImVec2>) : Void;
     @:native('GetCustomRectByIndex') public function getCustomRectByIndex(_index : Int) : ConstPointer<CustomRect>;
@@ -171,7 +172,7 @@ extern class CustomRect
   @:native('Height') public var height : Int;
   @:native('X') public var x : Int;
   @:native('Y') public var y : Int;
-  @:native('GlyphAdvanceX') public var glyphAdvanceX : Float;
+  @:native('GlyphAdvanceX') public var glyphAdvanceX : Float32;
   @:native('GlyphOffset')   public var glyphOffset   : ImVec2;
   @:native('Font') public var font : cpp.RawPointer<ImVec2>;
 

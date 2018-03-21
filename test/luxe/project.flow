@@ -10,7 +10,6 @@
         },
 
         build : {
-            defines : [ 'HXCPP_FLOAT32' ],
             dependencies : {
                 luxe : '*',
                 linc_imgui : '*'

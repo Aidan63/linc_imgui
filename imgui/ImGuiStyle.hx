@@ -3,6 +3,7 @@ package imgui;
 import imgui.util.ImVec2;
 import imgui.util.ImVec4;
 import cpp.Pointer;
+import cpp.Float32;
 
 @:include('linc_imgui.h')
 @:native('ImGuiStyle')
@@ -13,7 +14,7 @@ extern class ImGuiStyle
     /**
       Global alpha applies to everything in ImGui
      */
-    @:native('Alpha') public var alpha : Float;
+    @:native('Alpha') public var alpha : Float32;
 
     /**
       Padding within a window
@@ -23,12 +24,12 @@ extern class ImGuiStyle
     /**
       Radius of window corners rounding. Set to 0.0f to have rectangular windows
      */
-    @:native('WindowRounding') public var windowRounding : Float;
+    @:native('WindowRounding') public var windowRounding : Float32;
 
     /**
       Thickness of border around windows. Generally set to 0.0f or 1.0f. (Other values are not well tested and more CPU/GPU costly)
      */
-    @:native('WindowBorderSize') public var windowBorderSize : Float;
+    @:native('WindowBorderSize') public var windowBorderSize : Float32;
 
     /**
       Minimum window size
@@ -43,22 +44,22 @@ extern class ImGuiStyle
     /**
       Radius of child window corners rounding. Set to 0.0f to have rectangular windows.
      */
-    @:native('ChildRounding') public var childRounding : Float;
+    @:native('ChildRounding') public var childRounding : Float32;
 
     /**
       Thickness of border around child windows. Generally set to 0.0f or 1.0f. (Other values are not well tested and more CPU/GPU costly)
      */
-    @:native('ChildBorderSize') public var childBorderSize : Float;
+    @:native('ChildBorderSize') public var childBorderSize : Float32;
 
     /**
       Radius of popup window corners rounding.
      */
-    @:native('PopupRounding') public var popupRounding : Float;
+    @:native('PopupRounding') public var popupRounding : Float32;
 
     /**
       Thickness of border around popup windows. Generally set to 0.0f or 1.0f. (Other values are not well tested and more CPU/GPU costly)
      */
-    @:native('PopupBorderSize') public var popupBorderSize : Float;
+    @:native('PopupBorderSize') public var popupBorderSize : Float32;
 
     /**
       Padding within a framed rectangle (used by most widgets)
@@ -68,12 +69,12 @@ extern class ImGuiStyle
     /**
       Radius of frame corners rounding. Set to 0.0f to have rectangular frame (used by most widgets).
      */
-    @:native('FrameRounding') public var frameRounding : Float;
+    @:native('FrameRounding') public var frameRounding : Float32;
 
     /**
       Thickness of border around frames. Generally set to 0.0f or 1.0f. (Other values are not well tested and more CPU/GPU costly)
      */
-    @:native('FrameBorderSize') public var frameBorderSize : Float;
+    @:native('FrameBorderSize') public var frameBorderSize : Float32;
 
     /**
       Horizontal and vertical spacing between widgets/lines
@@ -95,32 +96,32 @@ extern class ImGuiStyle
     /**
       Horizontal indentation when e.g. entering a tree node. Generally == (FontSize + FramePadding.x*2).
      */
-    @:native('IndentSpacing') public var indentSpacing : Float;
+    @:native('IndentSpacing') public var indentSpacing : Float32;
 
     /**
       Minimum horizontal spacing between two columns
      */
-    @:native('ColumnsMinSpacing') public var columnsMinSpacing : Float;
+    @:native('ColumnsMinSpacing') public var columnsMinSpacing : Float32;
 
     /**
       Width of the vertical scrollbar, Height of the horizontal scrollbar
      */
-    @:native('ScrollbarSize') public var scrollbarSize : Float;
+    @:native('ScrollbarSize') public var scrollbarSize : Float32;
 
     /**
       Radius of grab corners for scrollbar
      */
-    @:native('ScrollbarRounding') public var scrollbarRounding : Float;
+    @:native('ScrollbarRounding') public var scrollbarRounding : Float32;
 
     /**
       Minimum width/height of a grab box for slider/scrollbar.
      */
-    @:native('GrabMinSize') public var grabMinSize : Float;
+    @:native('GrabMinSize') public var grabMinSize : Float32;
 
     /**
       Radius of grabs corners rounding. Set to 0.0f to have rectangular slider grabs.
      */
-    @:native('GrabRounding') public var grabRounding : Float;
+    @:native('GrabRounding') public var grabRounding : Float32;
 
     /**
       Alignment of button text when button is larger than text. Defaults to (0.5f,0.5f) for horizontally+vertically centered.
@@ -150,7 +151,7 @@ extern class ImGuiStyle
     /**
       Tessellation tolerance. Decrease for highly tessellated curves (higher quality, more polygons), increase to reduce quality.
      */
-    @:native('CurveTessellationTol') public var curveTessellationTol : Float;
+    @:native('CurveTessellationTol') public var curveTessellationTol : Float32;
 
     /**
       Colours
@@ -158,5 +159,5 @@ extern class ImGuiStyle
     @:native('Colors') public var colors : Pointer<ImVec4>;
 
     @:native('new ImGuiStyle') static function create() : Pointer<ImGuiStyle>;
-    @:native('ScaleAllSizes') static function scaleAllSizes(_scaleFactor : Float) : Void;
+    @:native('ScaleAllSizes') static function scaleAllSizes(_scaleFactor : Float32) : Void;
 }

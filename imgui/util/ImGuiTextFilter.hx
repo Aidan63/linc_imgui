@@ -1,5 +1,7 @@
 package imgui.util;
 
+import cpp.Float32;
+
 @:include('linc_imgui.h')
 @:native('ImGuiTextFilter')
 @:structAccess
@@ -15,7 +17,7 @@ extern class ImGuiTextFilter
 
     @:overload(function() : Bool {})
     @:overload(function(_label : String) : Bool {})
-    @:native('Draw') public function draw(_label : String, _width : Float) : Bool;
+    @:native('Draw') public function draw(_label : String, _width : Float32) : Bool;
 
     @:overload(function(_text : String) : Bool {})
     @:native('PassFilter') public function passFilter(_text : String, _textEnd : String) : Bool;

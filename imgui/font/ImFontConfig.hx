@@ -1,5 +1,6 @@
 package imgui.font;
 
+import cpp.Float32;
 import cpp.Pointer;
 import imgui.ImGui;
 import imgui.util.ImVec2;
@@ -15,7 +16,7 @@ extern class ImFontConfig
     @:native('FontDataSize')        public var fontDataSize : Int;
     @:native('FontDataOwnedByAtas') public var fontDataOwnedByAtas : Bool;
     @:native('FontNo')              public var fontNo : Int;
-    @:native('SizePixels')          public var sizePixels : Float;
+    @:native('SizePixels')          public var sizePixels : Float32;
     @:native('OversampleH')         public var oversampleH : Int;
     @:native('OversampleV')         public var oversampleV : Int;
     @:native('PixelSnapH')          public var pixelSnapH : Bool;
@@ -24,7 +25,7 @@ extern class ImFontConfig
     @:native('GlyphRanges')         public var glyphRanges : cpp.RawConstPointer<ImWchar>;
     @:native('MergeMode')           public var mergeMode : Bool;
     @:native('RasterizerFlags')     public var rasterizerFlags : Int;
-    @:native('RasterizerMultiply')  public var rasterizerMultiply : Float;
+    @:native('RasterizerMultiply')  public var rasterizerMultiply : Float32;
 
     @:native('new ImFontConfig') static function create() : Pointer<ImFontConfig>;
 }

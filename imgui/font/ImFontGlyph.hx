@@ -1,5 +1,6 @@
 package imgui.font;
 
+import cpp.Float32;
 import imgui.ImGui;
 import imgui.util.ImVector;
 
@@ -17,47 +18,47 @@ extern class ImFontGlyph
     /**
       Distance to next character (= data from font + ImFontConfig::GlyphExtraSpacing.x baked in)
      */
-    @:native('AdvanceX') public var advanceX : Float;
+    @:native('AdvanceX') public var advanceX : Float32;
 
     /**
       Top left x glyph position
      */
-    @:native('X0') public var x0 : Float;
+    @:native('X0') public var x0 : Float32;
 
     /**
       Top left y glyph position
      */
-    @:native('Y0') public var y0 : Float;
+    @:native('Y0') public var y0 : Float32;
 
     /**
       Bottom right x glyph position
      */
-    @:native('X1') public var x1 : Float;
+    @:native('X1') public var x1 : Float32;
 
     /**
       Bottom right y glyph position
      */
-    @:native('Y1') public var y1 : Float;
+    @:native('Y1') public var y1 : Float32;
 
     /**
       Top left x texture position
      */
-    @:native('U0') public var u0 : Float;
+    @:native('U0') public var u0 : Float32;
 
     /**
       Top left y texture position
      */
-    @:native('V0') public var v0 : Float;
+    @:native('V0') public var v0 : Float32;
 
     /**
       Bottom right x texture position
      */
-    @:native('U1') public var u1 : Float;
+    @:native('U1') public var u1 : Float32;
 
     /**
       Bottom right y texture position
      */
-    @:native('V1') public var v1 : Float;
+    @:native('V1') public var v1 : Float32;
 }
 
 @:native('ImVector<ImFontGlyph>')
