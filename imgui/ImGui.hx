@@ -42,7 +42,7 @@ extern class ImGui
     
     @:native('ImGui::GetIO')       static function getIO() : Reference<ImGuiIO>;
     @:native('ImGui::GetStyle')    static function getStyle() : Reference<ImGuiStyle>;
-    @:native('ImGui::GetDrawData') static function getDrawData() : Pointer<ImDrawData>;
+    @:native('ImGui::GetDrawData') static function getDrawData() : RawPointer<ImDrawData>;
     @:native('ImGui::NewFrame')    static function newFrame() : Void;
     @:native('ImGui::Render')      static function render() : Void;
     @:native('ImGui::EndFrame')    static function endFrame() : Void;
