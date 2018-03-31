@@ -20,6 +20,8 @@ For functions which take and modify a float (e.g. colour edits, float inputs / s
 
 There's a CLI, Luxe, and Haxeflixel demo in the tests folder. The Luxe and haxeflixel tests contain a class which handles all of the setting keyboard, mouse, and rendering callbacks for you.
 
+[kha demo](https://github.com/CoruNethron/KhaImGuiDemo)
+
 I hope to keep adding demos for other haxe frameworks as I find the time.
 
 ### Reporting errors
