@@ -1,3 +1,5 @@
+// korefile.js is used by Kha SDK, see test/kha
+
 var project = new Project('linc_imgui', __dirname);
 
 project.addFile('linc/**');
