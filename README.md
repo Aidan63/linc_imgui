@@ -18,9 +18,7 @@ The API follows the ImGui C++ API will most functions and attributes having a ha
 
 For functions which take and modify a float (e.g. colour edits, float inputs / sliders) the float must be a cpp.Float32 type, not a default Haxe float. When creating types such as Vec2 and Vec4 the floats passed to the create method do not need to be explicitly defined as a cpp.Float32 since it is not permanently modifying that variable.
 
-There's a CLI, Luxe, and Haxeflixel demo in the tests folder. The Luxe and haxeflixel tests contain a class which handles all of the setting keyboard, mouse, and rendering callbacks for you.
-
-[kha demo](https://github.com/CoruNethron/KhaImGuiDemo)
+There's a CLI, Luxe, Haxeflixel, and Kha demo in the tests folder. These demos show you how you implement drawing, input handling, etc in each framework and in many cases has a class you can drop into your own project to handle all of that setup automatically.
 
 I hope to keep adding demos for other haxe frameworks as I find the time.
 
