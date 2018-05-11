@@ -30,10 +30,6 @@ typedef ImGuiSizeCallback = Callable<Pointer<ImGuiSizeCallbackData>->Void>;
 #end
 extern class ImGui
 {
-    // Misc
-    @:native('ImGui::linc::resolveVoidStar') static function getVoidStar(_ptr : cpp.RawPointer<cpp.Void>) : cpp.ConstCharStar;
-    @:native('ImGui::linc::createVoidStar') static function createVoidStar(_string : String) : cpp.RawPointer<cpp.Void>;
-
     //------\\
     //      \\
     // Main \\
