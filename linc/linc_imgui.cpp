@@ -158,6 +158,10 @@ namespace ImGui
         {
             return ImGui::InputInt4(_label, &_v[0], _extraFlags);
         }
+        bool InputDouble(const char* _label, Array<double> _v, double _step, double _step_fast, const char* _format, ImGuiInputTextFlags _extra_flags)
+        {
+            return ImGui::InputDouble(_label, &_v[0], _step, _step_fast, _format, _extra_flags);
+        }
 
         // Slider Wrappers
         bool SliderFloat(const char* _label, float &_v, float _vMin, float _vMax, const char* _displayFormat, float _power)

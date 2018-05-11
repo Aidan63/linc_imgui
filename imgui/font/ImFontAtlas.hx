@@ -15,6 +15,8 @@ import cpp.Reference;
 @:unreflective
 extern class ImFontAtlas
 {
+    @:native('Flags') public var flags : ImFontAtlasFlags;
+
     /**
       User data to refer to the texture once it has been uploaded to user's graphic systems.
 

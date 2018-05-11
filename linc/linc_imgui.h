@@ -52,6 +52,7 @@ namespace ImGui
         extern bool InputInt2(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags = 0);
         extern bool InputInt3(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags = 0);
         extern bool InputInt4(const char* _label, Array<int> _v, ImGuiInputTextFlags _extraFlags = 0);
+        extern bool InputDouble(const char* _label, Array<double> _v, double _step = 0.0f, double _step_fast = 0.0f, const char* _format = "%.6f", ImGuiInputTextFlags _extra_flags = 0);
 
         // Slider Widgets
         extern bool SliderFloat(const char* _label, float &_v, float _vMin, float _vMax, const char* _displayFormat = "%.3f", float _power = 1.0f);     // adjust display_format to decorate the value with a prefix or a suffix for in-slider labels or unit display. Use power!=1.0 for logarithmic sliders

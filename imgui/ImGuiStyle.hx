@@ -139,6 +139,11 @@ extern class ImGuiStyle
     @:native('DisplaySafeAreaPadding') public var displaySafeAreaPadding : ImVec2;
 
     /**
+      Scale software rendered mouse cursor (when io.MouseDrawCursor is enabled). May be removed later.
+     */
+    @:native('MouseCursorScale') public var mouseCursorScale : Float32;
+
+    /**
       Enable anti-aliasing on lines/borders. Disable if you are really tight on CPU/GPU.
      */
     @:native('AntiAliasedLines') public var antiAliasedLines : Bool;

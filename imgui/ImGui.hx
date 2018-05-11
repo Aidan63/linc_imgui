@@ -181,6 +181,11 @@ extern class ImGui
     @:native('ImGui::SetNextWindowFocus') static function setNextWindowFocus() : Void;
 
     /**
+      set next window background color alpha. helper to easily modify ImGuiCol_WindowBg/ChildBg/PopupBg.
+     */
+    @:native('ImGui::SetNextWindowBgAlpha') static function setNextWindowBgAlpha(_alpha : Float32) : Void;
+
+    /**
       (not recommended) set current window position - call within Begin()/End(). prefer using SetNextWindowPos(), as this may incur tearing and side-effects.
      */
     @:native('ImGui::SetWindowPos') static function setCurrentWindowPos(_pos : Reference<ImVec2>, _cond : ImGuiCond = 0) : Void;
@@ -572,6 +577,8 @@ extern class ImGui
     @:overload(function(_label : String) : Bool {})
     @:native('ImGui::Button') static function button(_label : String, _size : ImVec2) : Bool;
 
+    @:native('ImGui::ArrowButton') static function arrowButton(_strID : String, _dir : ImGuiDir) : Bool;
+
     @:overload(function(_userTextureId : ImTextureID, _size : ImVec2) : Void {})
     @:overload(function(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2) : Void {})
     @:overload(function(_userTextureId : ImTextureID, _size : ImVec2, _uv0 : ImVec2, _uv1 : ImVec2) : Void {})
@@ -738,6 +745,12 @@ extern class ImGui
 
     @:overload(function(_label : String, _v : Array<Int>) : Bool {})
     @:native('ImGui::linc::InputInt4') static function inputInt4(_label : String, _v : Array<Int>, _extraFlags : ImGuiInputTextFlags) : Bool;
+
+    @:overload(function(_label : String, _v : Array<Float>) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float>, _step : Float) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float>, _step : Float, _stepFast : Float) : Bool {})
+    @:overload(function(_label : String, _v : Array<Float>, _step : Float, _stepFast : Float, _format : String) : Bool {})
+    @:native('ImGui::linc::InputDouble') static function inputDouble(_label : String, _v : Array<Float>, _step : Float, _stepFast : Float, _format : String, _extraFlags : ImGuiInputTextFlags) : Bool;
 
     /**
       map ImGuiKey_* values into user's key index. == io.KeyMap[key]
@@ -1083,7 +1096,8 @@ extern class ImGui
     /**
       return true if the popup is open, and you can start outputting to it. only call EndPopup() if BeginPopup() returned true!
      */
-    @:native('ImGui::BeginPopup') static function beginPopup(_strId : String) : Bool;
+    @:overload(function(_strID : String) : Bool {})
+    @:native('ImGui::BeginPopup') static function beginPopup(_strId : String, _flags : ImGuiWindowFlags) : Bool;
     
     /**
       modal dialog (block interactions behind the modal window, can't close the modal window by clicking outside)
@@ -1395,34 +1409,16 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
  */
 @:enum abstract ImGuiHoveredFlags(Int) from Int to Int
 {
-    /**
-      true if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
-     */
-    var Default = 0;
+  var Default                       = 0;        // Return true if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
+  var ChildWindows                  = 1 << 0;   // IsWindowHovered() only: Return true if any children of the window is hovered
+  var RootWindow                    = 1 << 1;   // IsWindowHovered() only: Test from root window (top most parent of the current hierarchy)
+  var AnyWindow                     = 1 << 2;   // IsWindowHovered() only: Return true if any window is hovered
+  var AllowWhenBlockedByPopup       = 1 << 3;   // Return true even if a popup window is normally blocking access to this item/window
 
-    /**
-      Return true even if a popup window is normally blocking access to this item/window
-     */
-    var AllowWhenBlockedByPopup = 1 << 0;
-
-    //var AllowWhenBlockedByModal = 1 << 1; // Return true even if a modal popup window is normally blocking access to this item/window. FIXME-TODO: Unavailable yet.
-
-    /**
-      Return true even if an active item is blocking access to this item/window
-     */
-    var AllowWhenBlockedByActiveItem = 1 << 2;
-
-    /**
-      Return true even if the position is overlapped by another window
-     */
-    var AllowWhenOverlapped = 1 << 3;
-
-    /**
-      Treat all child windows as the same window (for IsWindowHovered())
-     */
-    var FlattenChilds = 1 << 4;
-
-    var RectOnly = 1 << AllowWhenBlockedByPopup | AllowWhenBlockedByActiveItem | AllowWhenOverlapped;
+  var AllowWhenBlockedByActiveItem  = 1 << 5;   // Return true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
+  var AllowWhenOverlapped           = 1 << 6;   // Return true even if the position is overlapped by another window
+  var RectOnly                      = AllowWhenBlockedByPopup | AllowWhenBlockedByActiveItem | AllowWhenOverlapped;
+  var RootAndChildWindows           = RootWindow | ChildWindows;
 }
 
 /**
@@ -1515,24 +1511,28 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
  */
 @:enum abstract ImGuiStyleVar(Int) from Int to Int
 {
-    var Alpha = 0;
-    var WindowPadding = 1;
-    var WindowRounding = 2;
-    var WindowBorderSize = 3;
-    var WindowMinSize = 4;
-    var ChildRounding = 5;
-    var ChildBorderSize = 6;
-    var PopupRounding = 7;
-    var PopupBorderSize = 8;
-    var FramePadding = 9;
-    var FrameRounding = 10;
-    var FrameBorderSize = 11;
-    var ItemSpacing = 12;
-    var ItemInnerSpacing = 13;
-    var IndentSpacing = 14;
-    var GrabMinSize = 15;
-    var ButtonTextAlign = 16;
-    var Count = 17;
+    var Alpha             = 0;    // float     Alpha
+    var WindowPadding     = 1;    // ImVec2    WindowPadding
+    var WindowRounding    = 2;    // float     WindowRounding
+    var WindowBorderSize  = 3;    // float     WindowBorderSize
+    var WindowMinSize     = 4;    // ImVec2    WindowMinSize
+    var WindowTitleAlign  = 5;    // ImVec2    WindowTitleAlign
+    var ChildRounding     = 6;    // float     ChildRounding
+    var ChildBorderSize   = 7;    // float     ChildBorderSize
+    var PopupRounding     = 8;    // float     PopupRounding
+    var PopupBorderSize   = 9;    // float     PopupBorderSize
+    var FramePadding      = 10;   // ImVec2    FramePadding
+    var FrameRounding     = 11;   // float     FrameRounding
+    var FrameBorderSize   = 12;   // float     FrameBorderSize
+    var ItemSpacing       = 13;   // ImVec2    ItemSpacing
+    var ItemInnerSpacing  = 14;   // ImVec2    ItemInnerSpacing
+    var IndentSpacing     = 15;   // float     IndentSpacing
+    var ScrollbarSize     = 16;   // float     ScrollbarSize
+    var ScrollbarRounding = 17;   // float     ScrollbarRounding
+    var GrabMinSize       = 18;   // float     GrabMinSize
+    var GrabRounding      = 19;   // float     GrabRounding
+    var ButtonTextAlign   = 20;   // ImVec2    ButtonTextAlign
+    var COUNT = 21;
 }
 
 /**
@@ -1815,6 +1815,16 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
       Password mode, display all characters as '*'
      */
     var Password = 1 << 15;
+
+    /**
+      Disable undo/redo. Note that input text owns the text data while active, if you want to provide your own undo/redo stack you need e.g. to call ClearActiveID().
+     */
+    var NoUndoRedo          = 1 << 16;
+
+    /**
+      Allow 0123456789.+-*\/eE (Scientific notation input)
+     */
+    var CharsScientific     = 1 << 17;
 }
 
 /**
@@ -1867,7 +1877,9 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
   var HeightRegular  = 1 << 2;
   var HeightLarge    = 1 << 3;
   var HeightLargest  = 1 << 4;
-  var HeightMask = HeightSmall | HeightRegular | HeightLarge | HeightLargest;
+  var NoArrowButton  = 1 << 5;
+  var NoPreview      = 1 << 6;
+  var HeightMask     = HeightSmall | HeightRegular | HeightLarge | HeightLargest;
 }
 
 @:enum abstract ImGuiNavInput(Int) from Int to Int
@@ -1909,4 +1921,20 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
   var HasGamepad      = 1 << 0; // Back-end supports and has a connected gamepad.
   var HasMouseCursors = 1 << 1; // Back-end supports reading GetMouseCursor() to change the OS cursor shape.
   var HasSetMousePos  = 1 << 2; // Back-end supports io.WantSetMousePos requests to reposition the OS mouse position (only used if ImGuiConfigFlags_NavEnableSetMousePos is set).
+}
+
+@:enum abstract ImGuiDir(Int) from Int to Int
+{
+  var None    = -1;
+  var Left    = 0;
+  var Right   = 1;
+  var Up      = 2;
+  var Down    = 3;
+  var COUNT   = 4;
+}
+
+@:enum abstract ImFontAtlasFlags(Int) from Int to Int
+{
+  var NoPowerOfTwoHeight = 1 << 0;
+  var NoMouseCursors     = 1 << 1;
 }

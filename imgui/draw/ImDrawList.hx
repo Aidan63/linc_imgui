@@ -133,6 +133,7 @@ extern class ImDrawList
 
     @:native('AddCallback') function addCallback(_function : Callable<RawConstPointer<ImDrawList>->RawConstPointer<ImDrawCmd>->Void>, _userData : RawPointer<cpp.Void>) : Void;
     @:native('AddDrawCmd')  function addDrawCmd() : Void;
+    @:native('CloneOutput') function cloneOutput() : RawPointer<ImDrawList>;
 }
 
 @:enum abstract ImDrawCornerFlags(Int) from Int to Int
