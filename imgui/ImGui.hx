@@ -20,7 +20,7 @@ typedef ImWchar = cpp.UInt16;
 typedef ImTextureID = cpp.RawPointer<cpp.Void>;
 typedef ImGuiColumnsFlags = Int;
 
-typedef ImGuiSizeConstraintCallback = Callable<Pointer<ImGuiSizeConstraintCallbackData>->Void>;
+typedef ImGuiSizeCallback = Callable<Pointer<ImGuiSizeCallbackData>->Void>;
 
 @:keep
 @:include('linc_imgui.h')
@@ -39,6 +39,15 @@ extern class ImGui
     // Main \\
     //      \\
     //------\\
+
+    @:overload(function() : RawPointer<ImGuiContext> {})
+    @:native('ImGui::CreateContext') static function createContext(_sharedFontAtlas : RawPointer<ImFontAtlas>) : RawPointer<ImGuiContext>;
+
+    @:overload(function() : Void {})
+    @:native('ImGui::DestroyContext') static function destroyContext(_context : RawPointer<ImGuiContext>) : Void;
+
+    @:native('ImGui::SetCurrentContext')              static function setCurrentContext(_context : RawPointer<ImGuiContext>) : Void;
+    @:native('ImGui::DebugCheckVersionAndDataLayout') static function debugCheckVersionAndDataLayout(_versionStr : String, _sz_io : Int, _sz_style : Int, _sz_vec2 : Int, _sz_vec4 : Int, sz_drawvert : Int) : Bool;
     
     @:native('ImGui::GetIO')       static function getIO() : Reference<ImGuiIO>;
     @:native('ImGui::GetStyle')    static function getStyle() : Reference<ImGuiStyle>;
@@ -46,7 +55,6 @@ extern class ImGui
     @:native('ImGui::NewFrame')    static function newFrame() : Void;
     @:native('ImGui::Render')      static function render() : Void;
     @:native('ImGui::EndFrame')    static function endFrame() : Void;
-    @:native('ImGui::Shutdown')    static function shutdown() : Void;
 
     //---------------------\\
     //                     \\
@@ -155,7 +163,7 @@ extern class ImGui
     /**
       set next window size limits. use -1,-1 on either X/Y axis to preserve the current size. Use callback to apply non-trivial programmatic constraints.
      */
-    @:native('ImGui::SetNextWindowSizeConstraints') static function setNextWindowSizeConstraints(_sizeMin : Reference<ImVec2>, _sizeMax : Reference<ImVec2>, _customCallback : ImGuiSizeConstraintCallback = null, _customCallbackData : RawPointer<cpp.Void> = null) : Void;
+    @:native('ImGui::SetNextWindowSizeConstraints') static function setNextWindowSizeConstraints(_sizeMin : Reference<ImVec2>, _sizeMax : Reference<ImVec2>, _customCallback : ImGuiSizeCallback = null, _customCallbackData : RawPointer<cpp.Void> = null) : Void;
 
     /**
       set next window content size (enforce the range of scrollbars). set axis to 0.0f to leave it automatic. call before Begin()
@@ -763,6 +771,11 @@ extern class ImGui
     @:native('ImGui::IsMouseDown') static function isMouseDown(_button : Int) : Bool;
 
     /**
+      is any mouse button held.
+     */
+    @:native('ImGui::IsAnyMouseDown') static function isAnyMouseDown() : Bool;
+
+    /**
       did mouse button clicked (went from !Down to Down)
      */
     @:native('ImGui::IsMouseClicked') static function isMouseClicked(_button : Int, _repeat : Bool = false) : Bool;
@@ -1174,6 +1187,11 @@ extern class ImGui
     @:native('ImGui::IsItemActive') static function isItemActive() : Bool;
 
     /**
+      is the last item focused for keyboard/gamepad navigation?
+     */
+    @:native('ImGui::IsItemFocused') static function isItemFocused() : Bool;
+
+    /**
       is the last item clicked? (e.g. button/node just clicked on)
      */
     @:native('ImGui::IsItemClicked') static function isItemClicked(_mouseButton : Int = 0) : Bool;
@@ -1206,9 +1224,6 @@ extern class ImGui
       is current Begin()-ed window hovered (and typically: not blocked by a popup/modal)?
      */
     @:native('ImGui::IsWindowHovered') static function isWindowHovered(_flags : ImGuiHoveredFlags = 0) : Bool;
-
-    @:native('ImGui::IsAnyWindowHovered') static function isAnyWindowHovered() : Bool;
-    @:native('ImGui::IsAnyWindowFocused') static function isAnyWindowFocused() : Bool;
 
     /**
       test if rectangle (of given size, starting from cursor position) is visible / not clipped.
@@ -1361,6 +1376,18 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
       (WIP) Enable resize from any corners and borders. Your back-end needs to honor the different values of io.MouseCursor set by imgui.
      */
     var ResizeFromAnySide = 1 << 17;
+
+    /**
+      No gamepad/keyboard navigation within the window.
+     */
+    var NoNavInputs = 1 << 18;
+
+    /**
+      No focusing toward this window with gamepad/keyboard navigation (e.g. skipped by CTRL+TAB)
+     */
+    var NoNavFocus = 1 << 19;
+
+    var NoNav = NoNavInputs | NoNavFocus;
 }
 
 /**
@@ -1403,26 +1430,28 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
  */
 @:enum abstract ImGuiKey(Int) from Int to Int
 {
-    var Tab = 0;
-    var LeftArrow = 1;
-    var RightArrow = 2;
-    var UpArrow = 3;
-    var DownArrow = 4;
-    var PageUp = 5;
-    var PageDown = 6;
-    var Home = 7;
-    var End = 8;
-    var Delete = 9;
-    var Backspace = 10;
-    var Enter = 11;
-    var Escape = 12;
-    var A = 13;
-    var C = 14;
-    var V = 15;
-    var X = 16;
-    var Y = 17;
-    var Z = 18;
-    var COUNT = 19;
+  var Tab = 0;
+  var LeftArrow = 1;
+  var RightArrow = 2;
+  var UpArrow = 3;
+  var DownArrow = 4;
+  var PageUp = 5;
+  var PageDown = 6;
+  var Home = 7;
+  var End = 8;
+  var Insert = 9;
+  var Delete = 10;
+  var Backspace = 11;
+  var Space = 12;
+  var Enter = 13;
+  var Escape = 14;
+  var A = 15;
+  var C = 16;
+  var V = 17;
+  var X = 18;
+  var Y = 19;
+  var Z = 20;
+  var COUNT = 21;
 }
 
 /**
@@ -1463,15 +1492,15 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
     var ResizeGrip = 30;
     var ResizeGripHovered = 31;
     var ResizeGripActive = 32;
-    var CloseButton = 33;
-    var CloseButtonHovered = 34;
-    var CloseButtonActive = 35;
-    var PlotLines = 36;
-    var PlotLinesHovered = 37;
-    var PlotHistogram = 38;
-    var PlotHistogramHovered = 39;
-    var TextSelectedBg = 40;
-    var ModalWindowDarkening = 41;
+    var PlotLines = 33;
+    var PlotLinesHovered = 34;
+    var PlotHistogram = 35;
+    var PlotHistogramHovered = 36;
+    var TextSelectedBg = 37;
+    var ModalWindowDarkening = 38;
+    var DragDropTarget = 39;
+    var NavHighlight = 40;
+    var NavWindowHighlight = 41;
     var COUNT = 42;
 }
 
@@ -1503,7 +1532,7 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
     var IndentSpacing = 14;
     var GrabMinSize = 15;
     var ButtonTextAlign = 16;
-    var Count_ = 17;
+    var Count = 17;
 }
 
 /**
@@ -1519,7 +1548,7 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
     var ResizeEW = 4;
     var ResizeNESW = 5;
     var ResizeNWSE = 6;
-    var Count_ = 7;
+    var Count = 7;
 }
 
 /**
@@ -1833,10 +1862,51 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
 
 @:enum abstract ImGuiComboFlags(Int) from Int to Int
 {
-    var PopupAlignLeft = 1 << 0;
-    var HeightSmall    = 1 << 1;
-    var HeightRegular  = 1 << 2;
-    var HeightLarge    = 1 << 3;
-    var HeightLargest  = 1 << 4;
-    var HeightMask = HeightSmall | HeightRegular | HeightLarge | HeightLargest;
+  var PopupAlignLeft = 1 << 0;
+  var HeightSmall    = 1 << 1;
+  var HeightRegular  = 1 << 2;
+  var HeightLarge    = 1 << 3;
+  var HeightLargest  = 1 << 4;
+  var HeightMask = HeightSmall | HeightRegular | HeightLarge | HeightLargest;
+}
+
+@:enum abstract ImGuiNavInput(Int) from Int to Int
+{
+  var Activate = 0;      // activate / open / toggle / tweak value       // e.g. Cross  (PS4), A (Xbox), A (Switch), Space (Keyboard)
+  var Cancel = 1;        // cancel / close / exit                        // e.g. Circle (PS4), B (Xbox), B (Switch), Escape (Keyboard)
+  var Input = 2;         // text input / on-screen keyboard              // e.g. Triang.(PS4), Y (Xbox), X (Switch), Return (Keyboard)
+  var Menu = 3;          // tap: toggle menu / hold: focus, move, resize // e.g. Square (PS4), X (Xbox), Y (Switch), Alt (Keyboard)
+  var DpadLeft = 4;      // move / tweak / resize window (w/ PadMenu)    // e.g. D-pad Left/Right/Up/Down (Gamepads), Arrow keys (Keyboard)
+  var DpadRight = 5;     // 
+  var DpadUp = 6;        // 
+  var DpadDown = 7;      // 
+  var LStickLeft = 8;    // scroll / move window (w/ PadMenu)            // e.g. Left Analog Stick Left/Right/Up/Down
+  var LStickRight = 9;   // 
+  var LStickUp = 10;     // 
+  var LStickDown = 11;   // 
+  var FocusPrev = 12;    // next window (w/ PadMenu)                     // e.g. L1 or L2 (PS4), LB or LT (Xbox), L or ZL (Switch)
+  var FocusNext = 13;    // prev window (w/ PadMenu)                     // e.g. R1 or R2 (PS4), RB or RT (Xbox), R or ZL (Switch) 
+  var TweakSlow = 14;    // slower tweaks                                // e.g. L1 or L2 (PS4), LB or LT (Xbox), L or ZL (Switch)
+  var TweakFast = 15;    // faster tweaks                                // e.g. R1 or R2 (PS4), RB or RT (Xbox), R or ZL (Switch)
+}
+
+@:enum abstract ImGuiConfigFlags(Int) from Int to Int
+{
+  var NavEnableKeyboard      = 1 << 0;   // Master keyboard navigation enable flag. NewFrame() will automatically fill io.NavInputs[] based on io.KeysDown[].
+  var NavEnableGamepad       = 1 << 1;   // Master gamepad navigation enable flag. This is mostly to instruct your imgui back-end to fill io.NavInputs[]. Back-end also needs to set ImGuiBackendFlags_HasGamepad.
+  var NavEnableSetMousePos   = 1 << 2;   // Instruct navigation to move the mouse cursor. May be useful on TV/console systems where moving a virtual mouse is awkward. Will update io.MousePos and set io.WantSetMousePos=true. If enabled you MUST honor io.WantSetMousePos requests in your binding, otherwise ImGui will react as if the mouse is jumping around back and forth.
+  var NavNoCaptureKeyboard   = 1 << 3;   // Instruct navigation to not set the io.WantCaptureKeyboard flag with io.NavActive is set. 
+  var NoMouse                = 1 << 4;   // Instruct imgui to clear mouse position/buttons in NewFrame(). This allows ignoring the mouse information back-end
+  var NoMouseCursorChange    = 1 << 5;   // Instruct back-end to not alter mouse cursor shape and visibility.
+
+  // User storage (to allow your back-end/engine to communicate to code that may be shared between multiple projects. Those flags are not used by core ImGui)
+  var IsSRGB        = 1 << 20;  // Application is SRGB-aware.
+  var IsTouchScreen = 1 << 21;  // Application is using a touch screen instead of a mouse.
+}
+
+@:enum abstract ImGuiBackendFlags(Int) from Int to Int
+{
+  var HasGamepad      = 1 << 0; // Back-end supports and has a connected gamepad.
+  var HasMouseCursors = 1 << 1; // Back-end supports reading GetMouseCursor() to change the OS cursor shape.
+  var HasSetMousePos  = 1 << 2; // Back-end supports io.WantSetMousePos requests to reposition the OS mouse position (only used if ImGuiConfigFlags_NavEnableSetMousePos is set).
 }

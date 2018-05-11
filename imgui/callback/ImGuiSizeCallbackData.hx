@@ -5,7 +5,7 @@ package imgui.callback;
 @:native('ImGuiSizeConstraintCallbackData')
 @:structAccess
 @:unreflective
-extern class ImGuiSizeConstraintCallbackData
+extern class ImGuiSizeCallbackData
 {
     //
 }
