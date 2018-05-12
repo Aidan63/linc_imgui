@@ -20,7 +20,8 @@ typedef ImWchar = cpp.UInt16;
 typedef ImTextureID = cpp.RawPointer<cpp.Void>;
 typedef ImGuiColumnsFlags = Int;
 
-typedef ImGuiSizeCallback = Callable<Pointer<ImGuiSizeCallbackData>->Void>;
+typedef ImGuiSizeCallback = Callable<RawPointer<ImGuiSizeCallbackData>->Void>;
+typedef ImGuiTextEditCallback = Callable<RawPointer<ImGuiTextEditCallbackData>->Int>;
 
 @:keep
 @:include('linc_imgui.h')
@@ -704,11 +705,15 @@ extern class ImGui
     //-------------------------------//
 
     @:overload(function(_label : String, _buffer : Array<Char>) : Bool {})
-    @:native('ImGui::linc::InputText') static function inputText(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags) : Bool {})
+    @:overload(function(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags, _callback : ImGuiTextEditCallback) : Bool {})
+    @:native('ImGui::linc::InputText') static function inputText(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags, _callback : ImGuiTextEditCallback, _userData : RawPointer<cpp.Void>) : Bool;
 
     @:overload(function(_label : String, _buffer : Array<Char>) : Bool {})
     @:overload(function(_label : String, _buffer : Array<Char>, _size : ImVec2) : Bool {})
-    @:native('ImGui::linc::InputTextMultiline') static function inputTextMultiline(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags) : Bool {})
+    @:overload(function(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags, _callback : ImGuiTextEditCallback) : Bool {})
+    @:native('ImGui::linc::InputTextMultiline') static function inputTextMultiline(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags, _callback : ImGuiTextEditCallback, _userData : RawPointer<cpp.Void>) : Bool;
 
     @:overload(function(_label : String, _v : Float32) : Bool {})
     @:overload(function(_label : String, _v : Float32, _step : Float32) : Bool {})

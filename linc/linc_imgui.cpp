@@ -118,13 +118,13 @@ namespace ImGui
         }
 
         // Input Wrappers
-        bool InputText(const char* _label, Array<char> &_buffer, ImGuiInputTextFlags _flags)
+        bool InputText(const char* _label, Array<char> &_buffer, ImGuiInputTextFlags _flags, ImGuiTextEditCallback _callback, void* _userData)
         {
-            return ImGui::InputText(_label, &_buffer[0], _buffer->length, _flags);
+            return ImGui::InputText(_label, &_buffer[0], _buffer->length, _flags, _callback, _userData);
         }
-        bool InputTextMultiline(const char* _label, Array<char> &_buffer, const ImVec2& _size, ImGuiInputTextFlags _flags)
+        bool InputTextMultiline(const char* _label, Array<char> &_buffer, const ImVec2& _size, ImGuiInputTextFlags _flags, ImGuiTextEditCallback _callback, void* _userData)
         {
-            return ImGui::InputTextMultiline(_label, &_buffer[0], _buffer->length, _size, _flags);
+            return ImGui::InputTextMultiline(_label, &_buffer[0], _buffer->length, _size, _flags, _callback, _userData);
         }
         bool InputFloat(const char* _label, float &_v, float _step, float _stepFast, int _decimalPrecision, ImGuiInputTextFlags _extraFlags)
         {
