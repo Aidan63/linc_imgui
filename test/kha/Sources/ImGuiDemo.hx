@@ -8,6 +8,7 @@ import kha.Assets;
 import kha.Color;
 import kha.input.KeyCode;
 import kha.arrays.Float32Array;
+import kha.graphics4.Graphics;
 import kha.graphics4.TextureUnit;
 import kha.graphics4.PipelineState;
 import kha.graphics4.VertexStructure;
@@ -26,7 +27,6 @@ import imgui.draw.ImDrawData;
 
 class ImGuiDemo {
 	private static var pipeline:PipelineState;
-	private static var framebuffer:Framebuffer;
 	private static var texunit:TextureUnit;
 	private static var imguiTexture:Image;
 	private static var structure:VertexStructure;
@@ -41,6 +41,8 @@ class ImGuiDemo {
 	private static var inputWheelDelta:Int;
 	private static var isKeyDown:Array<Bool>;
 	private static var inputChars:String;
+
+	private static var hxLogo:Image;
 
 	public function new() {
 		structure = new VertexStructure();
@@ -65,9 +67,10 @@ class ImGuiDemo {
 
 		texunit = pipeline.getTextureUnit("texsampler");
 
+		ImGui.createContext();
+
 		var imguiIo = ImGui.getIO();
 		imguiIo.displaySize = ImVec2.create(1024, 768);
-		imguiIo.renderDrawListsFn  = Callable.fromStaticFunction(onRender);
 		// --App crashes on attemt to copy if we don't register copy/paste callbacks--
 		kha.System.notifyOnCutCopyPaste(khaCut, khaCopy, khaPaste);
 
@@ -84,6 +87,8 @@ class ImGuiDemo {
 		// --Seems like whole texture is white, but alpha channel changes--
 		// --Multiplication of alpha channel moved to fragment shader--
 		imguiTexture = Image.fromBytes(buff, width, height, TextureFormat.RGBA32, Usage.StaticUsage);
+
+		atlas.texID = Pointer.addressOf(imguiTexture).rawCast();
 
 		kha.input.Mouse.get().notifyWindowed(0, onMouseDown, onMouseUp, onMouseMove, onMouseWheel);
 		kha.input.Keyboard.get().notify(onKeyDown, onKeyUp, onKeyPress);
@@ -109,6 +114,7 @@ class ImGuiDemo {
 		imguiIo.keyMap[ImGuiKey.Z         ] = KeyCode.Z;
 
 		Assets.loadEverything(function() {
+			hxLogo = Assets.images.hxlogo;
 			System.notifyOnRender(render);
 		});
 	}
@@ -150,21 +156,29 @@ class ImGuiDemo {
 	}
 
 	function render(fb:Framebuffer): Void {
-		var g = fb.g4;
-		g.begin();
-		g.clear(Color.Orange);
-		// --Turn off rectangle clipping, that was enabled in onRender()--
-		// --So it would't affect any other draws--
-		g.disableScissor();
-		g.end();
-
-		framebuffer = fb;
 
 		newFrame();
+		
+		ImGui.begin('logo');
+        ImGui.image(Pointer.addressOf(hxLogo).rawCast(), ImVec2.create(128, 128));
+        ImGui.end();
+
 		ImGui.showDemoWindow();
+
+		ImGui.endFrame();
+
+		var g4 = fb.g4;
+
+		g4.begin();
+		g4.clear(Color.Orange);
+		// --Turn off rectangle clipping, that was enabled in onRender()--
+		// --So it would't affect any other draws--
 		
 		ImGui.render();
-		ImGui.endFrame();
+		onRender(g4, ImGui.getDrawData());
+
+		g4.disableScissor();
+		g4.end();
 	}
 
 	private static function newFrame() {
@@ -174,7 +188,7 @@ class ImGuiDemo {
 		io.mousePos.y   = inputY;
 		io.mouseDown[0] = inputDownL;
 		io.mouseDown[1] = inputDownR;
-		io.mouseWheel -= inputWheelDelta;
+		io.mouseWheel  -= inputWheelDelta;
 		inputWheelDelta = 0;
 
 		io.keyCtrl      = isKeyDown[KeyCode.Control];
@@ -195,12 +209,12 @@ class ImGuiDemo {
 		io.keysDown[KeyCode.Backspace] = isKeyDown[KeyCode.Backspace];
 		io.keysDown[KeyCode.Escape   ] = isKeyDown[KeyCode.Escape];
 		io.keysDown[KeyCode.Delete   ] = isKeyDown[KeyCode.Delete];
-		io.keysDown[KeyCode.A    ] = isKeyDown[KeyCode.A];
-		io.keysDown[KeyCode.C    ] = isKeyDown[KeyCode.C];
-		io.keysDown[KeyCode.V    ] = isKeyDown[KeyCode.V];
-		io.keysDown[KeyCode.X    ] = isKeyDown[KeyCode.X];
-		io.keysDown[KeyCode.Y    ] = isKeyDown[KeyCode.Y];
-		io.keysDown[KeyCode.Z    ] = isKeyDown[KeyCode.Z];
+		io.keysDown[KeyCode.A        ] = isKeyDown[KeyCode.A];
+		io.keysDown[KeyCode.C        ] = isKeyDown[KeyCode.C];
+		io.keysDown[KeyCode.V        ] = isKeyDown[KeyCode.V];
+		io.keysDown[KeyCode.X        ] = isKeyDown[KeyCode.X];
+		io.keysDown[KeyCode.Y        ] = isKeyDown[KeyCode.Y];
+		io.keysDown[KeyCode.Z        ] = isKeyDown[KeyCode.Z];
 
 		io.addInputCharactersUTF8(inputChars);
 		inputChars = "";
@@ -215,10 +229,8 @@ class ImGuiDemo {
 		vBuf.set(startIdx + 3, ((col >> 24) & 0xFF) / 255);
 	}
 
-	private static function onRender(_dataRawPtr : cpp.RawPointer<ImDrawData>) : Void {
+	private static function onRender(_g4 : Graphics, _dataRawPtr : cpp.RawPointer<ImDrawData>) : Void {
 		// --There are probably some mem leaks in this function--
-
-		var g = framebuffer.g4;
 
 		var drawData = Pointer.fromRaw(_dataRawPtr).ref;
 
@@ -268,14 +280,16 @@ class ImGuiDemo {
 				vtx.unlock();
 				idx.unlock();
 
-				g.begin();
-				g.setPipeline(pipeline);
-				g.setTexture(texunit, imguiTexture);
-				g.setVertexBuffer(vtx);
-				g.setIndexBuffer(idx);
-				g.scissor(Std.int(cmd.clipRect.x), Std.int(cmd.clipRect.y), Std.int(cmd.clipRect.z - cmd.clipRect.x), Std.int(cmd.clipRect.w - cmd.clipRect.y));
-				g.drawIndexedVertices();
-				g.end();
+				var tex : Pointer<Image> = Pointer.fromRaw(cmd.textureID).reinterpret();
+
+				_g4.begin();
+				_g4.setPipeline(pipeline);
+				_g4.setTexture(texunit, tex.ref);
+				_g4.setVertexBuffer(vtx);
+				_g4.setIndexBuffer(idx);
+				_g4.scissor(Std.int(cmd.clipRect.x), Std.int(cmd.clipRect.y), Std.int(cmd.clipRect.z - cmd.clipRect.x), Std.int(cmd.clipRect.w - cmd.clipRect.y));
+				_g4.drawIndexedVertices();
+				_g4.end();
 
 				vtx.delete();
 				idx.delete();
