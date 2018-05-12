@@ -11,6 +11,8 @@ class Main
 
     public function new()
     {
+        ImGui.createContext();
+
         var io = ImGui.getIO();
         io.displaySize = ImVec2.create(640, 480);
         
@@ -30,5 +32,7 @@ class Main
         ImGui.showDemoWindow();
 
         ImGui.render();
+
+        ImGui.destroyContext();
     }
 }
