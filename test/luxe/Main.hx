@@ -5,9 +5,12 @@ import luxe.Color;
 import cpp.Pointer;
 import imgui.ImGui;
 import imgui.util.ImVec2;
+import imgui.callback.ImGuiTextEditCallbackData;
 
 class Main extends Game
 {
+    var buf : Array<cpp.Char>;
+
     override function config(_config : GameConfig)
     {
         _config.window.title = 'luxe game';
@@ -28,6 +31,7 @@ class Main extends Game
     override function ready()
     {
         LuxeImGui.init();
+        buf = [ for (i in 0...16) 0x0 ];
     }
     
     override function update(_dt : Float)
@@ -42,6 +46,7 @@ class Main extends Game
 
         var haxeLogoTexID = "assets/hxlogo.png";
         ImGui.image(Pointer.addressOf(haxeLogoTexID).rawCast(), ImVec2.create(128, 128));
+        ImGui.inputText('test callback', buf, ImGuiInputTextFlags.CallbackCompletion, cpp.Callable.fromStaticFunction(textCallback));
 
         ImGui.end();
 
@@ -51,5 +56,14 @@ class Main extends Game
     override function ondestroy()
     {
         LuxeImGui.clean();
+    }
+
+    static function textCallback(_callback : cpp.RawPointer<ImGuiTextEditCallbackData>) : Int
+    {
+        var ptr  : Pointer<ImGuiTextEditCallbackData> = Pointer.fromRaw(_callback);
+        var data = ptr.ref;
+
+        trace(data.cursorPos);
+        return 0;
     }
 }
