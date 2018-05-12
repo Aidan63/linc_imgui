@@ -31,10 +31,13 @@ class LuxeImGui
             camera    : Luxe.camera.view
         });
 
+        ImGui.createContext();
+
         var io = ImGui.getIO();
-        io.renderDrawListsFn  = Callable.fromStaticFunction(onRender);
         io.getClipboardTextFn = Callable.fromStaticFunction(getClipboard);
         io.setClipboardTextFn = Callable.fromStaticFunction(setClipboard);
+        io.configFlags  |= ImGuiConfigFlags.NavEnableKeyboard | ImGuiConfigFlags.NavEnableGamepad;
+        io.backendFlags |= ImGuiBackendFlags.HasGamepad;
 
         io.keyMap[ImGuiKey.Tab       ] = Scan.tab;
         io.keyMap[ImGuiKey.LeftArrow ] = Scan.left;
@@ -47,6 +50,8 @@ class LuxeImGui
         io.keyMap[ImGuiKey.End       ] = Scan.end;
         io.keyMap[ImGuiKey.Delete    ] = Scan.delete;
         io.keyMap[ImGuiKey.Backspace ] = Scan.backspace;
+        io.keyMap[ImGuiKey.Insert    ] = Scan.insert;
+        io.keyMap[ImGuiKey.Space     ] = Scan.space;
         io.keyMap[ImGuiKey.Enter     ] = Scan.enter;
         io.keyMap[ImGuiKey.Escape    ] = Scan.escape;
         io.keyMap[ImGuiKey.A         ] = Scan.key_a;
@@ -109,12 +114,40 @@ class LuxeImGui
         io.keysDown[Scan.key_y    ] = Luxe.input.keypressed(Key.key_y);
         io.keysDown[Scan.key_z    ] = Luxe.input.keypressed(Key.key_z);
 
+        function mapButton(_v : Bool) {
+            return _v ? 1 : 0;
+        }
+
+        // Basic gamepad support, not all correctly mapped right now.
+        // See https://github.com/ocornut/imgui/issues/787 for more setup info.
+        io.navInputs[ImGuiNavInput.Activate   ] = mapButton(Luxe.input.gamepaddown(0, 0));
+        io.navInputs[ImGuiNavInput.Cancel     ] = mapButton(Luxe.input.gamepaddown(0, 1));
+        io.navInputs[ImGuiNavInput.Menu       ] = mapButton(Luxe.input.gamepaddown(0, 2));
+        io.navInputs[ImGuiNavInput.Input      ] = mapButton(Luxe.input.gamepaddown(0, 3));
+        io.navInputs[ImGuiNavInput.DpadLeft   ] = mapButton(Luxe.input.gamepaddown(0, 13));
+        io.navInputs[ImGuiNavInput.DpadRight  ] = mapButton(Luxe.input.gamepaddown(0, 14));
+        io.navInputs[ImGuiNavInput.DpadUp     ] = mapButton(Luxe.input.gamepaddown(0, 11));
+        io.navInputs[ImGuiNavInput.DpadDown   ] = mapButton(Luxe.input.gamepaddown(0, 12));
+
+        io.navInputs[ImGuiNavInput.FocusPrev  ] = Luxe.input.gamepadaxis(0, 4);
+        io.navInputs[ImGuiNavInput.FocusNext  ] = Luxe.input.gamepadaxis(0, 5);
+        io.navInputs[ImGuiNavInput.TweakSlow  ] = Luxe.input.gamepadaxis(0, 4);
+        io.navInputs[ImGuiNavInput.TweakFast  ] = Luxe.input.gamepadaxis(0, 5);
+
+        io.navInputs[ImGuiNavInput.LStickLeft ] = Luxe.input.gamepadaxis(0, 0);
+        io.navInputs[ImGuiNavInput.LStickRight] = Luxe.input.gamepadaxis(0, 0);
+        io.navInputs[ImGuiNavInput.LStickUp   ] = Luxe.input.gamepadaxis(0, 1);
+        io.navInputs[ImGuiNavInput.LStickDown ] = Luxe.input.gamepadaxis(0, 1);
+
+        //io.navInputs
+
         ImGui.newFrame();
     }
 
     public static function render()
     {
         ImGui.render();
+        onRender(ImGui.getDrawData());
     }
 
     public static function clean()
@@ -124,6 +157,8 @@ class LuxeImGui
 
         batcher.destroy();
         Luxe.resources.destroy('imgui_texture');
+
+        ImGui.destroyContext();
     }
 
     /**
