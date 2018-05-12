@@ -32,8 +32,9 @@ class FlxImGui
         group = new FlxSpriteGroup();
         state = FlxG.state;
 
+        ImGui.createContext();
+
 		var io = ImGui.getIO();
-		io.renderDrawListsFn  = Callable.fromStaticFunction(drawImGuiRaw);
         io.getClipboardTextFn = Callable.fromStaticFunction(getClipboard);
         io.setClipboardTextFn = Callable.fromStaticFunction(setClipboard);
 
@@ -50,6 +51,8 @@ class FlxImGui
         io.keyMap[ImGuiKey.Backspace ] = FlxKey.BACKSPACE;
         io.keyMap[ImGuiKey.Enter     ] = FlxKey.ENTER;
         io.keyMap[ImGuiKey.Escape    ] = FlxKey.ESCAPE;
+        io.keyMap[ImGuiKey.Insert    ] = FlxKey.INSERT;
+        io.keyMap[ImGuiKey.Space     ] = FlxKey.SPACE;
         io.keyMap[ImGuiKey.A         ] = FlxKey.A;
         io.keyMap[ImGuiKey.C         ] = FlxKey.C;
         io.keyMap[ImGuiKey.V         ] = FlxKey.V;
@@ -127,6 +130,7 @@ class FlxImGui
     public static function render()
     {
         ImGui.render();
+        onRender(ImGui.getDrawData());
     }
 
     public static function clean()
@@ -134,6 +138,8 @@ class FlxImGui
         atlas.destroy();
         group.destroy();
         state = null;
+
+        ImGui.destroyContext();
 
         FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
     }
@@ -165,7 +171,7 @@ class FlxImGui
     {
 		//
     }
-	private static function drawImGuiRaw(_drawRawPtr : cpp.RawPointer<ImDrawData>) : Void
+	private static function onRender(_drawRawPtr : cpp.RawPointer<ImDrawData>) : Void
 	{
         group.destroy();
         group = new FlxSpriteGroup();
