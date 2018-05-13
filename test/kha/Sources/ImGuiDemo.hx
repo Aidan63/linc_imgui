@@ -26,6 +26,7 @@ import imgui.util.ImVec2;
 import imgui.draw.ImDrawData;
 
 class ImGuiDemo {
+	private static var maxBufferSize:Int = 10000;
 	private static var pipeline:PipelineState;
 	private static var texunit:TextureUnit;
 	private static var imguiTexture:Image;
@@ -64,6 +65,9 @@ class ImGuiDemo {
 		pipeline.blendSource = BlendingFactor.SourceAlpha;
 		pipeline.blendDestination = BlendingFactor.InverseSourceAlpha;
 		pipeline.compile();
+
+		vtx = new VertexBuffer(maxBufferSize, structure, Usage.StaticUsage);
+		idx = new IndexBuffer(maxBufferSize, Usage.StaticUsage);
 
 		texunit = pipeline.getTextureUnit("texsampler");
 
@@ -248,8 +252,13 @@ class ImGuiDemo {
 				var cmd  = cmdBuffer[j];
 				var it : Int = cast cmd.elemCount / 3;
 
-				vtx = new VertexBuffer(it*3, structure, Usage.StaticUsage);
-				idx = new IndexBuffer(it*3, Usage.StaticUsage);
+				if (cmd.elemCount > maxBufferSize) {
+					vtx.delete();
+					idx.delete();
+					vtx = new VertexBuffer(cmd.elemCount, structure, Usage.StaticUsage);
+					idx = new IndexBuffer(cmd.elemCount, Usage.StaticUsage);
+					maxBufferSize = cmd.elemCount;
+				}
 
 				var v = vtx.lock();
 				var ii = idx.lock();
@@ -288,11 +297,8 @@ class ImGuiDemo {
 				_g4.setVertexBuffer(vtx);
 				_g4.setIndexBuffer(idx);
 				_g4.scissor(Std.int(cmd.clipRect.x), Std.int(cmd.clipRect.y), Std.int(cmd.clipRect.z - cmd.clipRect.x), Std.int(cmd.clipRect.w - cmd.clipRect.y));
-				_g4.drawIndexedVertices();
+				_g4.drawIndexedVertices(0, cmd.elemCount);
 				_g4.end();
-
-				vtx.delete();
-				idx.delete();
 
 				idxOffset += cmd.elemCount;
 			}
