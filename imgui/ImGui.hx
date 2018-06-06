@@ -3,6 +3,7 @@ package imgui;
 import cpp.Float32;
 import cpp.Pointer;
 import cpp.RawPointer;
+import cpp.RawConstPointer;
 import cpp.ConstCharStar;
 import cpp.Reference;
 import cpp.Callable;
@@ -698,6 +699,18 @@ extern class ImGui
     @:overload(function(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float32, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool {})
     @:native('ImGui::linc::DragIntRange2') static function dragIntRange2(_label : String, _vCurrentMin : Int, _vCurrentMax : Int, _vSpeed : Float32, _vMin : Int, _vMax : Int, _displayFormat : String, _displayFormatMax : String) : Bool;
 
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _vSpeed : Float32, _vMin : cpp.RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _vSpeed : Float32, _vMin : cpp.RawConstPointer<cpp.Void>, _vMax : cpp.RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _vSpeed : Float32, _vMin : cpp.RawConstPointer<cpp.Void>, _vMax : cpp.RawConstPointer<cpp.Void>, _format : String) : Bool {})
+    @:native('ImGui::DragScalar') static function dragScalar(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _vSpeed : Float32, _vMin : cpp.RawConstPointer<cpp.Void>, _vMax : cpp.RawConstPointer<cpp.Void>, _format : String, _power : Float32) : Bool;
+
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _components : Float32, _vSpeed : Float32) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _components : Float32, _vSpeed : Float32, _vMin : cpp.RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _components : Float32, _vSpeed : Float32, _vMin : cpp.RawConstPointer<cpp.Void>, _vMax : cpp.RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _components : Float32, _vSpeed : Float32, _vMin : cpp.RawConstPointer<cpp.Void>, _vMax : cpp.RawConstPointer<cpp.Void>, _format : String) : Bool {})
+    @:native('ImGui::DragScalarN') static function dragScalarN(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _components : Float32, _vSpeed : Float32, _vMin : cpp.RawConstPointer<cpp.Void>, _vMax : cpp.RawConstPointer<cpp.Void>, _format : String, _power : Float32) : Bool;
+
     //-------------------------------//
     //                               //
     // Widgets : Input with Keyboard //
@@ -718,20 +731,20 @@ extern class ImGui
     @:overload(function(_label : String, _v : Float32) : Bool {})
     @:overload(function(_label : String, _v : Float32, _step : Float32) : Bool {})
     @:overload(function(_label : String, _v : Float32, _step : Float32, _stepFast : Float32) : Bool {})
-    @:overload(function(_label : String, _v : Float32, _step : Float32, _stepFast : Float32, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::linc::InputFloat') static function inputFloat(_label : String, _v : Float32, _step : Float32, _stepFast : Float32, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Float32, _step : Float32, _stepFast : Float32, _format : String) : Bool {})
+    @:native('ImGui::linc::InputFloat') static function inputFloat(_label : String, _v : Float32, _step : Float32, _stepFast : Float32, _format : String, _extraFlags : ImGuiInputTextFlags) : Bool;
 
     @:overload(function(_label : String, _v : Array<Float32>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float32>, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::linc::InputFloat2') static function inputFloat2(_label : String, _v : Array<Float32>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Float32>, _format : String) : Bool {})
+    @:native('ImGui::linc::InputFloat2') static function inputFloat2(_label : String, _v : Array<Float32>, _format : String, _extraFlags : ImGuiInputTextFlags) : Bool;
 
     @:overload(function(_label : String, _v : Array<Float32>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float32>, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::linc::InputFloat3') static function inputFloat3(_label : String, _v : Array<Float32>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Float32>, _format : String) : Bool {})
+    @:native('ImGui::linc::InputFloat3') static function inputFloat3(_label : String, _v : Array<Float32>, _format : String, _extraFlags : ImGuiInputTextFlags) : Bool;
 
     @:overload(function(_label : String, _v : Array<Float32>) : Bool {})
-    @:overload(function(_label : String, _v : Array<Float32>, _decimalPrecision : Int) : Bool {})
-    @:native('ImGui::linc::InputFloat4') static function inputFloat4(_label : String, _v : Array<Float32>, _decimalPrecision : Int, _extraFlags : ImGuiInputTextFlags) : Bool;
+    @:overload(function(_label : String, _v : Array<Float32>, _format : String) : Bool {})
+    @:native('ImGui::linc::InputFloat4') static function inputFloat4(_label : String, _v : Array<Float32>, _format : String, _extraFlags : ImGuiInputTextFlags) : Bool;
 
     @:overload(function(_label : String, _v : Int) : Bool {})
     @:overload(function(_label : String, _v : Int, _step : Int) : Bool {})
@@ -752,6 +765,75 @@ extern class ImGui
     @:overload(function(_label : String, _v : Array<Float>, _step : Float, _stepFast : Float) : Bool {})
     @:overload(function(_label : String, _v : Array<Float>, _step : Float, _stepFast : Float, _format : String) : Bool {})
     @:native('ImGui::linc::InputDouble') static function inputDouble(_label : String, _v : Array<Float>, _step : Float, _stepFast : Float, _format : String, _extraFlags : ImGuiInputTextFlags) : Bool;
+
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : RawPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : RawPointer<cpp.Void>, _step : RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : RawPointer<cpp.Void>, _step : RawConstPointer<cpp.Void>, _stepFast : RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : RawPointer<cpp.Void>, _step : RawConstPointer<cpp.Void>, _stepFast : RawConstPointer<cpp.Void>, _format : String) : Bool {})
+    @:native('ImGui::InputScalar') static function inputScalar(_label : String, _dataType : ImGuiDataType, _v : RawPointer<cpp.Void>, _step : RawConstPointer<cpp.Void>, _stepFast : RawConstPointer<cpp.Void>, _format : String, _extraFlags : ImGuiInputTextFlags) : Bool;
+
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _components : Int, _v : RawPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _components : Int, _v : RawPointer<cpp.Void>, _step : RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _components : Int, _v : RawPointer<cpp.Void>, _step : RawConstPointer<cpp.Void>, _stepFast : RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _components : Int, _v : RawPointer<cpp.Void>, _step : RawConstPointer<cpp.Void>, _stepFast : RawConstPointer<cpp.Void>, _format : String) : Bool {})
+    @:native('ImGui::InputScalarN') static function inputScalarN(_label : String, _dataType : ImGuiDataType, _components : Int, _v : RawPointer<cpp.Void>, _step : RawConstPointer<cpp.Void>, _stepFast : RawConstPointer<cpp.Void>, _format : String, _extraFlags : ImGuiInputTextFlags) : Bool;
+
+    //------------------//
+    //                  //
+    // Widgets : Slider //
+    //                  //
+    //------------------//
+
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::SliderFloat') static function sliderFloat(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
+    
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::SliderFloat2') static function sliderFloat2(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
+
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::SliderFloat3') static function sliderFloat3(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
+
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::SliderFloat4') static function sliderFloat4(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
+
+    @:overload(function(_label : String, _vRad : Float32) : Bool {})
+    @:overload(function(_label : String, _vRad : Float32, _vDegreesMin : Float32) : Bool {})
+    @:native('ImGui::linc::SliderAngle') static function sliderAngle(_label : String, _vRad : Float32, _vDegreesMin : Float32, _vDegreesMax : Float32) : Bool;
+
+    @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
+    @:native('ImGui::linc::SliderInt') static function sliderInt(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
+
+    @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
+    @:native('ImGui::linc::SliderInt2') static function sliderInt2(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
+    
+    @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
+    @:native('ImGui::linc::SliderInt3') static function sliderInt3(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
+
+    @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
+    @:native('ImGui::linc::SliderInt4') static function sliderInt4(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
+
+    @:overload(function(_label : String, _size : ImVec2, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
+    @:native('ImGui::linc::VSliderInt') static function vSliderInt(_label : String, _size : ImVec2, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
+
+    @:overload(function(_label : String, _size : ImVec2, _v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
+    @:overload(function(_label : String, _size : ImVec2, _v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
+    @:native('ImGui::linc::VSliderFloat') static function vSliderFloat(_label : String, _size : ImVec2, _v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
+
+    @:overload(function(_label : String, _size : ImVec2, _dataType : ImGuiDataType, _v : RawPointer<cpp.Void>, _vMin : RawConstPointer<cpp.Void>, _vMax : RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _size : ImVec2, _dataType : ImGuiDataType, _v : RawPointer<cpp.Void>, _vMin : RawConstPointer<cpp.Void>, _vMax : RawConstPointer<cpp.Void>, _format : String) : Bool {})
+    @:native('ImGui::VSliderScalar') static function vSliderScalar(_label : String, _size : ImVec2, _dataType : ImGuiDataType, _v : RawPointer<cpp.Void>, _vMin : RawConstPointer<cpp.Void>, _vMax : RawConstPointer<cpp.Void>, _format : String, _power : Float32) : Bool;
+
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _vMin : RawConstPointer<cpp.Void>, _vMax : RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _vMin : RawConstPointer<cpp.Void>, _vMax : RawConstPointer<cpp.Void>, _format : String) : Bool {})
+    @:native('ImGui::SliderScalar') static function sliderScalar(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _vMin : RawConstPointer<cpp.Void>, _vMax : RawConstPointer<cpp.Void>, _format : String, _power : Float32) : Bool;
+
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _components : Int, _vMin : RawConstPointer<cpp.Void>, _vMax : RawConstPointer<cpp.Void>) : Bool {})
+    @:overload(function(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _components : Int, _vMin : RawConstPointer<cpp.Void>, _vMax : RawConstPointer<cpp.Void>, _format : String) : Bool {})
+    @:native('ImGui::SliderScalarN') static function sliderScalarN(_label : String, _dataType : ImGuiDataType, _v : cpp.RawPointer<cpp.Void>, _components : Int, _vMin : RawConstPointer<cpp.Void>, _vMax : RawConstPointer<cpp.Void>, _format : String, _power : Float32) : Bool;
 
     /**
       map ImGuiKey_* values into user's key index. == io.KeyMap[key]
@@ -854,51 +936,6 @@ extern class ImGui
       manually override io.WantCaptureMouse flag next frame (said flag is entirely left for your application handle).
      */
     @:native('ImGui::CaptureMouseFromApp') static function captureMouseFromApp(_capture : Bool = true) : Void;
-
-    //------------------//
-    //                  //
-    // Widgets : Slider //
-    //                  //
-    //------------------//
-
-    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
-    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::SliderFloat') static function sliderFloat(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
-    
-    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
-    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::SliderFloat2') static function sliderFloat2(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
-
-    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
-    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::SliderFloat3') static function sliderFloat3(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
-
-    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
-    @:overload(function(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::SliderFloat4') static function sliderFloat4(_label : String, v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
-
-    @:overload(function(_label : String, _vRad : Float32) : Bool {})
-    @:overload(function(_label : String, _vRad : Float32, _vDegreesMin : Float32) : Bool {})
-    @:native('ImGui::linc::SliderAngle') static function sliderAngle(_label : String, _vRad : Float32, _vDegreesMin : Float32, _vDegreesMax : Float32) : Bool;
-
-    @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
-    @:native('ImGui::linc::SliderInt') static function sliderInt(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
-
-    @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
-    @:native('ImGui::linc::SliderInt2') static function sliderInt2(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
-    
-    @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
-    @:native('ImGui::linc::SliderInt3') static function sliderInt3(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
-
-    @:overload(function(_label : String, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
-    @:native('ImGui::linc::SliderInt4') static function sliderInt4(_label : String, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
-
-    @:overload(function(_label : String, _size : ImVec2, _v : Float32, _vMin : Float32, _vMax : Float32) : Bool {})
-    @:overload(function(_label : String, _size : ImVec2, _v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String) : Bool {})
-    @:native('ImGui::linc::VSliderFloat') static function vSliderFloat(_label : String, _size : ImVec2, _v : Float32, _vMin : Float32, _vMax : Float32, _displayFormat : String, _power : Float32) : Bool;
-
-    @:overload(function(_label : String, _size : ImVec2, _v : Int, _vMin : Int, _vMax : Int) : Bool {})
-    @:native('ImGui::linc::VSliderInt') static function vSliderInt(_label : String, _size : ImVec2, _v : Int, _vMin : Int, _vMax : Int, _displayFormat : String) : Bool;
 
     //-----------------------------------//
     //                                   //
@@ -1284,6 +1321,13 @@ extern class ImGui
 
     @:native('ImGui::GetClipboardText') static function getClipboardText() : String;
     @:native('ImGui::SetClipboardText') static function setClipboardText(_text : String) : Void;
+
+    @:native('ImGui::LoadIniSettingsFromDisk')   static function loadIniSettingsFromDisk(_iniFilename : String) : Void;
+    @:native('ImGui::LoadIniSettingsFromMemory') static function LoadIniSettingsFromMemory(_iniData : String, _iniSize : Int) : Void;
+    @:native('ImGui::SaveIniSettingsToDisk')     static function saveIniSettingsToDisk(_iniFilename : String) : Void;
+
+    @:overload(function(_outIniSize : Int) : String {})
+    @:native('ImGui::SaveIniSettingsToMemory') static function saveIniSettingsToMemory(_outIniSize : Int) : String;
 }
 
 // Globally User ImVector wrappers
@@ -1938,4 +1982,15 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
 {
   var NoPowerOfTwoHeight = 1 << 0;
   var NoMouseCursors     = 1 << 1;
+}
+
+@:enum abstract ImGuiDataType(Int) from Int to Int
+{
+  var S32    = 0;
+  var U32    = 1;
+  var S64    = 2;
+  var U64    = 3;
+  var Float  = 4;
+  var Double = 5;
+  var COUNT  = 6;
 }

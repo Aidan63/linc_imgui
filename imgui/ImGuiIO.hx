@@ -271,6 +271,11 @@ extern class ImGuiIO
   @:native('WantSetMousePos') public var wantSetMousePos : Bool;
 
   /**
+   * When manual .ini load/save is active (io.IniFilename == NULL), this will be set to notify your application that you can call SaveIniSettingsToMemory() and save yourself. IMPORTANT: You need to clear io.WantSaveIniSettings yourself.
+   */
+  @:native('WantSaveIniSettings') public var wantSaveIniSettings : Bool;
+
+  /**
     Application framerate estimation, in frame per second. Solely for convenience. Rolling average estimation based on IO.DeltaTime over 120 frames.
     */
   @:native('Framerate') public var framerate : Float32;
