@@ -119,7 +119,7 @@ extern class ImFontAtlas
       Default + Japanese + full set of about 21000 CJK Unified Ideographs.
       @return ConstPointer<ImWchar>
      */
-    @:native('GetGlyphRangesChinese') function getGlyphRangesChinese() : ConstPointer<ImWchar>;
+    @:native('GetGlyphRangesChineseFull') function getGlyphRangesChineseFull() : ConstPointer<ImWchar>;
 
     /**
       Default + about 400 Cyrillic characters.
