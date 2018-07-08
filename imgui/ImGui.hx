@@ -1773,7 +1773,12 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
     //@:native('ImGuITreeNodeFlags_SpanAllAvailWidth') var SpanAllAvailWidth; // FIXME: TODO: Extend hit box horizontally even if not framed
     //@:native('ImGuiTreeNodeFlags_NoScrollOnOpen') var NoScrollOnOpen; // FIXME: TODO: Disable automatic scroll on TreePop() if node got just open and contents is not visible
 
-    var CollapsingHeader = Framed | NoAutoOpenOnLog;
+    /**
+     * (WIP) Nav: left direction may move to this TreeNode() from any of its child (items submitted between TreeNode and TreePop)
+     */
+    var NavLeftJumpsBackHere = 1 << 13;
+
+    var CollapsingHeader = ImGuiTreeNodeFlags.Framed | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.NoAutoOpenOnLog;
 }
 
 /**
