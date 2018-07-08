@@ -1251,7 +1251,9 @@ extern class ImGui
     /**
       is the last item visible? (aka not out of sight due to clipping/scrolling.)
      */
-    @:native('ImGui::IsItemVisible')    static function isItemVisible() : Bool;
+    @:native('ImGui::IsItemVisible')     static function isItemVisible() : Bool;
+    @:native('ImGui::IsItemDeactivated') static function IsItemDeactivated() : Bool;
+    @:native('ImGui::IsItemDeactivatedAfterChange') static function isItemDeactivatedAfterChange() : Bool;
     @:native('ImGui::IsAnyItemHovered') static function isAnyItemHovered() : Bool;
     @:native('ImGui::IsAnyItemActive')  static function isAnyItemActive() : Bool;
 
@@ -1660,54 +1662,59 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
      */
     var NoSidePreview = 1 << 8;
 
+    /**
+     * ColorEdit: disable drag and drop target. ColorButton: disable drag and drop source.
+     */
+    var NoDragDrop = 1 << 9;
+
     // User Options (right-click on widget to change some of them). You can set application defaults using SetColorEditOptions(). The idea is that you probably don't want to override them in most of your calls, let the user choose and/or call SetColorEditOptions() during startup.
 
     /**
       ColorEdit, ColorPicker: show vertical alpha bar/gradient in picker.
      */
-    var AlphaBar = 1 << 9;
+    var AlphaBar = 1 << 16;
 
     /**
       ColorEdit, ColorPicker, ColorButton: display preview as a transparent color over a checkerboard, instead of opaque.
      */
-    var AlphaPreview = 1 << 10;
+    var AlphaPreview = 1 << 17;
 
     /**
       ColorEdit, ColorPicker, ColorButton: display half opaque / half checkerboard, instead of opaque.
      */
-    var AlphaPreviewHalf = 1 << 11;
+    var AlphaPreviewHalf = 1 << 18;
 
     /**
       (WIP) ColorEdit: Currently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use ImGuiColorEditFlags_Float flag as well).
      */
-    var HDR = 1 << 12;
+    var HDR = 1 << 19;
 
     /**
       ColorEdit: choose one among RGB/HSV/HEX. ColorPicker: choose any combination using RGB/HSV/HEX.
      */
-    var RGB = 1 << 13;
-    var HSV = 1 << 14;
-    var HEX = 1 << 15;
+    var RGB = 1 << 20;
+    var HSV = 1 << 21;
+    var HEX = 1 << 22;
 
     /**
       ColorEdit, ColorPicker, ColorButton: _display_ values formatted as 0..255. 
      */
-    var Uint8 = 1 << 16;
+    var Uint8 = 1 << 23;
 
     /**
       ColorEdit, ColorPicker, ColorButton: _display_ values formatted as 0.0f..1.0f floats instead of 0..255 integers. No round-trip of value via integers.
      */
-    var Float32 = 1 << 17;
+    var Float32 = 1 << 24;
 
     /**
       ColorPicker: bar for Hue, rectangle for Sat/Value.
      */
-    var PickerHueBar = 1 << 18;
+    var PickerHueBar = 1 << 25;
 
     /**
       ColorPicker: wheel for Hue, triangle for Sat/Value.
      */
-    var PickerHueWheel = 1 << 19;
+    var PickerHueWheel = 1 << 26;
 }
 
 /**
