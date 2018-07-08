@@ -23,6 +23,8 @@ extern class ImFontConfig
     @:native('GlyphExtraSpacing')   public var glyphExtraSpacing : ImVec2;
     @:native('GlyphOffset')         public var glyphOffset : ImVec2;
     @:native('GlyphRanges')         public var glyphRanges : cpp.RawConstPointer<ImWchar>;
+    @:native('GlyphMinAdvanceX')    public var glyphMinAdvanceX : Float32;
+    @:native('GlyphMaxAdvanceX')    public var glyphMaxAdvanceX : Float32;
     @:native('MergeMode')           public var mergeMode : Bool;
     @:native('RasterizerFlags')     public var rasterizerFlags : Int;
     @:native('RasterizerMultiply')  public var rasterizerMultiply : Float32;
