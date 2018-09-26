@@ -3,15 +3,14 @@ package imgui.callback;
 import imgui.ImGui;
 
 @:include('linc_imgui.h')
-@:native('ImGuiTextEditCallbackData')
+@:native('ImGuiInputTextCallbackData')
 @:structAccess
 @:unreflective
-extern class ImGuiTextEditCallbackData
+extern class ImGuiInputTextCallbackData
 {
     @:native('EventFlag') var eventFlag : ImGuiInputTextFlags;
     @:native('Flags')     var flags     : ImGuiInputTextFlags;
     @:native('UserData')  var userData  : cpp.RawPointer<cpp.Void>;
-    @:native('ReadOnly')  var readOnly  : Bool;
 
     // Char filter event.
     @:native('EventChar')      var eventChar      : ImWchar;

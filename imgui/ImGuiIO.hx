@@ -145,18 +145,19 @@ extern class ImGuiIO
   @:native('DisplayVisibleMax') public var displayVisibleMax : ImVec2;
 
   /**
-    OS X style: Text editing cursor movement using Alt instead of Ctrl, Shortcuts using Cmd/Super instead of Ctrl,
-    Line/Text Start and End using Cmd+Arrows instead of Home/End, Double click selects by word instead of selecting whole text,
-    Multi-selection in lists uses Cmd/Super instead of Ctrl.
-    - Default : defined(__APPLE__)
-    */
-  @:native('OptMaxOSXBehaviors') public var optMaxOSXBehaviors : Bool;
+   * OS X style: Text editing cursor movement using Alt instead of Ctrl, Shortcuts using Cmd/Super instead of Ctrl, Line/Text Start and End using Cmd+Arrows instead of Home/End, Double click selects by word instead of selecting whole text, Multi-selection in lists uses Cmd/Super instead of Ctrl (was called io.OptMacOSXBehaviors prior to 1.63)
+   */
+  @:native('ConfigMacOSXBehaviors') public var configMacOSXBehaviors : Bool;
 
   /**
-    Enable blinking cursor, for users who consider it annoying.
-    - Default : true
-    */
-  @:native('OptCursorBlink') public var optCursorBlink : Bool;
+   * Set to false to disable blinking cursor, for users who consider it distracting. (was called: io.OptCursorBlink prior to 1.63).
+   */
+  @:native('ConfigInputTextCursorBlink') public var configInputTextCursorBlink : Bool;
+
+  /**
+   * [BETA] Enable resizing of windows from their edges and from the lower-left corner. This requires (io.BackendFlags & ImGuiBackendFlags_HasMouseCursors) because it needs mouse cursor feedback. (This used to be the ImGuiWindowFlags_ResizeFromAnySide flag)
+   */
+  @:native('ConfigResizeWindowsFromEdges') public var configResizeWindowsFromEdges : Bool;
 
   //------------------------//
   // User Function Settings //
@@ -283,7 +284,12 @@ extern class ImGuiIO
   /**
     Number of active memory allocations.
     */
-  @:native('MetricsAllocs') public var metricsAllocs : Int;
+  @:native('MetricsActiveAllocs') public var metricsActiveAllocs : Int;
+
+  /**
+    Number of active windows
+    */
+  @:native('MetricsActiveWindows') public var metricsActiveWindows : Int;
 
   /**
       Vertices output during last call to Render().

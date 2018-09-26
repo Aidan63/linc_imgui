@@ -22,7 +22,7 @@ typedef ImTextureID = cpp.RawPointer<cpp.Void>;
 typedef ImGuiColumnsFlags = Int;
 
 typedef ImGuiSizeCallback = Callable<RawPointer<ImGuiSizeCallbackData>->Void>;
-typedef ImGuiTextEditCallback = Callable<RawPointer<ImGuiTextEditCallbackData>->Int>;
+typedef ImGuiInputTextCallback = Callable<RawPointer<ImGuiInputTextCallbackData>->Int>;
 
 @:keep
 @:include('linc_imgui.h')
@@ -719,14 +719,14 @@ extern class ImGui
 
     @:overload(function(_label : String, _buffer : Array<Char>) : Bool {})
     @:overload(function(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags) : Bool {})
-    @:overload(function(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags, _callback : ImGuiTextEditCallback) : Bool {})
-    @:native('ImGui::linc::InputText') static function inputText(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags, _callback : ImGuiTextEditCallback, _userData : RawPointer<cpp.Void>) : Bool;
+    @:overload(function(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags, _callback : ImGuiInputTextCallback) : Bool {})
+    @:native('ImGui::linc::InputText') static function inputText(_label : String, _buffer : Array<Char>, _flags : ImGuiInputTextFlags, _callback : ImGuiInputTextCallback, _userData : RawPointer<cpp.Void>) : Bool;
 
     @:overload(function(_label : String, _buffer : Array<Char>) : Bool {})
     @:overload(function(_label : String, _buffer : Array<Char>, _size : ImVec2) : Bool {})
     @:overload(function(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags) : Bool {})
-    @:overload(function(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags, _callback : ImGuiTextEditCallback) : Bool {})
-    @:native('ImGui::linc::InputTextMultiline') static function inputTextMultiline(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags, _callback : ImGuiTextEditCallback, _userData : RawPointer<cpp.Void>) : Bool;
+    @:overload(function(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags, _callback : ImGuiInputTextCallback) : Bool {})
+    @:native('ImGui::linc::InputTextMultiline') static function inputTextMultiline(_label : String, _buffer : Array<Char>, _size : ImVec2, _flags : ImGuiInputTextFlags, _callback : ImGuiInputTextCallback, _userData : RawPointer<cpp.Void>) : Bool;
 
     @:overload(function(_label : String, _v : Float32) : Bool {})
     @:overload(function(_label : String, _v : Float32, _step : Float32) : Bool {})
@@ -1252,8 +1252,13 @@ extern class ImGui
       is the last item visible? (aka not out of sight due to clipping/scrolling.)
      */
     @:native('ImGui::IsItemVisible')     static function isItemVisible() : Bool;
+
+    /**
+     * did the last item modify its underlying value this frame? or was pressed? This is generally the same as the "bool" return value of many widgets.
+     */
+    @:native('ImGui::IsItemEdited')      static function isItemEdited() : Bool;
     @:native('ImGui::IsItemDeactivated') static function IsItemDeactivated() : Bool;
-    @:native('ImGui::IsItemDeactivatedAfterChange') static function isItemDeactivatedAfterChange() : Bool;
+    @:native('ImGui::IsItemDeactivatedAfterEdit') static function isItemDeactivatedAfterEdit() : Bool;
     @:native('ImGui::IsAnyItemHovered') static function isAnyItemHovered() : Bool;
     @:native('ImGui::IsAnyItemActive')  static function isAnyItemActive() : Bool;
 
@@ -1287,7 +1292,7 @@ extern class ImGui
     @:overload(function(_rectMin : ImVec2, _rectMax : ImVec2) : Bool {})
     @:native('ImGui::IsRectVisible') static function isRectVisible(_size : ImVec2) : Bool;
 
-    @:native('ImGui::GetTime')       static function getTime() : Float32;
+    @:native('ImGui::GetTime')       static function getTime() : Float;
     @:native('ImGui::GetFrameCount') static function getFrameCount() : Int;
     @:native('ImGui::GetOverlayDrawList')    static function getOverlayDrawList()    : RawPointer<ImDrawList>;
     @:native('ImGui::GetDrawListSharedData') static function getDrawListSharedData() : RawPointer<ImDrawListSharedData>;
@@ -1433,10 +1438,6 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
       Ensure child windows without border uses style.WindowPadding (ignored by default for non-bordered child windows, because more convenient)
      */
     var AlwaysUseWindowPadding = 1 << 16;
-    /**
-      (WIP) Enable resize from any corners and borders. Your back-end needs to honor the different values of io.MouseCursor set by imgui.
-     */
-    var ResizeFromAnySide = 1 << 17;
 
     /**
       No gamepad/keyboard navigation within the window.
@@ -1456,14 +1457,15 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
  */
 @:enum abstract ImGuiHoveredFlags(Int) from Int to Int
 {
-  var Default                       = 0;        // Return true if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
+  var None                          = 0;        // Return true if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
   var ChildWindows                  = 1 << 0;   // IsWindowHovered() only: Return true if any children of the window is hovered
   var RootWindow                    = 1 << 1;   // IsWindowHovered() only: Test from root window (top most parent of the current hierarchy)
   var AnyWindow                     = 1 << 2;   // IsWindowHovered() only: Return true if any window is hovered
   var AllowWhenBlockedByPopup       = 1 << 3;   // Return true even if a popup window is normally blocking access to this item/window
-
+  //ImGuiHoveredFlags_AllowWhenBlockedByModal     = 1 << 4,   // Return true even if a modal popup window is normally blocking access to this item/window. FIXME-TODO: Unavailable yet.
   var AllowWhenBlockedByActiveItem  = 1 << 5;   // Return true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
   var AllowWhenOverlapped           = 1 << 6;   // Return true even if the position is overlapped by another window
+  var AllowWhenDisabled             = 1 << 7;   // Return true even if the item is disabled
   var RectOnly                      = AllowWhenBlockedByPopup | AllowWhenBlockedByActiveItem | AllowWhenOverlapped;
   var RootAndChildWindows           = RootWindow | ChildWindows;
 }
@@ -1540,7 +1542,7 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
     var PlotHistogram = 35;
     var PlotHistogramHovered = 36;
     var TextSelectedBg = 37;
-    var ModalWindowDarkening = 38;
+    var ModalWindowDimBg = 38;
     var DragDropTarget = 39;
     var NavHighlight = 40;
     var NavWindowHighlight = 41;
@@ -1590,11 +1592,12 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
     var None = -1;
     var Arrow = 0;
     var TextInput = 1;
-    var Move = 2;
+    var ResizeAll = 2;
     var ResizeNS = 3;
     var ResizeEW = 4;
     var ResizeNESW = 5;
     var ResizeNWSE = 6;
+    var Hand = 8;
     var Count = 7;
 }
 
@@ -1615,6 +1618,8 @@ extern class ImVectorInt extends ImVector<cpp.UInt16>
       Generate press events on double clicks too
      */
     var AllowDoubleClick = 1 << 2;
+
+    var Disabled = 1 << 3;
 }
 
 /**
