@@ -304,7 +304,7 @@ extern class ImGuiIO
   /**
     Number of visible root windows (exclude child windows).
     */
-  @:native('MetricsActiveWindows') public var metricsActiveWindows : Int;
+  @:native('MetricsRenderWindows') public var metricsRenderWindows : Int;
 
   /**
     Mouse delta. Note that this is zero if either current or previous position are invalid (-FLT_MAX,-FLT_MAX),
