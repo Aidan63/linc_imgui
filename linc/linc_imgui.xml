@@ -16,7 +16,10 @@
     </files>
 
     <files id="imgui-sources">
+        <cache value="1" name="imgui" />
+
         <compilerflag value="-I${LINC_IMGUI_PATH}lib/imgui/" />
+        
         <file name="${IMGUI}/imgui.cpp" />
         <file name="${IMGUI}/imgui_draw.cpp" />
         <file name="${IMGUI}/imgui_demo.cpp" />
