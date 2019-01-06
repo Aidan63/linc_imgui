@@ -7,8 +7,5 @@
     "releasenote": "Initial release",
     "contributors": [
         "Aidan"
-    ],
-    "dependencies" : {
-        "hxcpp" : ""
-    }
+    ]
 }
