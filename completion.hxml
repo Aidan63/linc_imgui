@@ -1,0 +1,8 @@
+-cp gen
+
+-lib safety
+-lib json2object
+
+-main Main
+
+--no-output

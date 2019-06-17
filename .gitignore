@@ -1,6 +1,6 @@
-test/cli/cpp
-test/luxe/bin
-test/haxeflixel/export
-test/kha/build
-test/kha/korefile.js
+cpp
+bin
+export
+build
+korefile.js
 .vscode
