@@ -1,4 +1,5 @@
 
+import haxe.macro.Printer;
 import sys.io.File;
 import ImGuiJsonReader;
 
@@ -7,15 +8,16 @@ using Generator.StringBufChainer;
 
 class Generator
 {
+    final printer : Printer;
     final buffer : StringBuf;
     final reader : ImGuiJsonReader;
     final typedefs : Map<String, TypedefDefinition>;
-    final enums : Map<String, Array<EnumValueDefinition>>;
     final structs : Map<String, StructDefinition>;
     final namespace : Array<FunctionDefinition>;
 
     public function new()
     {
+        printer   = new Printer();
         buffer    = new StringBuf();
         reader    = new ImGuiJsonReader(
             File.getContent('gen/typedefs_dict.json'),
@@ -23,9 +25,22 @@ class Generator
             File.getContent('gen/definitions.json')
         );
         typedefs  = reader.generateTypedefs();
-        enums     = reader.generateEnums();
         structs   = reader.generateStructs();
         namespace = reader.generateNamespace();
+
+        for (type in reader.generateEnumExprs())
+        {
+            buffer.append(printer.printTypeDefinition(type, false));
+            buffer.newline();
+            buffer.newline();
+        }
+
+        for (type in reader.generateStructExprs())
+        {
+            buffer.append(printer.printTypeDefinition(type, false));
+            buffer.newline();
+            buffer.newline();
+        }
 
         write();
     }
@@ -38,11 +53,6 @@ class Generator
         // {
         //     writeTypedef(name, value);
         // }
-
-        for (name => values in enums)
-        {
-            writeEnum(name, values);
-        }
 
         // for (name => values in structs)
         // {
@@ -87,26 +97,6 @@ class Generator
         buffer.append('typedef $_name = ');
         _typedef.star > 0 ? writePointerType(getHaxeType(_typedef.type), _typedef.star) : buffer.add(getHaxeType(_typedef.type));
         buffer.append(';').newline();
-        buffer.newline();
-    }
-
-    /**
-     * Write a haxe enum from the read in values.
-     * Enum names are post-fixed with _'s so we trim them off, enum value names are also pre-fixed with the enum name, so we also remove those.
-     * @param _name Enum name.
-     * @param _values Array of enum members and values.
-     */
-    function writeEnum(_name : String, _values : Array<EnumValueDefinition>)
-    {
-        buffer.append('enum abstract ${_name.substr(0, _name.length - 1)}(Int) from Int to Int').newline();
-        buffer.append('{').newline();
-
-        for (value in _values)
-        {
-            buffer.tab().append('var ${value.name.replace(_name, '')} = ${value.value};').newline();
-        }
-
-        buffer.append('}').newline();
         buffer.newline();
     }
 

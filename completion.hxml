@@ -5,4 +5,6 @@
 
 -main Main
 
+-cpp out
+
 --no-output

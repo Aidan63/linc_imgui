@@ -4,3 +4,4 @@ export
 build
 korefile.js
 .vscode
+node_modules
