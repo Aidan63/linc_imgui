@@ -7,7 +7,7 @@ import cpp.UInt8;
 
 using cpp.NativeArray;
 
-abstract BytesPointer(Star<UInt8>) to Star<UInt8>
+abstract CharPointer(Star<UInt8>) to Star<UInt8>
 {
     function new(_ptr : Star<UInt8>)
     {
@@ -16,17 +16,17 @@ abstract BytesPointer(Star<UInt8>) to Star<UInt8>
 
     @:from public static function fromString(_string : String)
     {
-        return new BytesPointer(untyped _string.__s);
+        return new CharPointer(untyped _string.__s);
     }
 
     @:from public static function fromBytes(_bytes : Bytes)
     {
-        return new BytesPointer(_bytes.getData().address(0).ptr);
+        return new CharPointer(_bytes.getData().address(0).ptr);
     }
 
     @:from public static function fromBytesData(_bytes : BytesData)
     {
-        return new BytesPointer(_bytes.address(0).ptr);
+        return new CharPointer(_bytes.address(0).ptr);
     }
 
     @:to public function toString()

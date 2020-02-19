@@ -11,9 +11,6 @@ class Generator
     final printer : Printer;
     final buffer : StringBuf;
     final reader : ImGuiJsonReader;
-    final typedefs : Map<String, TypedefDefinition>;
-    final structs : Map<String, StructDefinition>;
-    final namespace : Array<FunctionDefinition>;
 
     public function new()
     {
@@ -24,23 +21,33 @@ class Generator
             File.getContent('gen/structs_and_enums.json'),
             File.getContent('gen/definitions.json')
         );
-        typedefs  = reader.generateTypedefs();
-        structs   = reader.generateStructs();
-        namespace = reader.generateNamespace();
+        // structs   = reader.generateStructs();
+        // namespace = reader.generateNamespace();
 
-        for (type in reader.generateEnumExprs())
+        for (type in reader.generateTypedefs())
         {
             buffer.append(printer.printTypeDefinition(type, false));
             buffer.newline();
             buffer.newline();
         }
 
-        for (type in reader.generateStructExprs())
+        for (type in reader.generateEnums())
         {
             buffer.append(printer.printTypeDefinition(type, false));
             buffer.newline();
             buffer.newline();
         }
+
+        for (type in reader.generateStructs())
+        {
+            buffer.append(printer.printTypeDefinition(type, false));
+            buffer.newline();
+            buffer.newline();
+        }
+
+        buffer.append(printer.printTypeDefinition(reader.generateTopLevelFunctions(), false));
+        buffer.newline();
+        buffer.newline();
 
         write();
     }
@@ -61,7 +68,7 @@ class Generator
 
         // writeNamespace();
 
-        File.saveContent('imgui/_NativeImGui.hx', buffer.toString());
+        File.saveContent('imgui/ImGui.hx', buffer.toString());
     }
 
     function writeHeader()
@@ -174,11 +181,11 @@ class Generator
         buffer.append('extern class NativeImGui').newline();
         buffer.append('{').newline();
 
-        for (fun in namespace)
-        {
-            buffer.tab().append('@:native("ImGui::${fun.name}")').newline();
-            writeFunction(fun, true);
-        }
+        // for (fun in namespace)
+        // {
+        //     buffer.tab().append('@:native("ImGui::${fun.name}")').newline();
+        //     writeFunction(fun, true);
+        // }
 
         buffer.append('}').newline();
     }

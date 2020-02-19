@@ -1,7 +1,6 @@
 
-import haxe.macro.Printer;
+import cpp.Callable;
 import json2object.JsonParser;
-import haxe.macro.Type;
 import haxe.macro.Expr;
 
 using StringTools;
@@ -17,8 +16,10 @@ typedef JsonEnumStruct = {
     var structs : Map<String, Array<{
         var name : String;
         var type : String;
-        var ?size : Int;
-        var ?template_type : String;
+        @:default(0)
+        var size : Int;
+        @:default('')
+        var template_type : String;
     }>>;
 }
 typedef JsonFunctionArg = {
@@ -27,7 +28,7 @@ typedef JsonFunctionArg = {
     @:default('')
     var signature : String;
 }
-typedef JsonDefinitions = Map<String, Array<{
+typedef JsonFunction = {
     var args : String;
     var argsT : Array<JsonFunctionArg>;
     var argsoriginal : String;
@@ -40,19 +41,22 @@ typedef JsonDefinitions = Map<String, Array<{
 
     @:default([])
     var defaults : Map<String, String>;
+
     @:default(false)
     var constructor : Bool;
+
     @:default(false)
     var destructor : Bool;
-    @:default(false)
 
+    @:default(false)
     var templatedgen : Bool;
     var ?isvararg : String;
     var ?retref : String;
     var ?namespace : String;
     var ?ret : String;
     var ?retorig : String;
-}>>;
+}
+typedef JsonDefinitions = Map<String, Array<JsonFunction>>;
 
 typedef TypedefDefinition = {
     var type : String;
@@ -104,13 +108,7 @@ class ImGuiJsonReader
         templatedGen = [];
     }
 
-    /**
-     * Read all the typedef values.
-     * Filters out iterators, enums, and structs. These types are read from other json structures.
-     * @param _json Json object to read.
-     * @return Map of typedef names and values.
-     */
-    public function generateTypedefs() : Map<String, TypedefDefinition>
+    public function generateTypedefs() : Array<TypeDefinition>
     {
         return [
             for (name => value in typedefs)
@@ -119,31 +117,30 @@ class ImGuiJsonReader
                     name == 'const_iterator' ||
                     name == 'value_type' ||
                     name.endsWith('Flags') ||
-                    name.endsWith('Callback') ||
                     value.contains('struct '))
                 {
                     continue;
                 }
 
-                name => { type: cleanNativeType(value), star: getPointerLevel(value) }
+                { pack: [ 'imgui' ], name: name, pos: null, fields: [], kind: TDAlias(parseNativeString(value)) }
             }
         ];
     }
 
-    public function generateEnumExprs() : Array<TypeDefinition>
+    public function generateEnums() : Array<TypeDefinition>
         return [ for (name => values in enumStruct.enums) {
             pack   : [ 'imgui' ],
             kind   : TDAbstract(macro : Int, [ macro : Int ], [ macro : Int ]),
-            name   : name,
+            name   : name.substr(0, name.length - 1),
             pos    : null,
             fields : [ for (value in values) {
-                name : value.name,
-                kind : FVar(macro : Int),
-                pos  : null
+                name : value.name.replace(name, ''),
+                kind : FVar(macro : Int, { pos: null, expr: EConst(CInt('${value.calc_value}')) }),
+                pos  : null,
             } ]
         } ];
 
-    public function generateStructExprs()
+    public function generateStructs() : Array<TypeDefinition>
     {
         final structs = [];
 
@@ -175,7 +172,7 @@ class ImGuiJsonReader
                 var finalType;
                 var finalName = value.name;
 
-                if (value.template_type != null)
+                if (value.template_type != '')
                 {
                     if (!templatedGen.has(value.template_type))
                     {
@@ -184,10 +181,11 @@ class ImGuiJsonReader
 
                     // TODO : Very lazy and should be improved.
                     // Exactly one of the templated types is also a pointer, so do a quick check and manually wrap it.
+                    // Can't use parseNativeType as we need a user friendly string name, not the actual type
                     if (value.template_type.contains('*'))
                     {
                         finalType = TPath({ pack: [ 'cpp' ], name: 'Star' , params: [
-                            TPType(TPath({pack : [ 'imgui' ], name : 'ImVector', sub : 'ImVector${value.template_type.replace('*', '')}'}))
+                            TPType(TPath({pack : [ 'imgui' ], name : 'ImVector', sub : 'ImVector${value.template_type.replace('*', '')}Pointer'}))
                         ] });
                     }
                     else
@@ -198,11 +196,11 @@ class ImGuiJsonReader
                 else
                 {
                     // Get the corresponding (and potentially simplified) complex type.
-                    final type = parseNativeType(value.type);
+                    final type = parseNativeString(value.type);
 
                     // If its an array type wrap it in a pointer.
                     // cpp.Star doesn't allow array access so we need to use the old cpp.RawPointer.
-                    if (value.size != null)
+                    if (value.size > 0)
                     {
                         finalName = value.name.split('[')[0];
                         finalType = TPath({ pack : [ 'cpp' ], name : 'RawPointer', params : [ TPType(type) ] });
@@ -227,25 +225,172 @@ class ImGuiJsonReader
         return structs;
     }
 
-    function parseNativeType(_in : String) : ComplexType
+    public function generateTopLevelFunctions() : TypeDefinition
     {
-        // strip const-ness
-        final cleaned  = _in.replace('const', '').trim();
-        final pointer  = occurance(cleaned);
+        final topLevelClass : TypeDefinition = {
+            pos: null,
+            pack: [ 'imgui' ],
+            name: 'ImGui',
+            kind: TDClass(null, null, null, null),
+            fields: [],
+            isExtern: true,
+            meta: [
+                { name: ':keep', pos : null },
+                { name: ':structAccess', pos : null },
+                { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] }
+            ]
+        }
+
+        for (_ => overloads in definitions)
+        {
+            if (overloads[0].stname != '')
+            {
+                continue;
+            }
+
+            final baseFunction = generateFunction(overloads[0], null);
+
+            for (overloadedFunction in overloads.slice(1))
+            {
+                baseFunction.meta.push({
+                    name: ':overload',
+                    pos: null,
+                    params: [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFunction, EBlock([]))) } ]
+                });
+            }
+
+            topLevelClass.fields.push(baseFunction);
+        }
+
+        return topLevelClass;
+    }
+
+    function extractFunctionExpr(_function : Field) : ExprDef
+    {
+        switch _function.kind
+        {
+            case FFun(f): return EFunction(FAnonymous, f);
+            case _: throw 'should be function';
+        }
+    }
+
+    function generateFunction(_function : JsonFunction, _endExpr : ExprDef) : Field
+    {
+        final ftype : Function = {
+            ret : buildReturnType(parseNativeString(_function.ret), _function.retref != null),
+            args: [ for (arg in _function.argsT) {
+                name: '_${ getHaxefriendlyName(arg.name) }',
+                type: parseNativeString(arg.type)
+            } ],
+            expr: null
+        }
+        if (_endExpr != null)
+        {
+            ftype.expr = { expr: _endExpr, pos: null }
+        }
+
+        return {
+            name: _function.funcname,
+            pos : null,
+            access: [ AStatic ],
+            kind: FFun(ftype),
+            meta: [ { name: ':native', params: [ { expr: EConst(CString('ImGui::${_function.funcname}', SingleQuotes)), pos : null } ], pos : null } ]
+        }
+    }
+
+    // Helpers
+
+    function parseNativeString(_in : String) : ComplexType
+    {
+        if (_in.contains('(*)'))
+        {
+            return parseFunction(_in);
+        }
+        else
+        {
+            return parseType(_in);
+        }
+    }
+
+    function parseType(_in : String) : ComplexType
+    {
+        // count how many pointer levels then strip any of that away
+        final pointer  = occurance(_in, '*');
+        final refType  = occurance(_in, '&');
+        final cleaned  = _in.replace('const', '').replace('*', '').replace('&', '').trim();
+
+        var ct;
+        if (cleaned.contains('['))
+        {
+            // Array type
+            // This should be simplified to an abstract in the future for easy array assignment.
+            // Should add this type to an array so abstracts can be auto generated in the future.
+
+            final arrayType = cleaned.split('[')[0];
+
+            ct = TPath({ pack: [ 'cpp' ], name: 'Star', params: [ TPType( getHaxeType(arrayType) ) ] });
+        }
+        else
+        {
+            ct = getHaxeType(cleaned);
+        }
 
         // Get the base complex type, then wrap it in as many pointer as is required.
-        var ct = getHaxeType(cleaned.replace('*', ''));
         for (_ in 0...pointer)
         {
             ct = TPath({ pack: [ 'cpp' ], name: 'Star', params: [ TPType(ct) ] });
+        }
+        for (_ in 0...refType)
+        {
+            ct = TPath({ pack: [ 'cpp' ], name: 'Reference', params: [ TPType(ct) ] });
         }
 
         // Attempt to detect pointer patters and map them to custom abstracts for easier end-user usage.
         return simplifyComplexType(ct);
     }
 
+    function parseFunction(_in : String) : ComplexType
+    {
+        final returnType    = _in.split('(*)')[0];
+        final bracketedArgs = _in.split('(*)')[1];
+        final splitArgs     = bracketedArgs.substr(1, bracketedArgs.length - 2).split(',');
+
+        final ctArgs = [];
+        for (arg in splitArgs)
+        {
+            final split = arg.split(' ');
+
+            final name = split.pop();
+            final type = split.join(' ');
+
+            ctArgs.push(parseNativeString(type));
+        }
+
+        return TPath({ pack: [ 'cpp' ], name: 'Callable', params: [ TPType(TFunction(ctArgs, parseType(returnType))) ] });
+    }
+
+    function buildReturnType(_ct : ComplexType, _reference : Bool)
+    {
+        if (_reference)
+        {
+            switch _ct
+            {
+                case TPath(p):
+                    // If the return type is a reference and the outer-most complex type is a pointer
+                    // Strip that pointer off and make it a reference instead.
+                    if (p.name == 'Star')
+                    {
+                        return TPath({ pack: [ 'cpp' ], name: 'Reference', params: p.params });
+                    }
+                case _:
+            }
+        }
+
+        return _ct;
+    }
+
     function getHaxeType(_in : String) : ComplexType
-        return switch _in {
+        return switch _in.trim() {
             case 'int', 'signed int'                 : macro : Int;
             case 'unsigned int'                      : macro : UInt;
             case 'short', 'signed short'             : macro : cpp.Int16;
@@ -257,7 +402,7 @@ class ImGuiJsonReader
             case 'unsigned char', 'const char'       : macro : cpp.UInt8;
             case 'int64_t'                           : macro : cpp.Int64;
             case 'uint64_t'                          : macro : cpp.UInt64;
-            case 'va_list'                           : macro : cpp.VarArg;
+            case 'va_list', '...'                    : macro : cpp.VarArg;
             case 'size_t'                            : macro : cpp.SizeT;
             case 'void'                              : macro : cpp.Void;
             default : TPath({ pack: [ 'imgui' ], name : _in });
@@ -288,8 +433,8 @@ class ImGuiJsonReader
                                     case TPath(innerPath):
                                         switch innerPath.name
                                         {
-                                            case 'UInt8' : return TPath({ pack: [ 'imgui' ], name: 'BytesPointer' });
-                                            case 'Void'  : return TPath({ pack: [ 'imgui' ], name: 'VoidPointer' });
+                                            case 'UInt8', 'Int8': return TPath({ pack: [ 'imgui' ], name: 'CharPointer' });
+                                            case 'Void': return TPath({ pack: [ 'imgui' ], name: 'VoidPointer' });
                                             case _: // Not other pointer simplifications at this point
                                         }
                                     case _: throw 'complex type parameter should be another TPath';
@@ -305,12 +450,12 @@ class ImGuiJsonReader
         return _ct;
     }
 
-    function occurance(_in : String)
+    function occurance(_in : String, _search : String) : Int
     {
         var pointer = 0;
         for (i in 0..._in.length)
         {
-            if (_in.charAt(i) == '*')
+            if (_in.charAt(i) == _search)
             {
                 pointer++;
             }
@@ -326,7 +471,7 @@ class ImGuiJsonReader
      * @param _definitions 
      * @return Map<String, StructDefinition>
      */
-    public function generateStructs() : Map<String, StructDefinition>
+    public function generateOldStructs() : Map<String, StructDefinition>
     {
         final structs = new Map<String, StructDefinition>();
 
@@ -443,7 +588,16 @@ class ImGuiJsonReader
     }
 
     function getHaxefriendlyName(_in : String)
-        return '${_in.charAt(0).toLowerCase()}${_in.substr(1)}';
+    {
+        if (_in == '...')
+        {
+            return 'vargs';
+        }
+        else
+        {
+            return '${_in.charAt(0).toLowerCase()}${_in.substr(1)}';
+        }
+    }
 
     public function generateNamespace() : Array<FunctionDefinition>
     {
