@@ -3,7 +3,6 @@ import haxe.macro.Printer;
 import sys.io.File;
 import ImGuiJsonReader;
 
-using StringTools;
 using Generator.StringBufChainer;
 
 class Generator
@@ -14,15 +13,12 @@ class Generator
 
     public function new()
     {
-        printer   = new Printer();
-        buffer    = new StringBuf();
-        reader    = new ImGuiJsonReader(
+        printer = new Printer();
+        buffer  = new StringBuf();
+        reader  = new ImGuiJsonReader(
             File.getContent('lib/cimgui/generator/output/typedefs_dict.json'),
             File.getContent('lib/cimgui/generator/output/structs_and_enums.json'),
-            File.getContent('lib/cimgui/generator/output/definitions.json')
-        );
-        // structs   = reader.generateStructs();
-        // namespace = reader.generateNamespace();
+            File.getContent('lib/cimgui/generator/output/definitions.json'));
 
         for (type in reader.generateTypedefs())
         {
@@ -57,7 +53,12 @@ class Generator
         buffer.newline();
         buffer.newline();
 
-        reader.generateImVectors();
+        for (type in reader.generateImVectors())
+        {
+            buffer.append(printer.printTypeDefinition(type, false));
+            buffer.newline();
+            buffer.newline();
+        }
 
         File.saveContent('imgui/ImGui.hx', buffer.toString());
     }

@@ -210,23 +210,32 @@ class ImGuiJsonReader
             // Generate functions
             for (_ => overloads in definitions)
             {
-                if (overloads[0].stname != name || overloads[0].constructor || overloads[0].destructor)
+                var baseFunction = null;
+                for (overloadedFn in overloads)
                 {
-                    continue;
+                    if (overloadedFn.stname != name || overloadedFn.constructor || overloadedFn.destructor)
+                    {
+                        continue;
+                    }
+
+                    if (baseFunction == null)
+                    {
+                        baseFunction = generateFunction(overloadedFn, null);
+                    }
+                    else
+                    {
+                        baseFunction.meta.push({
+                            name   : ':overload',
+                            pos    : null,
+                            params : [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFn, EBlock([]))) } ]
+                        });
+                    }
                 }
 
-                final baseFunction = generateFunction(overloads[0], null);
-
-                for (overloadedFunction in overloads.slice(1))
+                if (baseFunction != null)
                 {
-                    baseFunction.meta.push({
-                        name: ':overload',
-                        pos: null,
-                        params: [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFunction, EBlock([]))) } ]
-                    });
+                    struct.fields.push(baseFunction);
                 }
-
-                struct.fields.push(baseFunction);
             }
 
             structs.push(struct);
@@ -237,32 +246,65 @@ class ImGuiJsonReader
 
     public function generateImVectors() : Array<TypeDefinition>
     {
-        for (name => overloads in definitions)
+        final imVectorClass : TypeDefinition = {
+            pos      : null,
+            pack     : [ 'imgui' ],
+            name     : 'ImVector',
+            kind     : TDClass(null, null, null, null),
+            fields   : [],
+            isExtern : true,
+            params   : [ { name: 'T' } ],
+            meta     : [
+                { name: ':keep', pos : null },
+                { name: ':structAccess', pos : null },
+                { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
+                { name: ':native', pos : null, params: [ { expr : EConst(CString('ImVector', SingleQuotes)), pos : null } ] }
+            ]
+        }
+
+        for (_ => overloads in definitions)
         {
-            if (overloads[0].stname != 'ImVector' || overloads[0].funcname == null)
+            var baseFunction = null;
+            for (overloadedFn in overloads)
             {
-                continue;
+                if (overloadedFn.stname != 'ImVector' || overloadedFn.constructor || overloadedFn.destructor)
+                {
+                    continue;
+                }
+
+                if (baseFunction == null)
+                {
+                    baseFunction = generateFunction(overloadedFn, null);
+                }
+                else
+                {
+                    baseFunction.meta.push({
+                        name   : ':overload',
+                        pos    : null,
+                        params : [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFn, EBlock([]))) } ]
+                    });
+                }
             }
 
-            for (overloadFn in overloads)
+            if (baseFunction != null)
             {
-                trace(name, overloadFn.funcname);
+                imVectorClass.fields.push(baseFunction);
             }
         }
 
-        return [];
+        return [ imVectorClass ];
     }
 
     public function generateEmptyExtern(_name : String) : TypeDefinition
     {
         return {
-            pos: null,
-            pack: [ 'imgui' ],
-            name: _name,
-            kind: TDClass(null, null, null, null),
-            fields: [],
-            isExtern: true,
-            meta: [
+            pos      : null,
+            pack     : [ 'imgui' ],
+            name     : _name,
+            kind     : TDClass(null, null, null, null),
+            fields   : [],
+            isExtern : true,
+            meta     : [
                 { name: ':keep', pos : null },
                 { name: ':structAccess', pos : null },
                 { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
@@ -275,12 +317,12 @@ class ImGuiJsonReader
     {
         final topLevelClass : TypeDefinition = {
             pos: null,
-            pack: [ 'imgui' ],
-            name: 'ImGui',
-            kind: TDClass(null, null, null, null),
-            fields: [],
-            isExtern: true,
-            meta: [
+            pack     : [ 'imgui' ],
+            name     : 'ImGui',
+            kind     : TDClass(null, null, null, null),
+            fields   : [],
+            isExtern : true,
+            meta     : [
                 { name: ':keep', pos : null },
                 { name: ':structAccess', pos : null },
                 { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] }
@@ -299,9 +341,11 @@ class ImGuiJsonReader
             for (overloadedFunction in overloads.slice(1))
             {
                 baseFunction.meta.push({
-                    name: ':overload',
-                    pos: null,
-                    params: [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFunction, EBlock([]))) } ]
+                    name   : ':overload',
+                    pos    : null,
+                    params : [
+                        { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFunction, EBlock([]))) }
+                    ]
                 });
             }
 
@@ -322,29 +366,41 @@ class ImGuiJsonReader
 
     function generateFunction(_function : JsonFunction, _endExpr : ExprDef) : Field
     {
-        final ftype : Function = {
-            ret : buildReturnType(parseNativeString(_function.retorig != null ? _function.retorig : _function.ret), _function.retref != null),
-            args: [ for (arg in _function.argsT) {
-                name: '_${ getHaxefriendlyName(arg.name) }',
-                type: parseNativeString(arg.type)
-            } ],
-            expr: null
+        // Take out the first argument if its called 'self'
+        // This is used for the cimgui bindings but we don't need it as we can use the original c++ structs and functions.
+        if (_function.argsT.length > 0)
+        {
+            if (_function.argsT[0].name == 'self')
+            {
+                _function.argsT.shift();
+            }
         }
+
+        final ftype : Function = {
+            expr : null,
+            ret  : buildReturnType(parseNativeString(_function.retorig != null ? _function.retorig : _function.ret), _function.retref != null),
+            args : [ for (arg in _function.argsT) {
+                name : '_${ getHaxefriendlyName(arg.name) }',
+                type : parseNativeString(arg.type)
+            } ]
+        }
+
         if (_endExpr != null)
         {
             ftype.expr = { expr: _endExpr, pos: null }
         }
 
-        return {
-            name: getHaxefriendlyName(_function.funcname),
-            pos : null,
-            access: [ AStatic ],
-            kind: FFun(ftype),
-            meta: [ { name: ':native', params: [ { expr: EConst(CString('ImGui::${_function.funcname}', SingleQuotes)), pos : null } ], pos : null } ]
+        return
+        {
+            name   : getHaxefriendlyName(_function.funcname),
+            pos    : null,
+            access : [ AStatic ],
+            kind   : FFun(ftype),
+            meta   : [
+                { name : ':native', params : [ { expr: EConst(CString('ImGui::${_function.funcname}', SingleQuotes)), pos : null } ], pos : null }
+            ]
         }
     }
-
-    // Helpers
 
     function parseNativeString(_in : String) : ComplexType
     {
@@ -436,23 +492,28 @@ class ImGuiJsonReader
     }
 
     function getHaxeType(_in : String) : ComplexType
-        return switch _in.trim() {
-            case 'int', 'signed int'                 : macro : Int;
-            case 'unsigned int'                      : macro : UInt;
-            case 'short', 'signed short'             : macro : cpp.Int16;
-            case 'unsigned short'                    : macro : cpp.UInt16;
-            case 'float'                             : macro : cpp.Float32;
-            case 'double'                            : macro : Float;
-            case 'bool'                              : macro : Bool;
-            case 'char', 'signed char'               : macro : cpp.Int8;
-            case 'unsigned char', 'const char'       : macro : cpp.UInt8;
-            case 'int64_t'                           : macro : cpp.Int64;
-            case 'uint64_t'                          : macro : cpp.UInt64;
-            case 'va_list', '...'                    : macro : cpp.VarArg;
-            case 'size_t'                            : macro : cpp.SizeT;
-            case 'void'                              : macro : cpp.Void;
-            default : TPath({ pack: [ 'imgui' ], name : _in });
+    {
+        return switch _in.trim()
+        {
+            case 'int', 'signed int'           : macro : Int;
+            case 'unsigned int'                : macro : UInt;
+            case 'short', 'signed short'       : macro : cpp.Int16;
+            case 'unsigned short'              : macro : cpp.UInt16;
+            case 'float'                       : macro : cpp.Float32;
+            case 'double'                      : macro : Float;
+            case 'bool'                        : macro : Bool;
+            case 'char', 'signed char'         : macro : cpp.Int8;
+            case 'unsigned char', 'const char' : macro : cpp.UInt8;
+            case 'int64_t'                     : macro : cpp.Int64;
+            case 'uint64_t'                    : macro : cpp.UInt64;
+            case 'va_list', '...'              : macro : cpp.VarArg;
+            case 'size_t'                      : macro : cpp.SizeT;
+            case 'void'                        : macro : cpp.Void;
+            case 'T'                           : macro : T;
+            case 'ImVector'                    : macro : imgui.ImVector<T>;
+            case _other: TPath({ pack: [ 'imgui' ], name : _other });
         }
+    }
 
     function simplifyComplexType(_ct : ComplexType) : ComplexType
     {
