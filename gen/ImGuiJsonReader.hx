@@ -1,26 +1,26 @@
 
-import cpp.Callable;
 import json2object.JsonParser;
 import haxe.macro.Expr;
 
 using StringTools;
-using Safety;
 using Lambda;
 
+typedef JsonEnum = {
+    calc_value : Int,
+    name       : String,
+    value      : String
+};
+typedef JsonStruct = {
+    var name : String;
+    var type : String;
+    @:default(0)
+    var size : Int;
+    @:default('')
+    var template_type : String;
+};
 typedef JsonEnumStruct = {
-    var enums : Map<String, Array<{
-        calc_value : Int,
-        name       : String,
-        value      : String
-    }>>;
-    var structs : Map<String, Array<{
-        var name : String;
-        var type : String;
-        @:default(0)
-        var size : Int;
-        @:default('')
-        var template_type : String;
-    }>>;
+    var enums : Map<String, Array<JsonEnum>>;
+    var structs : Map<String, Array<JsonStruct>>;
 }
 typedef JsonFunctionArg = {
     var name : String;
@@ -57,44 +57,11 @@ typedef JsonFunction = {
     var ?retorig : String;
 }
 typedef JsonDefinitions = Map<String, Array<JsonFunction>>;
-
-typedef TypedefDefinition = {
-    var type : String;
-    var star : Int;
-};
-typedef EnumValueDefinition = {
-    var name : String;
-    var value : Int;
-};
-typedef FieldDefinition = {
-    var name : String;
-    var type : String;
-    var generic : String;
-    var size : Int;
-    var pointer : Int;
-    var signature : String;
-};
-typedef FunctionDefinition = {
-    var name : String;
-    var constructor : Bool;
-    var destructor : Bool;
-    var overloads : Array<FunctionOverloadDefinition>;
-};
-typedef FunctionOverloadDefinition = {
-    var name : String;
-    var type : String;
-    var pointer : Int;
-    var retref : Bool;
-    var arguments : Array<FieldDefinition>;
-};
-typedef StructDefinition = {
-    var fields : Array<FieldDefinition>;
-    var functions : Array<FunctionDefinition>;
-};
+typedef JsonTypedef = Map<String, String>;
 
 class ImGuiJsonReader
 {
-    final typedefs : Map<String, String>;
+    final typedefs : JsonTypedef;
     final enumStruct : JsonEnumStruct;
     final definitions : JsonDefinitions;
 
@@ -108,6 +75,11 @@ class ImGuiJsonReader
         templatedGen = [];
     }
 
+    /**
+     * Generate expr type definitions for all typedef aliases found in the json.
+     * Ignores flags, structs, and iterators and they are generated else where.
+     * @return Array<TypeDefinition>
+     */
     public function generateTypedefs() : Array<TypeDefinition>
     {
         return [
@@ -122,12 +94,26 @@ class ImGuiJsonReader
                     continue;
                 }
 
+                if (enumStruct.enums.exists('${ name }_'))
+                {
+                    continue;
+                }
+
                 { pack: [ 'imgui' ], name: name, pos: null, fields: [], kind: TDAlias(parseNativeString(value)) }
             }
         ];
     }
 
+    /**
+     * Generate expr type definitions for all the enums found in the json.
+     * Integer based abstract enums are generated with implicit to and from int conversions.
+     * 
+     * The json definition enum names are post fixed with `_` so we substring the last character away.
+     * Enum members are also prefixed with the enum struct they belong to, so we remove that from each enum members name.
+     * @return Array<TypeDefinition>
+     */
     public function generateEnums() : Array<TypeDefinition>
+    {
         return [ for (name => values in enumStruct.enums) {
             pack   : [ 'imgui' ],
             kind   : TDAbstract(macro : Int, [ macro : Int ], [ macro : Int ]),
@@ -139,6 +125,7 @@ class ImGuiJsonReader
                 pos  : null,
             } ]
         } ];
+    }
 
     public function generateStructs() : Array<TypeDefinition>
     {
@@ -161,6 +148,7 @@ class ImGuiJsonReader
                 ]
             }
 
+            // Generate fields
             for (value in values)
             {
                 // Ignore function and union types for now
@@ -219,10 +207,68 @@ class ImGuiJsonReader
                 });
             }
 
+            // Generate functions
+            for (_ => overloads in definitions)
+            {
+                if (overloads[0].stname != name || overloads[0].constructor || overloads[0].destructor)
+                {
+                    continue;
+                }
+
+                final baseFunction = generateFunction(overloads[0], null);
+
+                for (overloadedFunction in overloads.slice(1))
+                {
+                    baseFunction.meta.push({
+                        name: ':overload',
+                        pos: null,
+                        params: [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFunction, EBlock([]))) } ]
+                    });
+                }
+
+                struct.fields.push(baseFunction);
+            }
+
             structs.push(struct);
         }
 
         return structs;
+    }
+
+    public function generateImVectors() : Array<TypeDefinition>
+    {
+        for (name => overloads in definitions)
+        {
+            if (overloads[0].stname != 'ImVector' || overloads[0].funcname == null)
+            {
+                continue;
+            }
+
+            for (overloadFn in overloads)
+            {
+                trace(name, overloadFn.funcname);
+            }
+        }
+
+        return [];
+    }
+
+    public function generateEmptyExtern(_name : String) : TypeDefinition
+    {
+        return {
+            pos: null,
+            pack: [ 'imgui' ],
+            name: _name,
+            kind: TDClass(null, null, null, null),
+            fields: [],
+            isExtern: true,
+            meta: [
+                { name: ':keep', pos : null },
+                { name: ':structAccess', pos : null },
+                { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
+                { name: ':native', pos : null, params: [ { expr : EConst(CString(_name, SingleQuotes)), pos : null } ] }
+            ]
+        }
     }
 
     public function generateTopLevelFunctions() : TypeDefinition
@@ -277,7 +323,7 @@ class ImGuiJsonReader
     function generateFunction(_function : JsonFunction, _endExpr : ExprDef) : Field
     {
         final ftype : Function = {
-            ret : buildReturnType(parseNativeString(_function.ret), _function.retref != null),
+            ret : buildReturnType(parseNativeString(_function.retorig != null ? _function.retorig : _function.ret), _function.retref != null),
             args: [ for (arg in _function.argsT) {
                 name: '_${ getHaxefriendlyName(arg.name) }',
                 type: parseNativeString(arg.type)
@@ -290,7 +336,7 @@ class ImGuiJsonReader
         }
 
         return {
-            name: _function.funcname,
+            name: getHaxefriendlyName(_function.funcname),
             pos : null,
             access: [ AStatic ],
             kind: FFun(ftype),
@@ -464,129 +510,6 @@ class ImGuiJsonReader
         return pointer;
     }
 
-    /**
-     * [Description]
-     * @param _typedefs 
-     * @param _structs 
-     * @param _definitions 
-     * @return Map<String, StructDefinition>
-     */
-    public function generateOldStructs() : Map<String, StructDefinition>
-    {
-        final structs = new Map<String, StructDefinition>();
-
-        // First, read any structs from the typedefs.
-        for (name => value in typedefs)
-        {
-            if (value.contains('struct '))
-            {
-                structs.set(name, { fields : [], functions : [] });
-            }
-        }
-
-        // Pass over all definitions looking for any structure names which are not yet known.
-        for (_ => functions in definitions)
-        {
-            for (fun in functions)
-            {
-                if (fun.stname == '')
-                {
-                    continue;
-                }
-
-                if (!structs.exists(fun.stname))
-                {
-                    structs.set(fun.stname, { fields : [], functions : [] });
-                }
-            }
-        }
-
-        // Read all struct fields
-        for (struct => fields in enumStruct.structs)
-        {
-            if (!structs.exists(struct))
-            {
-                continue;
-            }
-
-           for (field in fields)
-           {
-                structs[struct].fields.push({
-                    name      : getSanitisedName(field.name),
-                    type      : cleanNativeType(field.type),
-                    pointer   : getPointerLevel(field.type),
-                    size      : field.type.contains('**') ? 1 : field.size.or(0),
-                    generic   : field.template_type.or(''),
-                    signature : ''
-                });
-           }
-        }
-
-        // Read all functions which belong to structs
-        for (_ => overloads in definitions)
-        {
-            if (!structs.exists(overloads[0].stname))
-            {
-                continue;
-            }
-
-            final overloadDefinitions = [];
-            for (fun in overloads)
-            {
-                // Create overloads for functions which have default values
-                var i = 1;
-                for (_ => _ in fun.defaults)
-                {
-                    overloadDefinitions.push({
-                        name        : fun.funcname,
-                        type        : cleanNativeType(fun.retorig.or(fun.ret.or(''))),
-                        pointer     : getPointerLevel(fun.retorig.or(fun.ret.or(''))),
-                        retref      : fun.retref == null ? false : true,
-                        arguments   : [
-                            for (j in 0...fun.argsT.length - i) {
-                                name      : getSanitisedName(fun.argsT[j].name),
-                                type      : getSanitisedName(cleanNativeType(fun.argsT[j].type)),
-                                size      : 0,
-                                pointer   : Std.int(Math.max(getPointerLevel(fun.argsT[j].type), getSizePointerLevel(fun.argsT[j].type))),
-                                generic   : '',
-                                signature : fun.argsT[j].signature.or(''),
-                            }
-                        ]
-                    });
-
-                    i++;
-                }
-
-                // Default overloaded type
-                overloadDefinitions.push({
-                    name        : fun.funcname,
-                    type        : cleanNativeType(fun.retorig.or(fun.ret.or(''))),
-                    pointer     : getPointerLevel(fun.retorig.or(fun.ret.or(''))),
-                    retref      : fun.retref == null ? false : true,
-                    arguments   : [
-                        for (arg in fun.argsT) {
-                            name      : getSanitisedName(arg.name),
-                            type      : getSanitisedName(cleanNativeType(arg.type)),
-                            size      : 0,
-                            pointer   : Std.int(Math.max(getPointerLevel(arg.type), getSizePointerLevel(arg.type))),
-                            generic   : '',
-                            signature : arg.signature.or(''),
-                        }
-                    ]
-                });
-            }
-            
-            structs[overloads[0].stname].functions.push({
-                name        : overloads[0].funcname,
-                constructor : overloads[0].constructor.or(false),
-                destructor  : overloads[0].destructor.or(false),
-                overloads   : overloadDefinitions
-            });
-        }
-
-        return structs;
-    }
-
     function getHaxefriendlyName(_in : String)
     {
         if (_in == '...')
@@ -597,74 +520,6 @@ class ImGuiJsonReader
         {
             return '${_in.charAt(0).toLowerCase()}${_in.substr(1)}';
         }
-    }
-
-    public function generateNamespace() : Array<FunctionDefinition>
-    {
-        final functions = [];
-
-        for (_ => overloads in definitions)
-        {
-            final overloadDefinitions = [];
-            for (fun in overloads)
-            {
-                if (fun.namespace != 'ImGui' || fun.stname != '')
-                {
-                    continue;
-                }
-
-                // Create overloads for functions which have default values
-                var i = 1;
-                for (_ => _ in fun.defaults)
-                {
-                    overloadDefinitions.push({
-                        name        : fun.funcname,
-                        type        : cleanNativeType(fun.retorig.or(fun.ret.or(''))),
-                        pointer     : getPointerLevel(fun.retorig.or(fun.ret.or(''))),
-                        retref      : fun.retref == null ? false : true,
-                        arguments   : [
-                            for (j in 0...fun.argsT.length - i) {
-                                name      : getSanitisedName(fun.argsT[j].name),
-                                type      : getSanitisedName(cleanNativeType(fun.argsT[j].type)),
-                                size      : 0,
-                                pointer   : Std.int(Math.max(getPointerLevel(fun.argsT[j].type), getSizePointerLevel(fun.argsT[j].type))),
-                                generic   : '',
-                                signature : fun.argsT[j].signature.or(''),
-                            }
-                        ]
-                    });
-
-                    i++;
-                }
-
-                // Default overloaded type
-                overloadDefinitions.push({
-                    name        : fun.funcname,
-                    type        : cleanNativeType(fun.retorig.or(fun.ret.or(''))),
-                    pointer     : getPointerLevel(fun.retorig.or(fun.ret.or(''))),
-                    retref      : fun.retref == null ? false : true,
-                    arguments   : [
-                        for (arg in fun.argsT) {
-                            name      : getSanitisedName(arg.name),
-                            type      : getSanitisedName(cleanNativeType(arg.type)),
-                            size      : 0,
-                            pointer   : Std.int(Math.max(getPointerLevel(arg.type), getSizePointerLevel(arg.type))),
-                            generic   : '',
-                            signature : arg.signature.or(''),
-                        }
-                    ]
-                });
-            }
-            
-            functions.push({
-                name        : overloads[0].funcname,
-                constructor : overloads[0].constructor.or(false),
-                destructor  : overloads[0].destructor.or(false),
-                overloads   : overloadDefinitions
-            });
-        }
-
-        return functions;
     }
 
     static function cleanNativeType(_in : String) : String
@@ -685,8 +540,4 @@ class ImGuiJsonReader
 
         return count;
     }
-
-    static function getSanitisedName(_in : String) : String return _in.split('[')[0];
-
-    static function getSizePointerLevel(_in : String) : Int return _in.contains('[') ? 1 : 0;
 }
