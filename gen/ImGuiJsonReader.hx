@@ -50,6 +50,8 @@ typedef JsonFunction = {
 
     @:default(false)
     var templatedgen : Bool;
+    @:default(false)
+    var templated : Bool;
     var ?isvararg : String;
     var ?retref : String;
     var ?namespace : String;
@@ -65,14 +67,11 @@ class ImGuiJsonReader
     final enumStruct : JsonEnumStruct;
     final definitions : JsonDefinitions;
 
-    final templatedGen : Array<String>;
-
     public function new(_typedefs : String, _enumStruct : String, _definitions : String)
     {
         typedefs     = new JsonParser<Map<String, String>>().fromJson(_typedefs);
         enumStruct   = new JsonParser<JsonEnumStruct>().fromJson(_enumStruct);
         definitions  = new JsonParser<JsonDefinitions>().fromJson(_definitions);
-        templatedGen = [];
     }
 
     /**
@@ -119,6 +118,7 @@ class ImGuiJsonReader
             kind   : TDAbstract(macro : Int, [ macro : Int ], [ macro : Int ]),
             name   : name.substr(0, name.length - 1),
             pos    : null,
+            meta   : [ { name: ':enum', pos : null } ],
             fields : [ for (value in values) {
                 name : value.name.replace(name, ''),
                 kind : FVar(macro : Int, { pos: null, expr: EConst(CInt('${value.calc_value}')) }),
@@ -162,23 +162,18 @@ class ImGuiJsonReader
 
                 if (value.template_type != '')
                 {
-                    if (!templatedGen.has(value.template_type))
-                    {
-                        templatedGen.push(value.template_type);
-                    }
-
                     // TODO : Very lazy and should be improved.
                     // Exactly one of the templated types is also a pointer, so do a quick check and manually wrap it.
                     // Can't use parseNativeType as we need a user friendly string name, not the actual type
                     if (value.template_type.contains('*'))
                     {
                         finalType = TPath({ pack: [ 'cpp' ], name: 'Star' , params: [
-                            TPType(TPath({pack : [ 'imgui' ], name : 'ImVector', sub : 'ImVector${value.template_type.replace('*', '')}Pointer'}))
+                            TPType(TPath({pack : [ ], name : 'ImVector${value.template_type.replace('*', '')}Pointer'}))
                         ] });
                     }
                     else
                     {
-                        finalType = TPath({ pack : [ 'imgui' ], name : 'ImVector', sub : 'ImVector${value.template_type}' });
+                        finalType = TPath({ pack : [ ], name : 'ImVector${value.template_type}' });
                     }
                 }
                 else
@@ -220,14 +215,14 @@ class ImGuiJsonReader
 
                     if (baseFunction == null)
                     {
-                        baseFunction = generateFunction(overloadedFn, null);
+                        baseFunction = generateFunction(overloadedFn, null, false);
                     }
                     else
                     {
                         baseFunction.meta.push({
                             name   : ':overload',
                             pos    : null,
-                            params : [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFn, EBlock([]))) } ]
+                            params : [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFn, EBlock([]), false)) } ]
                         });
                     }
                 }
@@ -246,6 +241,8 @@ class ImGuiJsonReader
 
     public function generateImVectors() : Array<TypeDefinition>
     {
+        // Generic class
+        final generatedVectors = [];
         final imVectorClass : TypeDefinition = {
             pos      : null,
             pack     : [ 'imgui' ],
@@ -262,26 +259,29 @@ class ImGuiJsonReader
             ]
         }
 
+        generatedVectors.push(imVectorClass);
+
+        // Fill in fields for generic class
         for (_ => overloads in definitions)
         {
             var baseFunction = null;
             for (overloadedFn in overloads)
             {
-                if (overloadedFn.stname != 'ImVector' || overloadedFn.constructor || overloadedFn.destructor)
+                if (overloadedFn.constructor || overloadedFn.destructor || !overloadedFn.templated)
                 {
                     continue;
                 }
 
                 if (baseFunction == null)
                 {
-                    baseFunction = generateFunction(overloadedFn, null);
+                    baseFunction = generateFunction(overloadedFn, null, false);
                 }
                 else
                 {
                     baseFunction.meta.push({
                         name   : ':overload',
                         pos    : null,
-                        params : [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFn, EBlock([]))) } ]
+                        params : [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFn, EBlock([]), false)) } ]
                     });
                 }
             }
@@ -292,7 +292,80 @@ class ImGuiJsonReader
             }
         }
 
-        return [ imVectorClass ];
+        // Compile a list of all known vector templates
+        final templatedTypes = [];
+        for (_ => fields in enumStruct.structs)
+        {
+            for (field in fields)
+            {
+                if (field.template_type != '')
+                {
+                    if (!templatedTypes.has(field.template_type))
+                    {
+                        templatedTypes.push(field.template_type);
+                    }
+                }
+            }
+        }
+        for (_ => overloads in definitions)
+        {
+            for (overloadFn in overloads)
+            {
+                if (overloadFn.constructor || overloadFn.destructor || overloadFn.templated)
+                {
+                    continue;
+                }
+
+                if (overloadFn.ret.startsWith('ImVector_'))
+                {
+                    final templatedType = overloadFn.ret.replace('ImVector_', '');
+                    if (!templatedTypes.has(templatedType))
+                    {
+                        templatedTypes.push(templatedType);
+                    }
+                }
+
+                for (arg in overloadFn.argsT)
+                {
+                    if (arg.type.startsWith('ImVector_'))
+                    {
+                        final templatedType = arg.type.replace('ImVector_', '');
+                        if (!templatedTypes.has(templatedType))
+                        {
+                            templatedTypes.push(templatedType);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Generate an extern for each templated type
+        for (templatedType in templatedTypes)
+        {
+            final ct = parseNativeString(templatedType);
+            var name = cleanNativeType(templatedType);
+
+            for (_ in 0...occurance(templatedType, '*'))
+            {
+                name += 'Pointer';
+            }
+
+            generatedVectors.push({
+                pos      : null,
+                pack     : [ 'imgui' ],
+                name     : 'ImVector$name',
+                kind     : TDClass({ pack: [ 'imgui' ], name: 'ImVector', params: [ TPType(ct) ] }, null, null, null),
+                fields   : [],
+                isExtern : true,
+                meta     : [
+                    { name: ':keep', pos : null },
+                    { name: ':structAccess', pos : null },
+                    { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
+                    { name: ':native', pos : null, params: [ { expr : EConst(CString('ImVector<$templatedType>', SingleQuotes)), pos : null } ] }
+            ]});
+        }
+
+        return generatedVectors;
     }
 
     public function generateEmptyExtern(_name : String) : TypeDefinition
@@ -336,7 +409,7 @@ class ImGuiJsonReader
                 continue;
             }
 
-            final baseFunction = generateFunction(overloads[0], null);
+            final baseFunction = generateFunction(overloads[0], null, true);
 
             for (overloadedFunction in overloads.slice(1))
             {
@@ -344,7 +417,7 @@ class ImGuiJsonReader
                     name   : ':overload',
                     pos    : null,
                     params : [
-                        { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFunction, EBlock([]))) }
+                        { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFunction, EBlock([]), true)) }
                     ]
                 });
             }
@@ -364,7 +437,7 @@ class ImGuiJsonReader
         }
     }
 
-    function generateFunction(_function : JsonFunction, _endExpr : ExprDef) : Field
+    function generateFunction(_function : JsonFunction, _endExpr : ExprDef, _isStatic : Bool) : Field
     {
         // Take out the first argument if its called 'self'
         // This is used for the cimgui bindings but we don't need it as we can use the original c++ structs and functions.
@@ -394,7 +467,7 @@ class ImGuiJsonReader
         {
             name   : getHaxefriendlyName(_function.funcname),
             pos    : null,
-            access : [ AStatic ],
+            access : _isStatic ? [ AStatic ] : [],
             kind   : FFun(ftype),
             meta   : [
                 { name : ':native', params : [ { expr: EConst(CString('ImGui::${_function.funcname}', SingleQuotes)), pos : null } ], pos : null }
@@ -417,11 +490,22 @@ class ImGuiJsonReader
     function parseType(_in : String) : ComplexType
     {
         // count how many pointer levels then strip any of that away
-        final pointer  = occurance(_in, '*');
-        final refType  = occurance(_in, '&');
-        final cleaned  = _in.replace('const', '').replace('*', '').replace('&', '').trim();
-
+        final pointer = occurance(_in, '*');
+        final refType = occurance(_in, '&');
+        final cleaned = _in.replace('const', '').replace('*', '').replace('&', '').trim();
         var ct;
+
+        if (cleaned.startsWith('ImVector_'))
+        {
+            var type = cleaned.replace('ImVector_', '');
+            for (_ in 0...pointer)
+            {
+                type += 'Pointer';
+            }
+
+            return TPath({ pack: [ ], name: 'ImVector$type' });
+        }
+
         if (cleaned.contains('['))
         {
             // Array type
