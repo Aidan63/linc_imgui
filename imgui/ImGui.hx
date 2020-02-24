@@ -2089,6 +2089,8 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 }
 
 @:keep @:structAccess @:include("imgui.h") @:native("ImVector") extern class ImVector<T> {
+	@:native("Data")
+	var data : cpp.RawPointer<T>;
 	@:native("ImGui::swap")
 	function swap(_rhs:cpp.Reference<imgui.ImVector<T>>):cpp.Void;
 	@:native("ImGui::size_in_bytes")

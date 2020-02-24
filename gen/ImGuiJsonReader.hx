@@ -259,6 +259,15 @@ class ImGuiJsonReader
             ]
         }
 
+        // Manually add data field
+        // This is a special RawPointer field to allow array access to the vectors items.
+        imVectorClass.fields.push({
+            name : 'data',
+            pos  : null,
+            kind : FVar(macro : cpp.RawPointer<T>),
+            meta : [ { name: ':native', pos : null, params: [ { expr : EConst(CString('Data', SingleQuotes)), pos : null } ] } ]
+        });
+
         generatedVectors.push(imVectorClass);
 
         // Fill in fields for generic class
