@@ -370,7 +370,7 @@ class ImGuiJsonReader
 
     public function generateTopLevelFunctions() : TypeDefinition
     {
-        final topLevelClass    = macro class ImGui {};
+        final topLevelClass    = macro class ImGui { };
         topLevelClass.isExtern = true;
         topLevelClass.meta     = [
             { name: ':keep', pos : null },
@@ -441,6 +441,8 @@ class ImGuiJsonReader
             ftype.expr = { expr: _endExpr, pos: null }
         }
 
+        final nativeType = _isStatic ? 'ImGui::${_function.funcname}' : _function.funcname;
+
         return
         {
             name   : getHaxefriendlyName(_function.funcname),
@@ -448,7 +450,7 @@ class ImGuiJsonReader
             access : _isStatic ? [ AStatic ] : [],
             kind   : FFun(ftype),
             meta   : [
-                { name: ':native', pos : null, params: [ macro $i{ '"ImGui::${_function.funcname}"' } ] }
+                { name: ':native', pos : null, params: [ macro $i{ '"$nativeType"' } ] }
             ]
         }
     }
