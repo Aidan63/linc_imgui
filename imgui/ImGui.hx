@@ -1380,7 +1380,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 	function hSV(_h:cpp.Float32, _s:cpp.Float32, _v:cpp.Float32, _a:cpp.Float32):imgui.ImColor;
 }
 
-@:keep @:structAccess @:include(imgui.h) @:build(linc.Linc.xml("imgui")) @:build(linc.Linc.touch()) extern class ImGui {
+@:keep @:structAccess @:include("imgui.h") @:build(linc.Linc.xml("imgui")) @:build(linc.Linc.touch()) extern class ImGui {
 	@:native("ImGui::Value")
 	@:overload(function(_prefix:imgui.CharPointer, _v:Int):cpp.Void { })
 	@:overload(function(_prefix:imgui.CharPointer, _v:UInt):cpp.Void { })
@@ -2150,79 +2150,79 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 	function _grow_capacity(_sz:Int):Int;
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImGuiTextRange>") extern class ImVectorImGuiTextRange extends imgui.ImVector<imgui.ImGuiTextRange> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImGuiTextRange>") extern class ImVectorImGuiTextRange extends ImVector<imgui.ImGuiTextRange> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<char>") extern class ImVectorchar extends imgui.ImVector<cpp.Int8> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<char>") extern class ImVectorchar extends ImVector<cpp.Int8> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImGuiStoragePair>") extern class ImVectorImGuiStoragePair extends imgui.ImVector<imgui.ImGuiStoragePair> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImGuiStoragePair>") extern class ImVectorImGuiStoragePair extends ImVector<imgui.ImGuiStoragePair> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImWchar>") extern class ImVectorImWchar extends imgui.ImVector<imgui.ImWchar> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImWchar>") extern class ImVectorImWchar extends ImVector<imgui.ImWchar> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImU32>") extern class ImVectorImU32 extends imgui.ImVector<imgui.ImU32> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImU32>") extern class ImVectorImU32 extends ImVector<imgui.ImU32> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImFont*>") extern class ImVectorImFontPointer extends imgui.ImVector<cpp.Star<imgui.ImFont>> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImFont*>") extern class ImVectorImFontPointer extends ImVector<cpp.Star<imgui.ImFont>> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImFontAtlasCustomRect>") extern class ImVectorImFontAtlasCustomRect extends imgui.ImVector<imgui.ImFontAtlasCustomRect> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImFontAtlasCustomRect>") extern class ImVectorImFontAtlasCustomRect extends ImVector<imgui.ImFontAtlasCustomRect> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImFontConfig>") extern class ImVectorImFontConfig extends imgui.ImVector<imgui.ImFontConfig> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImFontConfig>") extern class ImVectorImFontConfig extends ImVector<imgui.ImFontConfig> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<float>") extern class ImVectorfloat extends imgui.ImVector<cpp.Float32> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<float>") extern class ImVectorfloat extends ImVector<cpp.Float32> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImFontGlyph>") extern class ImVectorImFontGlyph extends imgui.ImVector<imgui.ImFontGlyph> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImFontGlyph>") extern class ImVectorImFontGlyph extends ImVector<imgui.ImFontGlyph> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImDrawChannel>") extern class ImVectorImDrawChannel extends imgui.ImVector<imgui.ImDrawChannel> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImDrawChannel>") extern class ImVectorImDrawChannel extends ImVector<imgui.ImDrawChannel> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImDrawCmd>") extern class ImVectorImDrawCmd extends imgui.ImVector<imgui.ImDrawCmd> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImDrawCmd>") extern class ImVectorImDrawCmd extends ImVector<imgui.ImDrawCmd> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImDrawIdx>") extern class ImVectorImDrawIdx extends imgui.ImVector<imgui.ImDrawIdx> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImDrawIdx>") extern class ImVectorImDrawIdx extends ImVector<imgui.ImDrawIdx> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImDrawVert>") extern class ImVectorImDrawVert extends imgui.ImVector<imgui.ImDrawVert> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImDrawVert>") extern class ImVectorImDrawVert extends ImVector<imgui.ImDrawVert> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImVec4>") extern class ImVectorImVec4 extends imgui.ImVector<imgui.ImVec4> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImVec4>") extern class ImVectorImVec4 extends ImVector<imgui.ImVec4> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImTextureID>") extern class ImVectorImTextureID extends imgui.ImVector<imgui.ImTextureID> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImTextureID>") extern class ImVectorImTextureID extends ImVector<imgui.ImTextureID> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImVec2>") extern class ImVectorImVec2 extends imgui.ImVector<imgui.ImVec2> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImVec2>") extern class ImVectorImVec2 extends ImVector<imgui.ImVec2> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImGuiTextRange*>") extern class ImVectorImGuiTextRangePointer extends imgui.ImVector<cpp.Star<imgui.ImGuiTextRange>> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImGuiTextRange*>") extern class ImVectorImGuiTextRangePointer extends ImVector<cpp.Star<imgui.ImGuiTextRange>> {
 
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImWchar*>") extern class ImVectorImWcharPointer extends imgui.ImVector<cpp.Star<imgui.ImWchar>> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<ImWchar*>") extern class ImVectorImWcharPointer extends ImVector<cpp.Star<imgui.ImWchar>> {
 
 }
 

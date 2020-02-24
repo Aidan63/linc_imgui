@@ -133,20 +133,14 @@ class ImGuiJsonReader
 
         for (name => values in enumStruct.structs)
         {
-            final struct : TypeDefinition = {
-                pack     : [ 'imgui' ],
-                kind     : TDClass(null, null, false, false),
-                name     : name,
-                pos      : null,
-                fields   : [ ],
-                isExtern : true,
-                meta     : [
-                    { name: ':keep', pos : null },
-                    { name: ':structAccess', pos : null },
-                    { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
-                    { name: ':native', pos : null, params: [ { expr : EConst(CString(name, SingleQuotes)), pos : null } ] }
-                ]
-            }
+            final struct    = macro class $name {};
+            struct.isExtern = true;
+            struct.meta     = [
+                { name: ':keep', pos : null },
+                { name: ':structAccess', pos : null },
+                { name: ':include', pos : null, params: [ macro $i{ '"imgui.h"' } ] },
+                { name: ':native', pos : null, params: [ macro $i{ '"$name"' } ] }
+            ];
 
             // Generate fields
             for (value in values)
@@ -198,7 +192,7 @@ class ImGuiJsonReader
                     name : getHaxefriendlyName(finalName),
                     kind : FVar(finalType),
                     pos  : null,
-                    meta : [ { name: ':native', params: [ { expr: EConst(CString(finalName, SingleQuotes)), pos : null } ], pos : null } ]
+                    meta : [ { name: ':native', pos : null, params: [ macro $i{ '"$finalName"' } ] } ]
                 });
             }
 
@@ -241,32 +235,17 @@ class ImGuiJsonReader
 
     public function generateImVectors() : Array<TypeDefinition>
     {
-        // Generic class
         final generatedVectors = [];
-        final imVectorClass : TypeDefinition = {
-            pos      : null,
-            pack     : [ 'imgui' ],
-            name     : 'ImVector',
-            kind     : TDClass(null, null, null, null),
-            fields   : [],
-            isExtern : true,
-            params   : [ { name: 'T' } ],
-            meta     : [
-                { name: ':keep', pos : null },
-                { name: ':structAccess', pos : null },
-                { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
-                { name: ':native', pos : null, params: [ { expr : EConst(CString('ImVector', SingleQuotes)), pos : null } ] }
-            ]
-        }
-
-        // Manually add data field
-        // This is a special RawPointer field to allow array access to the vectors items.
-        imVectorClass.fields.push({
-            name : 'data',
-            pos  : null,
-            kind : FVar(macro : cpp.RawPointer<T>),
-            meta : [ { name: ':native', pos : null, params: [ { expr : EConst(CString('Data', SingleQuotes)), pos : null } ] } ]
-        });
+        final imVectorClass    = macro class ImVector<T> {
+            @:native('Data') var data : cpp.RawPointer<T>;
+        };
+        imVectorClass.isExtern = true;
+        imVectorClass.meta     = [
+            { name: ':keep', pos : null },
+            { name: ':structAccess', pos : null },
+            { name: ':include', pos : null, params: [ macro $i{ '"imgui.h"' } ] },
+            { name: ':native', pos : null, params: [ macro $i{ '"ImVector"' } ] }
+        ];
 
         generatedVectors.push(imVectorClass);
 
@@ -359,19 +338,17 @@ class ImGuiJsonReader
                 name += 'Pointer';
             }
 
-            generatedVectors.push({
-                pos      : null,
-                pack     : [ 'imgui' ],
-                name     : 'ImVector$name',
-                kind     : TDClass({ pack: [ 'imgui' ], name: 'ImVector', params: [ TPType(ct) ] }, null, null, null),
-                fields   : [],
-                isExtern : true,
-                meta     : [
-                    { name: ':keep', pos : null },
-                    { name: ':structAccess', pos : null },
-                    { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
-                    { name: ':native', pos : null, params: [ { expr : EConst(CString('ImVector<$templatedType>', SingleQuotes)), pos : null } ] }
-            ]});
+            final fullname = 'ImVector$name';
+            final templated    = macro class $fullname extends ImVector<$ct> {};
+            templated.isExtern = true;
+            templated.meta     = [
+                { name: ':keep', pos : null },
+                { name: ':structAccess', pos : null },
+                { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
+                { name: ':native', pos : null, params: [ { expr : EConst(CString('ImVector<$templatedType>', SingleQuotes)), pos : null } ] }
+            ];
+
+            generatedVectors.push(templated);
         }
 
         return generatedVectors;
@@ -379,39 +356,29 @@ class ImGuiJsonReader
 
     public function generateEmptyExtern(_name : String) : TypeDefinition
     {
-        return {
-            pos      : null,
-            pack     : [ 'imgui' ],
-            name     : _name,
-            kind     : TDClass(null, null, null, null),
-            fields   : [],
-            isExtern : true,
-            meta     : [
-                { name: ':keep', pos : null },
-                { name: ':structAccess', pos : null },
-                { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
-                { name: ':native', pos : null, params: [ { expr : EConst(CString(_name, SingleQuotes)), pos : null } ] }
-            ]
-        }
+        final def    = macro class $_name {};
+        def.isExtern = true;
+        def.meta     = [
+            { name: ':keep', pos : null },
+            { name: ':structAccess', pos : null },
+            { name: ':include', pos : null, params: [ macro $i{ '"imgui.h"' } ] },
+            { name: ':native', pos : null, params: [ macro $i{ '"$_name"' } ] }
+        ];
+
+        return def;
     }
 
     public function generateTopLevelFunctions() : TypeDefinition
     {
-        final topLevelClass : TypeDefinition = {
-            pos: null,
-            pack     : [ 'imgui' ],
-            name     : 'ImGui',
-            kind     : TDClass(null, null, null, null),
-            fields   : [],
-            isExtern : true,
-            meta     : [
-                { name: ':keep', pos : null },
-                { name: ':structAccess', pos : null },
-                { name: ':include', pos : null, params: [ macro $i{ 'imgui.h' } ] },
-                { name: ':build', pos : null, params: [ macro linc.Linc.xml("imgui") ] },
-                { name: ':build', pos : null, params: [ macro linc.Linc.touch() ] }
-            ]
-        }
+        final topLevelClass    = macro class ImGui {};
+        topLevelClass.isExtern = true;
+        topLevelClass.meta     = [
+            { name: ':keep', pos : null },
+            { name: ':structAccess', pos : null },
+            { name: ':include', pos : null, params: [ macro $i{ '"imgui.h"' } ] },
+            { name: ':build', pos : null, params: [ macro linc.Linc.xml('imgui') ] },
+            { name: ':build', pos : null, params: [ macro linc.Linc.touch() ] }
+        ];
 
         for (_ => overloads in definitions)
         {
@@ -481,7 +448,7 @@ class ImGuiJsonReader
             access : _isStatic ? [ AStatic ] : [],
             kind   : FFun(ftype),
             meta   : [
-                { name : ':native', params : [ { expr: EConst(CString('ImGui::${_function.funcname}', SingleQuotes)), pos : null } ], pos : null }
+                { name: ':native', pos : null, params: [ macro $i{ '"ImGui::${_function.funcname}"' } ] }
             ]
         }
     }
