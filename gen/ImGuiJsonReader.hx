@@ -407,7 +407,9 @@ class ImGuiJsonReader
             meta     : [
                 { name: ':keep', pos : null },
                 { name: ':structAccess', pos : null },
-                { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] }
+                { name: ':include', pos : null, params: [ macro $i{ 'imgui.h' } ] },
+                { name: ':build', pos : null, params: [ macro linc.Linc.xml("imgui") ] },
+                { name: ':build', pos : null, params: [ macro linc.Linc.touch() ] }
             ]
         }
 

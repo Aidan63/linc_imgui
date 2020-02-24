@@ -1380,7 +1380,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 	function hSV(_h:cpp.Float32, _s:cpp.Float32, _v:cpp.Float32, _a:cpp.Float32):imgui.ImColor;
 }
 
-@:keep @:structAccess @:include("imgui.h") extern class ImGui {
+@:keep @:structAccess @:include(imgui.h) @:build(linc.Linc.xml("imgui")) @:build(linc.Linc.touch()) extern class ImGui {
 	@:native("ImGui::Value")
 	@:overload(function(_prefix:imgui.CharPointer, _v:Int):cpp.Void { })
 	@:overload(function(_prefix:imgui.CharPointer, _v:UInt):cpp.Void { })
