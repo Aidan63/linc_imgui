@@ -20,6 +20,10 @@ class Generator
             File.getContent('lib/cimgui/generator/output/structs_and_enums.json'),
             File.getContent('lib/cimgui/generator/output/definitions.json'));
 
+        buffer.append('package imgui;');
+        buffer.newline();
+        buffer.newline();
+
         for (type in reader.generateTypedefs())
         {
             buffer.append(printer.printTypeDefinition(type, false));
