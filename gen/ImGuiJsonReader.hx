@@ -4,6 +4,7 @@ import haxe.macro.Expr;
 
 using StringTools;
 using Lambda;
+using Safety;
 
 typedef JsonEnum = {
     calc_value : Int,
@@ -344,8 +345,8 @@ class ImGuiJsonReader
             templated.meta     = [
                 { name: ':keep', pos : null },
                 { name: ':structAccess', pos : null },
-                { name: ':include', pos : null, params: [ { expr : EConst(CString('imgui.h', SingleQuotes)), pos : null } ] },
-                { name: ':native', pos : null, params: [ { expr : EConst(CString('ImVector<$templatedType>', SingleQuotes)), pos : null } ] }
+                { name: ':include', pos : null, params: [ macro $i{ '"imgui.h"' } ] },
+                { name: ':native', pos : null, params: [ macro $i{ '"ImVector<$templatedType>"' } ] }
             ];
 
             generatedVectors.push(templated);
@@ -406,6 +407,13 @@ class ImGuiJsonReader
         return topLevelClass;
     }
 
+    /**
+     * Converts a function field type definition into a function expr
+     * This is needed as metadata params need to be expr's not type definitions.
+     * We need expr functions for adding overloads to extern functions.
+     * @param _function Function field type definition to convert.
+     * @return ExprDef
+     */
     function extractFunctionExpr(_function : Field) : ExprDef
     {
         switch _function.kind
@@ -415,7 +423,15 @@ class ImGuiJsonReader
         }
     }
 
-    function generateFunction(_function : JsonFunction, _endExpr : ExprDef, _isStatic : Bool) : Field
+    /**
+     * Generates a function field type definiton from a json definition.
+     * @param _function Json definition to generate a function from.
+     * @param _endExpr This should be null for struct and top level functions, and EBlock for overloads.
+     * @param _isTopLevel If the function doesn't belong to a struct.
+     * If true the function is generated as static and the native type is prefixed with the `ImGui::` namespace.
+     * @return Field
+     */
+    function generateFunction(_function : JsonFunction, _endExpr : ExprDef, _isTopLevel : Bool) : Field
     {
         // Take out the first argument if its called 'self'
         // This is used for the cimgui bindings but we don't need it as we can use the original c++ structs and functions.
@@ -429,11 +445,8 @@ class ImGuiJsonReader
 
         final ftype : Function = {
             expr : null,
-            ret  : buildReturnType(parseNativeString(_function.retorig != null ? _function.retorig : _function.ret), _function.retref != null),
-            args : [ for (arg in _function.argsT) {
-                name : '_${ getHaxefriendlyName(arg.name) }',
-                type : parseNativeString(arg.type)
-            } ]
+            ret  : buildReturnType(parseNativeString(_function.retorig.or(_function.ret)), _function.retref == '&'),
+            args : [ for (arg in _function.argsT) generateFunctionArg(arg) ]
         }
 
         if (_endExpr != null)
@@ -441,18 +454,23 @@ class ImGuiJsonReader
             ftype.expr = { expr: _endExpr, pos: null }
         }
 
-        final nativeType = _isStatic ? 'ImGui::${_function.funcname}' : _function.funcname;
+        final nativeType = _isTopLevel ? 'ImGui::${_function.funcname}' : _function.funcname;
 
         return
         {
             name   : getHaxefriendlyName(_function.funcname),
             pos    : null,
-            access : _isStatic ? [ AStatic ] : [],
+            access : _isTopLevel ? [ AStatic ] : [],
             kind   : FFun(ftype),
             meta   : [
                 { name: ':native', pos : null, params: [ macro $i{ '"$nativeType"' } ] }
             ]
         }
+    }
+
+    function generateFunctionArg(_arg : JsonFunctionArg) : FunctionArg
+    {
+        return { name : '_${ getHaxefriendlyName(_arg.name) }', type : parseNativeString(_arg.type) }
     }
 
     function parseNativeString(_in : String) : ComplexType
@@ -477,24 +495,24 @@ class ImGuiJsonReader
 
         if (cleaned.startsWith('ImVector_'))
         {
-            var type = cleaned.replace('ImVector_', '');
+            var hxType = cleaned.replace('ImVector_', '');
             for (_ in 0...pointer)
             {
-                type += 'Pointer';
+                hxType += 'Pointer';
             }
 
-            return TPath({ pack: [ ], name: 'ImVector$type' });
+            return TPath({ pack: [ ], name: 'ImVector$hxType' });
         }
 
         if (cleaned.contains('['))
         {
-            // Array type
-            // This should be simplified to an abstract in the future for easy array assignment.
-            // Should add this type to an array so abstracts can be auto generated in the future.
+            // Array types use cpp.RawPointer instead of cpp.Star to allow array access
+            // Also allows us to pattern match against it and generate abstracts to easy array <-> pointer interop.
 
             final arrayType = cleaned.split('[')[0];
+            final hxType    = getHaxeType(arrayType);
 
-            ct = TPath({ pack: [ 'cpp' ], name: 'Star', params: [ TPType( getHaxeType(arrayType) ) ] });
+            ct = macro : cpp.RawPointer<$hxType>;
         }
         else
         {
@@ -504,11 +522,11 @@ class ImGuiJsonReader
         // Get the base complex type, then wrap it in as many pointer as is required.
         for (_ in 0...pointer)
         {
-            ct = TPath({ pack: [ 'cpp' ], name: 'Star', params: [ TPType(ct) ] });
+            ct = macro : cpp.Star<$ct>;
         }
         for (_ in 0...refType)
         {
-            ct = TPath({ pack: [ 'cpp' ], name: 'Reference', params: [ TPType(ct) ] });
+            ct = macro : cpp.Reference<$ct>;
         }
 
         // Attempt to detect pointer patters and map them to custom abstracts for easier end-user usage.

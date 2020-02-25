@@ -1032,7 +1032,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 	@:native("GetTexDataAsAlpha8")
 	function getTexDataAsAlpha8(_out_pixels:cpp.Star<cpp.Star<cpp.UInt8>>, _out_width:cpp.Star<Int>, _out_height:cpp.Star<Int>, _out_bytes_per_pixel:cpp.Star<Int>):cpp.Void;
 	@:native("GetMouseCursorTexData")
-	function getMouseCursorTexData(_cursor:imgui.ImGuiMouseCursor, _out_offset:cpp.Star<imgui.ImVec2>, _out_size:cpp.Star<imgui.ImVec2>, _out_uv_border:cpp.Star<imgui.ImVec2>, _out_uv_fill:cpp.Star<imgui.ImVec2>):Bool;
+	function getMouseCursorTexData(_cursor:imgui.ImGuiMouseCursor, _out_offset:cpp.Star<imgui.ImVec2>, _out_size:cpp.Star<imgui.ImVec2>, _out_uv_border:cpp.RawPointer<imgui.ImVec2>, _out_uv_fill:cpp.RawPointer<imgui.ImVec2>):Bool;
 	@:native("GetGlyphRangesVietnamese")
 	function getGlyphRangesVietnamese():cpp.Star<imgui.ImWchar>;
 	@:native("GetGlyphRangesThai")
@@ -1446,19 +1446,19 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 	@:native("ImGui::SliderScalar")
 	static function sliderScalar(_label:imgui.CharPointer, _data_type:imgui.ImGuiDataType, _p_data:imgui.VoidPointer, _p_min:imgui.VoidPointer, _p_max:imgui.VoidPointer, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::SliderInt4")
-	static function sliderInt4(_label:imgui.CharPointer, _v:cpp.Star<Int>, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
+	static function sliderInt4(_label:imgui.CharPointer, _v:cpp.RawPointer<Int>, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
 	@:native("ImGui::SliderInt3")
-	static function sliderInt3(_label:imgui.CharPointer, _v:cpp.Star<Int>, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
+	static function sliderInt3(_label:imgui.CharPointer, _v:cpp.RawPointer<Int>, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
 	@:native("ImGui::SliderInt2")
-	static function sliderInt2(_label:imgui.CharPointer, _v:cpp.Star<Int>, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
+	static function sliderInt2(_label:imgui.CharPointer, _v:cpp.RawPointer<Int>, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
 	@:native("ImGui::SliderInt")
 	static function sliderInt(_label:imgui.CharPointer, _v:cpp.Star<Int>, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
 	@:native("ImGui::SliderFloat4")
-	static function sliderFloat4(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
+	static function sliderFloat4(_label:imgui.CharPointer, _v:cpp.RawPointer<cpp.Float32>, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::SliderFloat3")
-	static function sliderFloat3(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
+	static function sliderFloat3(_label:imgui.CharPointer, _v:cpp.RawPointer<cpp.Float32>, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::SliderFloat2")
-	static function sliderFloat2(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
+	static function sliderFloat2(_label:imgui.CharPointer, _v:cpp.RawPointer<cpp.Float32>, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::SliderFloat")
 	static function sliderFloat(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::SliderAngle")
@@ -1666,7 +1666,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 	static function listBoxFooter():cpp.Void;
 	@:native("ImGui::ListBox")
 	@:overload(function(_label:imgui.CharPointer, _current_item:cpp.Star<Int>, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.Star<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _height_in_items:Int):Bool { })
-	static function listBox(_label:imgui.CharPointer, _current_item:cpp.Star<Int>, _items:cpp.Star<cpp.Star<cpp.Int8>>, _items_count:Int, _height_in_items:Int):Bool;
+	static function listBox(_label:imgui.CharPointer, _current_item:cpp.Star<Int>, _items:cpp.Star<cpp.RawPointer<cpp.Int8>>, _items_count:Int, _height_in_items:Int):Bool;
 	@:native("ImGui::LabelTextV")
 	static function labelTextV(_label:imgui.CharPointer, _fmt:imgui.CharPointer, _args:cpp.VarArg):cpp.Void;
 	@:native("ImGui::LabelText")
@@ -1745,19 +1745,19 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 	@:native("ImGui::InputScalar")
 	static function inputScalar(_label:imgui.CharPointer, _data_type:imgui.ImGuiDataType, _p_data:imgui.VoidPointer, _p_step:imgui.VoidPointer, _p_step_fast:imgui.VoidPointer, _format:imgui.CharPointer, _flags:imgui.ImGuiInputTextFlags):Bool;
 	@:native("ImGui::InputInt4")
-	static function inputInt4(_label:imgui.CharPointer, _v:cpp.Star<Int>, _flags:imgui.ImGuiInputTextFlags):Bool;
+	static function inputInt4(_label:imgui.CharPointer, _v:cpp.RawPointer<Int>, _flags:imgui.ImGuiInputTextFlags):Bool;
 	@:native("ImGui::InputInt3")
-	static function inputInt3(_label:imgui.CharPointer, _v:cpp.Star<Int>, _flags:imgui.ImGuiInputTextFlags):Bool;
+	static function inputInt3(_label:imgui.CharPointer, _v:cpp.RawPointer<Int>, _flags:imgui.ImGuiInputTextFlags):Bool;
 	@:native("ImGui::InputInt2")
-	static function inputInt2(_label:imgui.CharPointer, _v:cpp.Star<Int>, _flags:imgui.ImGuiInputTextFlags):Bool;
+	static function inputInt2(_label:imgui.CharPointer, _v:cpp.RawPointer<Int>, _flags:imgui.ImGuiInputTextFlags):Bool;
 	@:native("ImGui::InputInt")
 	static function inputInt(_label:imgui.CharPointer, _v:cpp.Star<Int>, _step:Int, _step_fast:Int, _flags:imgui.ImGuiInputTextFlags):Bool;
 	@:native("ImGui::InputFloat4")
-	static function inputFloat4(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _format:imgui.CharPointer, _flags:imgui.ImGuiInputTextFlags):Bool;
+	static function inputFloat4(_label:imgui.CharPointer, _v:cpp.RawPointer<cpp.Float32>, _format:imgui.CharPointer, _flags:imgui.ImGuiInputTextFlags):Bool;
 	@:native("ImGui::InputFloat3")
-	static function inputFloat3(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _format:imgui.CharPointer, _flags:imgui.ImGuiInputTextFlags):Bool;
+	static function inputFloat3(_label:imgui.CharPointer, _v:cpp.RawPointer<cpp.Float32>, _format:imgui.CharPointer, _flags:imgui.ImGuiInputTextFlags):Bool;
 	@:native("ImGui::InputFloat2")
-	static function inputFloat2(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _format:imgui.CharPointer, _flags:imgui.ImGuiInputTextFlags):Bool;
+	static function inputFloat2(_label:imgui.CharPointer, _v:cpp.RawPointer<cpp.Float32>, _format:imgui.CharPointer, _flags:imgui.ImGuiInputTextFlags):Bool;
 	@:native("ImGui::InputFloat")
 	static function inputFloat(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _step:cpp.Float32, _step_fast:cpp.Float32, _format:imgui.CharPointer, _flags:imgui.ImGuiInputTextFlags):Bool;
 	@:native("ImGui::InputDouble")
@@ -1957,21 +1957,21 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 	@:native("ImGui::DragIntRange2")
 	static function dragIntRange2(_label:imgui.CharPointer, _v_current_min:cpp.Star<Int>, _v_current_max:cpp.Star<Int>, _v_speed:cpp.Float32, _v_min:Int, _v_max:Int, _format:imgui.CharPointer, _format_max:imgui.CharPointer):Bool;
 	@:native("ImGui::DragInt4")
-	static function dragInt4(_label:imgui.CharPointer, _v:cpp.Star<Int>, _v_speed:cpp.Float32, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
+	static function dragInt4(_label:imgui.CharPointer, _v:cpp.RawPointer<Int>, _v_speed:cpp.Float32, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
 	@:native("ImGui::DragInt3")
-	static function dragInt3(_label:imgui.CharPointer, _v:cpp.Star<Int>, _v_speed:cpp.Float32, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
+	static function dragInt3(_label:imgui.CharPointer, _v:cpp.RawPointer<Int>, _v_speed:cpp.Float32, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
 	@:native("ImGui::DragInt2")
-	static function dragInt2(_label:imgui.CharPointer, _v:cpp.Star<Int>, _v_speed:cpp.Float32, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
+	static function dragInt2(_label:imgui.CharPointer, _v:cpp.RawPointer<Int>, _v_speed:cpp.Float32, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
 	@:native("ImGui::DragInt")
 	static function dragInt(_label:imgui.CharPointer, _v:cpp.Star<Int>, _v_speed:cpp.Float32, _v_min:Int, _v_max:Int, _format:imgui.CharPointer):Bool;
 	@:native("ImGui::DragFloatRange2")
 	static function dragFloatRange2(_label:imgui.CharPointer, _v_current_min:cpp.Star<cpp.Float32>, _v_current_max:cpp.Star<cpp.Float32>, _v_speed:cpp.Float32, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _format_max:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::DragFloat4")
-	static function dragFloat4(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _v_speed:cpp.Float32, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
+	static function dragFloat4(_label:imgui.CharPointer, _v:cpp.RawPointer<cpp.Float32>, _v_speed:cpp.Float32, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::DragFloat3")
-	static function dragFloat3(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _v_speed:cpp.Float32, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
+	static function dragFloat3(_label:imgui.CharPointer, _v:cpp.RawPointer<cpp.Float32>, _v_speed:cpp.Float32, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::DragFloat2")
-	static function dragFloat2(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _v_speed:cpp.Float32, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
+	static function dragFloat2(_label:imgui.CharPointer, _v:cpp.RawPointer<cpp.Float32>, _v_speed:cpp.Float32, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::DragFloat")
 	static function dragFloat(_label:imgui.CharPointer, _v:cpp.Star<cpp.Float32>, _v_speed:cpp.Float32, _v_min:cpp.Float32, _v_max:cpp.Float32, _format:imgui.CharPointer, _power:cpp.Float32):Bool;
 	@:native("ImGui::DestroyContext")
@@ -1983,17 +1983,17 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<imgui.ImDrawList>, cpp.Star<imgu
 	@:native("ImGui::Combo")
 	@:overload(function(_label:imgui.CharPointer, _current_item:cpp.Star<Int>, _items_separated_by_zeros:imgui.CharPointer, _popup_max_height_in_items:Int):Bool { })
 	@:overload(function(_label:imgui.CharPointer, _current_item:cpp.Star<Int>, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.Star<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _popup_max_height_in_items:Int):Bool { })
-	static function combo(_label:imgui.CharPointer, _current_item:cpp.Star<Int>, _items:cpp.Star<cpp.Star<cpp.Int8>>, _items_count:Int, _popup_max_height_in_items:Int):Bool;
+	static function combo(_label:imgui.CharPointer, _current_item:cpp.Star<Int>, _items:cpp.Star<cpp.RawPointer<cpp.Int8>>, _items_count:Int, _popup_max_height_in_items:Int):Bool;
 	@:native("ImGui::Columns")
 	static function columns(_count:Int, _id:imgui.CharPointer, _border:Bool):cpp.Void;
 	@:native("ImGui::ColorPicker4")
-	static function colorPicker4(_label:imgui.CharPointer, _col:cpp.Star<cpp.Float32>, _flags:imgui.ImGuiColorEditFlags, _ref_col:cpp.Star<cpp.Float32>):Bool;
+	static function colorPicker4(_label:imgui.CharPointer, _col:cpp.RawPointer<cpp.Float32>, _flags:imgui.ImGuiColorEditFlags, _ref_col:cpp.Star<cpp.Float32>):Bool;
 	@:native("ImGui::ColorPicker3")
-	static function colorPicker3(_label:imgui.CharPointer, _col:cpp.Star<cpp.Float32>, _flags:imgui.ImGuiColorEditFlags):Bool;
+	static function colorPicker3(_label:imgui.CharPointer, _col:cpp.RawPointer<cpp.Float32>, _flags:imgui.ImGuiColorEditFlags):Bool;
 	@:native("ImGui::ColorEdit4")
-	static function colorEdit4(_label:imgui.CharPointer, _col:cpp.Star<cpp.Float32>, _flags:imgui.ImGuiColorEditFlags):Bool;
+	static function colorEdit4(_label:imgui.CharPointer, _col:cpp.RawPointer<cpp.Float32>, _flags:imgui.ImGuiColorEditFlags):Bool;
 	@:native("ImGui::ColorEdit3")
-	static function colorEdit3(_label:imgui.CharPointer, _col:cpp.Star<cpp.Float32>, _flags:imgui.ImGuiColorEditFlags):Bool;
+	static function colorEdit3(_label:imgui.CharPointer, _col:cpp.RawPointer<cpp.Float32>, _flags:imgui.ImGuiColorEditFlags):Bool;
 	@:native("ImGui::ColorConvertU32ToFloat4")
 	@:overload(function(_pOut:cpp.Star<imgui.ImVec4>, _in:imgui.ImU32):cpp.Void { })
 	@:overload(function(_in:imgui.ImU32):imgui.ImVec4 { })
