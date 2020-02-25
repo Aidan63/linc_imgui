@@ -162,9 +162,9 @@ class ImGuiJsonReader
                     // Can't use parseNativeType as we need a user friendly string name, not the actual type
                     if (value.template_type.contains('*'))
                     {
-                        finalType = TPath({ pack: [ 'cpp' ], name: 'Star' , params: [
-                            TPType(TPath({pack : [ ], name : 'ImVector${value.template_type.replace('*', '')}Pointer'}))
-                        ] });
+                        final ctInner = TPath({ pack : [ ], name : 'ImVector${value.template_type.replace('*', '')}Pointer' });
+
+                        finalType = macro : cpp.Star<$ctInner>;
                     }
                     else
                     {
@@ -174,18 +174,18 @@ class ImGuiJsonReader
                 else
                 {
                     // Get the corresponding (and potentially simplified) complex type.
-                    final type = parseNativeString(value.type);
+                    final ctType = parseNativeString(value.type);
 
                     // If its an array type wrap it in a pointer.
                     // cpp.Star doesn't allow array access so we need to use the old cpp.RawPointer.
                     if (value.size > 0)
                     {
                         finalName = value.name.split('[')[0];
-                        finalType = TPath({ pack : [ 'cpp' ], name : 'RawPointer', params : [ TPType(type) ] });
+                        finalType = macro : cpp.RawPointer<$ctType>;
                     }
                     else
                     {
-                        finalType = type;
+                        finalType = ctType;
                     }
                 }
 
@@ -197,35 +197,10 @@ class ImGuiJsonReader
                 });
             }
 
-            // Generate functions
-            for (_ => overloads in definitions)
+            for (field in generateFunctionFieldsArray(
+                definitions.map(f -> f.filter(i -> i.stname == name && !i.constructor && !i.destructor)), false))
             {
-                var baseFunction = null;
-                for (overloadedFn in overloads)
-                {
-                    if (overloadedFn.stname != name || overloadedFn.constructor || overloadedFn.destructor)
-                    {
-                        continue;
-                    }
-
-                    if (baseFunction == null)
-                    {
-                        baseFunction = generateFunction(overloadedFn, null, false);
-                    }
-                    else
-                    {
-                        baseFunction.meta.push({
-                            name   : ':overload',
-                            pos    : null,
-                            params : [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFn, EBlock([]), false)) } ]
-                        });
-                    }
-                }
-
-                if (baseFunction != null)
-                {
-                    struct.fields.push(baseFunction);
-                }
+                struct.fields.push(field);
             }
 
             structs.push(struct);
@@ -247,41 +222,13 @@ class ImGuiJsonReader
             { name: ':include', pos : null, params: [ macro $i{ '"imgui.h"' } ] },
             { name: ':native', pos : null, params: [ macro $i{ '"ImVector"' } ] }
         ];
+        imVectorClass.fields = imVectorClass.fields.concat(generateFunctionFieldsArray(
+            definitions.map(f -> f.filter(i -> !i.constructor && !i.destructor && i.templated)), false));
 
         generatedVectors.push(imVectorClass);
 
-        // Fill in fields for generic class
-        for (_ => overloads in definitions)
-        {
-            var baseFunction = null;
-            for (overloadedFn in overloads)
-            {
-                if (overloadedFn.constructor || overloadedFn.destructor || !overloadedFn.templated)
-                {
-                    continue;
-                }
-
-                if (baseFunction == null)
-                {
-                    baseFunction = generateFunction(overloadedFn, null, false);
-                }
-                else
-                {
-                    baseFunction.meta.push({
-                        name   : ':overload',
-                        pos    : null,
-                        params : [ { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFn, EBlock([]), false)) } ]
-                    });
-                }
-            }
-
-            if (baseFunction != null)
-            {
-                imVectorClass.fields.push(baseFunction);
-            }
-        }
-
         // Compile a list of all known vector templates
+        // Search the argument and variable types of all structs and functions.
         final templatedTypes = [];
         for (_ => fields in enumStruct.structs)
         {
@@ -369,9 +316,14 @@ class ImGuiJsonReader
         return def;
     }
 
+    /**
+     * Generate the the type definition for the extern class which will contain all the top level static imgui functions.
+     * @return TypeDefinition
+     */
     public function generateTopLevelFunctions() : TypeDefinition
     {
         final topLevelClass    = macro class ImGui { };
+        topLevelClass.fields   = generateFunctionFieldsArray(definitions.map(f -> f.filter(i -> i.stname == '')), true);
         topLevelClass.isExtern = true;
         topLevelClass.meta     = [
             { name: ':keep', pos : null },
@@ -381,96 +333,114 @@ class ImGuiJsonReader
             { name: ':build', pos : null, params: [ macro linc.Linc.touch() ] }
         ];
 
-        for (_ => overloads in definitions)
-        {
-            if (overloads[0].stname != '')
-            {
-                continue;
-            }
-
-            final baseFunction = generateFunction(overloads[0], null, true);
-
-            for (overloadedFunction in overloads.slice(1))
-            {
-                baseFunction.meta.push({
-                    name   : ':overload',
-                    pos    : null,
-                    params : [
-                        { pos: null, expr: extractFunctionExpr(generateFunction(overloadedFunction, EBlock([]), true)) }
-                    ]
-                });
-            }
-
-            topLevelClass.fields.push(baseFunction);
-        }
-
         return topLevelClass;
     }
 
     /**
-     * Converts a function field type definition into a function expr
-     * This is needed as metadata params need to be expr's not type definitions.
-     * We need expr functions for adding overloads to extern functions.
-     * @param _function Function field type definition to convert.
-     * @return ExprDef
+     * Generates a array of field function definitions.
+     * Overloads are generated based on actual overloads and arguments with default values.
+     * In haxe default values must be constant, so we use overloads for this.
+     * @param _overloads Array of all pre-defined overloads for functions.
+     * @param _isTopLevel If this function is to be generated as a static function.
+     * @return Array field functions in the type definition format.
      */
-    function extractFunctionExpr(_function : Field) : ExprDef
+    function generateFunctionFieldsArray(_overloads : Array<Array<JsonFunction>>, _isTopLevel : Bool) : Array<Field>
     {
-        switch _function.kind
+        final fields = [];
+
+        for (overloads in _overloads.filter(a -> a.length > 0))
         {
-            case FFun(f): return EFunction(FAnonymous, f);
-            case _: throw 'should be function';
+            var baseFn = null;
+
+            for (overloadedFn in overloads)
+            {
+                if (baseFn == null)
+                {
+                    baseFn = generateFunction(overloadedFn, _isTopLevel);
+                }
+                else
+                {
+                    baseFn.meta.push({
+                        name   : ':overload',
+                        pos    : null,
+                        params : [ { pos: null, expr: EFunction(FAnonymous, generateFunctionAst(
+                            overloadedFn.retorig.or(overloadedFn.ret),
+                            overloadedFn.retref == '&',
+                            overloadedFn.argsT.copy(),
+                            true)) } ]
+                    });
+                }
+            }
+
+            fields.push(baseFn);
         }
+
+        return fields;
     }
 
     /**
-     * Generates a function field type definiton from a json definition.
+     * Generates a field function type definiton from a json definition.
      * @param _function Json definition to generate a function from.
-     * @param _endExpr This should be null for struct and top level functions, and EBlock for overloads.
      * @param _isTopLevel If the function doesn't belong to a struct.
      * If true the function is generated as static and the native type is prefixed with the `ImGui::` namespace.
      * @return Field
      */
-    function generateFunction(_function : JsonFunction, _endExpr : ExprDef, _isTopLevel : Bool) : Field
+    function generateFunction(_function : JsonFunction, _isTopLevel : Bool) : Field
     {
-        // Take out the first argument if its called 'self'
-        // This is used for the cimgui bindings but we don't need it as we can use the original c++ structs and functions.
-        if (_function.argsT.length > 0)
-        {
-            if (_function.argsT[0].name == 'self')
-            {
-                _function.argsT.shift();
-            }
-        }
-
-        final ftype : Function = {
-            expr : null,
-            ret  : buildReturnType(parseNativeString(_function.retorig.or(_function.ret)), _function.retref == '&'),
-            args : [ for (arg in _function.argsT) generateFunctionArg(arg) ]
-        }
-
-        if (_endExpr != null)
-        {
-            ftype.expr = { expr: _endExpr, pos: null }
-        }
-
         final nativeType = _isTopLevel ? 'ImGui::${_function.funcname}' : _function.funcname;
 
-        return
-        {
+        return {
             name   : getHaxefriendlyName(_function.funcname),
             pos    : null,
             access : _isTopLevel ? [ AStatic ] : [],
-            kind   : FFun(ftype),
+            kind   : FFun(generateFunctionAst(_function.retorig.or(_function.ret), _function.retref == '&', _function.argsT.copy(), false)),
             meta   : [
                 { name: ':native', pos : null, params: [ macro $i{ '"$nativeType"' } ] }
             ]
         }
     }
 
-    function generateFunctionArg(_arg : JsonFunctionArg) : FunctionArg
+    /**
+     * Generates an AST representation of a function.
+     * AST representations do not contain a function name, this type is then wrapped in an anonymous and function expr or type definition.
+     * @param _return String of the native return type.
+     * @param _reference If the return type is a reference.
+     * @param _args Array of arguments for this function.
+     * @param _block If this function should be generated with an EBlock expr (needed for correct overload syntax).
+     * @return Function
+     */
+    function generateFunctionAst(_return : String, _reference : Bool, _args : Array<JsonFunctionArg>, _block : Bool) : Function
     {
-        return { name : '_${ getHaxefriendlyName(_arg.name) }', type : parseNativeString(_arg.type) }
+        // If the first argument is called 'self' then thats part of cimgui
+        // we can safely remove it as we aren't using the c bindings code.
+        if (_args.length > 0)
+        {
+            if (_args[0].name == 'self')
+            {
+                _args.shift();
+            }
+        }
+
+        return {
+            expr : _block ? { expr: EBlock([]), pos : null } : null,
+            ret  : buildReturnType(parseNativeString(_return), _reference),
+            args : [ for (arg in _args) generateFunctionArg(arg.name, arg.type) ]
+        }
+    }
+
+    /**
+     * Generate a function argument AST representation.
+     * @param _name name of the argument.
+     * Will prefix this with and _ to avoid collisions with haxe preserved keyworks and will force the first character to a lower case.
+     * @param _type Native type of this argument.
+     * @return FunctionArg
+     */
+    function generateFunctionArg(_name : String, _type : String) : FunctionArg
+    {
+        return {
+            name : '_${ getHaxefriendlyName(_name) }',
+            type : parseNativeString(_type)
+        }
     }
 
     function parseNativeString(_in : String) : ComplexType
@@ -490,7 +460,7 @@ class ImGuiJsonReader
         // count how many pointer levels then strip any of that away
         final pointer = occurance(_in, '*');
         final refType = occurance(_in, '&');
-        final cleaned = _in.replace('const', '').replace('*', '').replace('&', '').trim();
+        final cleaned = cleanNativeType(_in);
         var ct;
 
         if (cleaned.startsWith('ImVector_'))
@@ -550,7 +520,9 @@ class ImGuiJsonReader
             ctArgs.push(parseNativeString(type));
         }
 
-        return TPath({ pack: [ 'cpp' ], name: 'Callable', params: [ TPType(TFunction(ctArgs, parseType(returnType))) ] });
+        final ctParams = TFunction(ctArgs, parseType(returnType));
+
+        return macro : cpp.Callable<$ctParams>;
     }
 
     function buildReturnType(_ct : ComplexType, _reference : Bool)
@@ -661,26 +633,12 @@ class ImGuiJsonReader
         }
         else
         {
-            return '${_in.charAt(0).toLowerCase()}${_in.substr(1)}';
+            return '${ _in.charAt(0).toLowerCase() }${ _in.substr(1) }';
         }
     }
 
     static function cleanNativeType(_in : String) : String
     {
-        return _in == 'const char*' ? 'ConstCharStar' : _in.replace('*', '').replace('const', '').replace('&', '').trim();
-    }
-
-    static function getPointerLevel(_in : String) : Int
-    {
-        if (_in == 'const char*') return 0;
-        if (_in.contains('**')) return 1;
-
-        var count = 0;
-        for (i in 0..._in.length)
-        {
-            if (_in.charAt(i) == '*') count++;
-        }
-
-        return count;
+        return _in.replace('*', '').replace('const', '').replace('&', '').trim();
     }
 }
