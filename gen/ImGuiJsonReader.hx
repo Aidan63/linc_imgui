@@ -198,7 +198,7 @@ class ImGuiJsonReader
             }
 
             for (field in generateFunctionFieldsArray(
-                definitions.map(f -> f.filter(i -> i.stname == name && !i.constructor && !i.destructor)), false))
+                definitions.map(f -> f.filter(i -> i.stname == name && !i.destructor)), false))
             {
                 struct.fields.push(field);
             }
@@ -296,6 +296,31 @@ class ImGuiJsonReader
                 { name: ':native', pos : null, params: [ macro $i{ '"ImVector<$templatedType>"' } ] }
             ];
 
+            // Add constructors for each imvector child
+            // Has a standard constructor and one which copies from another vector of the same type.
+            final constructor : Field = { name: 'create', pos: null, access: [ AStatic ], kind: FFun(generateFunctionAst(fullname, false, [], false)) };
+            constructor.meta = [
+                {
+                    name   : ':native',
+                    pos    : null,
+                    params : [ macro $i{ '"ImVector<$templatedType>"' } ]
+                },
+                {
+                    name   : ':overload',
+                    pos    : null,
+                    params : [
+                        {
+                            expr : EFunction(FAnonymous, generateFunctionAst(fullname, false, [
+                                { name: 'src', type: fullname, signature: '' }
+                            ], true)),
+                            pos  : null
+                        }
+                    ]
+                }
+            ];
+
+            templated.fields.push(constructor);
+
             generatedVectors.push(templated);
         }
 
@@ -356,7 +381,7 @@ class ImGuiJsonReader
             {
                 if (baseFn == null)
                 {
-                    baseFn = generateFunction(overloadedFn, _isTopLevel);
+                    baseFn = generateFunction(overloadedFn, _isTopLevel, overloadedFn.constructor);
                 }
                 else
                 {
@@ -364,7 +389,7 @@ class ImGuiJsonReader
                         name   : ':overload',
                         pos    : null,
                         params : [ { pos: null, expr: EFunction(FAnonymous, generateFunctionAst(
-                            overloadedFn.retorig.or(overloadedFn.ret),
+                            overloadedFn.constructor ? overloadedFn.stname : overloadedFn.retorig.or(overloadedFn.ret),
                             overloadedFn.retref == '&',
                             overloadedFn.argsT.copy(),
                             true)) } ]
@@ -385,7 +410,7 @@ class ImGuiJsonReader
                         name   : ':overload',
                         pos    : null,
                         params : [ { pos: null, expr: EFunction(FAnonymous, generateFunctionAst(
-                            overloadedFn.retorig.or(overloadedFn.ret),
+                            overloadedFn.constructor ? overloadedFn.stname : overloadedFn.retorig.or(overloadedFn.ret),
                             overloadedFn.retref == '&',
                             overloadedFn.argsT.filter(i -> !filtered.has(i.name)),
                             true)) } ]
@@ -404,17 +429,20 @@ class ImGuiJsonReader
      * @param _function Json definition to generate a function from.
      * @param _isTopLevel If the function doesn't belong to a struct.
      * If true the function is generated as static and the native type is prefixed with the `ImGui::` namespace.
+     * @param _isConstructor
      * @return Field
      */
-    function generateFunction(_function : JsonFunction, _isTopLevel : Bool) : Field
+    function generateFunction(_function : JsonFunction, _isTopLevel : Bool, _isConstructor : Bool) : Field
     {
         final nativeType = _isTopLevel ? 'ImGui::${_function.funcname}' : _function.funcname;
+        final funcName   = _isConstructor ? 'create' : getHaxefriendlyName(_function.funcname);
+        final returnType = _isConstructor ? _function.stname : _function.retorig.or(_function.ret);
 
         return {
-            name   : getHaxefriendlyName(_function.funcname),
+            name   : funcName,
             pos    : null,
-            access : _isTopLevel ? [ AStatic ] : [],
-            kind   : FFun(generateFunctionAst(_function.retorig.or(_function.ret), _function.retref == '&', _function.argsT.copy(), false)),
+            access : _isTopLevel || _isConstructor ? [ AStatic ] : [],
+            kind   : FFun(generateFunctionAst(returnType, _function.retref == '&', _function.argsT.copy(), false)),
             meta   : [
                 { name: ':native', pos : null, params: [ macro $i{ '"$nativeType"' } ] }
             ]
