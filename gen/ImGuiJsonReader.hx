@@ -298,21 +298,23 @@ class ImGuiJsonReader
 
             // Add constructors for each imvector child
             // Has a standard constructor and one which copies from another vector of the same type.
-            final constructor : Field = { name: 'create', pos: null, access: [ AStatic ], kind: FFun(generateFunctionAst(fullname, false, [], false)) };
+            final constructor : Field = {
+                name   : 'create',
+                pos    : null,
+                access : [ AStatic ], kind: FFun(generateFunctionAst(fullname, false, [], false))
+            };
             constructor.meta = [
-                {
-                    name   : ':native',
-                    pos    : null,
-                    params : [ macro $i{ '"ImVector<$templatedType>"' } ]
-                },
+                { name : ':native', pos : null, params : [ macro $i{ '"ImVector<$templatedType>"' } ] },
                 {
                     name   : ':overload',
                     pos    : null,
                     params : [
                         {
-                            expr : EFunction(FAnonymous, generateFunctionAst(fullname, false, [
-                                { name: 'src', type: fullname, signature: '' }
-                            ], true)),
+                            expr : EFunction(FAnonymous, generateFunctionAst(fullname, false, [ {
+                                    name      : 'src',
+                                    type      : fullname,
+                                    signature : ''
+                                } ], true)),
                             pos  : null
                         }
                     ]
@@ -614,7 +616,7 @@ class ImGuiJsonReader
             case 'void'                        : macro : cpp.Void;
             case 'T'                           : macro : T;
             case 'ImVector'                    : macro : imgui.ImVector<T>;
-            case _other: TPath({ pack: [ 'imgui' ], name : _other });
+            case _other: TPath({ pack: [ ], name : _other });
         }
     }
 
