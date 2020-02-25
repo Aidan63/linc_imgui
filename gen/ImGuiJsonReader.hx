@@ -370,6 +370,27 @@ class ImGuiJsonReader
                             true)) } ]
                     });
                 }
+
+                // For each overloaded function also look at the default values.
+                // Generate additional overloads by filtering the aguments based on a growing list of arguments to remove.
+                // We pop from the list as default arguments 
+                final defaults = [ for (k in overloadedFn.defaults.keys()) k ];
+                final filtered = [];
+
+                while (defaults.length > 0)
+                {
+                    filtered.push(defaults.pop());
+
+                    baseFn.meta.push({
+                        name   : ':overload',
+                        pos    : null,
+                        params : [ { pos: null, expr: EFunction(FAnonymous, generateFunctionAst(
+                            overloadedFn.retorig.or(overloadedFn.ret),
+                            overloadedFn.retref == '&',
+                            overloadedFn.argsT.filter(i -> !filtered.has(i.name)),
+                            true)) } ]
+                    });
+                }
             }
 
             fields.push(baseFn);
