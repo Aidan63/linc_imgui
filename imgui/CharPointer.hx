@@ -15,28 +15,18 @@ abstract CharPointer(RawPointer<UInt8>) from RawPointer<UInt8> to RawPointer<UIn
         this = _ptr;
     }
 
-    // @:from public static function fromString(_string : String)
-    // {
-    //     return new CharPointer(cast untyped _string.__s);
-    // }
+    @:from public static function fromBytes(_bytes : Bytes)
+    {
+        return new CharPointer(cast _bytes.getData().address(0).ptr);
+    }
 
-    // @:from public static function fromBytes(_bytes : Bytes)
-    // {
-    //     return new CharPointer(cast _bytes.getData().address(0).ptr);
-    // }
+    @:from public static function fromBytesData(_bytes : BytesData)
+    {
+        return new CharPointer(cast _bytes.address(0).ptr);
+    }
 
-    // @:from public static function fromBytesData(_bytes : BytesData)
-    // {
-    //     return new CharPointer(cast _bytes.address(0).ptr);
-    // }
-
-    // @:to public function toString()
-    // {
-    //     return new String(cast untyped this);
-    // }
-
-    // @:to public function toStar() : Star<UInt8>
-    // {
-    //     return cast this;
-    // }
+    @:to public function toStar() : Star<UInt8>
+    {
+        return cast this;
+    }
 }

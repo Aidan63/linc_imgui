@@ -180,8 +180,9 @@ class ImGuiJsonReader
                     // cpp.Star doesn't allow array access so we need to use the old cpp.RawPointer.
                     if (value.size > 0)
                     {
+                        // Attempt to simplify again now that its wrapped in a raw pointer
                         finalName = value.name.split('[')[0];
-                        finalType = macro : cpp.RawPointer<$ctType>;
+                        finalType = simplifyComplexType(macro : cpp.RawPointer<$ctType>);
                     }
                     else
                     {
@@ -645,13 +646,42 @@ class ImGuiJsonReader
                                     case TPath(innerPath):
                                         switch innerPath.name
                                         {
-                                            case 'UInt8', 'Int8': return TPath({ pack: [ 'imgui' ], name: 'CharPointer' });
-                                            case 'Void': return TPath({ pack: [ 'imgui' ], name: 'VoidPointer' });
+                                            case 'Int8': return macro : cpp.ConstCharStar;
+                                            case 'UInt8': return macro : imgui.CharPointer;
+                                            case 'Void': return macro : imgui.VoidPointer;
+                                            case 'Int' : return macro : imgui.IntPointer;
+                                            case 'Float32': return macro : imgui.FloatPointer;
+                                            case 'Bool' : return macro : imgui.BoolPointer;
                                             case _: // Not other pointer simplifications at this point
                                         }
                                     case _: throw 'complex type parameter should be another TPath';
                                 }
                             case _: throw 'complex type parameter should be another TPath';
+                        }
+                    }
+                }
+
+                if (p.name == 'RawPointer')
+                {
+                    for (param in p.params)
+                    {
+                        switch param
+                        {
+                            case TPType(inner):
+                                switch inner
+                                {
+                                    case TPath(innerPath):
+                                        switch innerPath.name
+                                        {
+                                            case 'UInt8', 'Int8': return macro : cpp.ConstCharStar;
+                                            case 'Int': return macro : imgui.IntPointer;
+                                            case 'Float32': return macro : imgui.FloatPointer;
+                                            case 'Bool': return macro : imgui.BoolPointer;
+                                            case _:
+                                        }
+                                    case _:
+                                }
+                            case _:
                         }
                     }
                 }
