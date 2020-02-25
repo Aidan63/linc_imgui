@@ -1,6 +1,7 @@
-import cpp.Pointer;
+
 import imgui.ImGui;
-import imgui.util.ImVec2;
+
+using cpp.Native;
 
 class Main
 {
@@ -11,20 +12,20 @@ class Main
 
     public function new()
     {
-        ImGui.createContext();
-
-        var io = ImGui.getIO();
+        final ctx = ImGui.createContext();
+        final io  = ImGui.getIO();
         io.displaySize = ImVec2.create(640, 480);
-        
-        var text  = "TextureID";
 
-        var atlas = Pointer.fromRaw(io.fonts).ref;
-        var width  : Int = 0;
-        var height : Int = 0;
-        var pixels : Array<Int> = null;
+        final id = 'text';
+
+        var width  = 0;
+        var height = 0;
+        var pixels : cpp.Star<cpp.UInt8> = null;
+        var pixelPtr : cpp.Star<cpp.Star<cpp.UInt8>> = pixels.addressOf();
         
-        atlas.getTexDataAsRGBA32(pixels, width, height);
-        atlas.texID = Pointer.addressOf(text).rawCast();
+        io.fonts.getTexDataAsRGBA32(pixelPtr, width, height);
+        io.fonts.texID = id;
+        io.backendRendererName = 'my renderer';
 
         // Update
         ImGui.newFrame();
@@ -33,6 +34,8 @@ class Main
 
         ImGui.render();
 
-        ImGui.destroyContext();
+        ImGui.destroyContext(ctx);
+        
+        trace('done');
     }
 }
