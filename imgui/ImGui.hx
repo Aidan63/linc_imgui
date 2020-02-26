@@ -1899,10 +1899,10 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::ListBoxFooter")
 	static function listBoxFooter():cpp.Void;
 	@:native("ImGui::ListBox")
-	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.Star<cpp.RawPointer<cpp.Int8>>, _items_count:Int):Bool { })
+	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<cpp.ConstCharStar>, _items_count:Int):Bool { })
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.Star<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _height_in_items:Int):Bool { })
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.Star<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
-	static function listBox(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.Star<cpp.RawPointer<cpp.Int8>>, _items_count:Int, _height_in_items:Int):Bool;
+	static function listBox(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<cpp.ConstCharStar>, _items_count:Int, _height_in_items:Int):Bool;
 	@:native("ImGui::LabelTextV")
 	static function labelTextV(_label:cpp.ConstCharStar, _fmt:cpp.ConstCharStar, _args:cpp.VarArg):cpp.Void;
 	@:native("ImGui::LabelText")
@@ -2340,12 +2340,12 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:overload(function():cpp.Star<ImGuiContext> { })
 	static function createContext(_shared_font_atlas:cpp.Star<ImFontAtlas>):cpp.Star<ImGuiContext>;
 	@:native("ImGui::Combo")
-	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.Star<cpp.RawPointer<cpp.Int8>>, _items_count:Int):Bool { })
+	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<cpp.ConstCharStar>, _items_count:Int):Bool { })
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_separated_by_zeros:cpp.ConstCharStar, _popup_max_height_in_items:Int):Bool { })
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_separated_by_zeros:cpp.ConstCharStar):Bool { })
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.Star<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _popup_max_height_in_items:Int):Bool { })
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.Star<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
-	static function combo(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.Star<cpp.RawPointer<cpp.Int8>>, _items_count:Int, _popup_max_height_in_items:Int):Bool;
+	static function combo(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<cpp.ConstCharStar>, _items_count:Int, _popup_max_height_in_items:Int):Bool;
 	@:native("ImGui::Columns")
 	@:overload(function(_count:Int, _id:cpp.ConstCharStar):cpp.Void { })
 	@:overload(function(_id:cpp.ConstCharStar):cpp.Void { })

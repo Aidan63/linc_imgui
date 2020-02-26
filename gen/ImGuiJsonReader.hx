@@ -531,24 +531,26 @@ class ImGuiJsonReader
             // Array types use cpp.RawPointer instead of cpp.Star to allow array access
             // Also allows us to pattern match against it and generate abstracts to easy array <-> pointer interop.
 
-            final arrayType = cleaned.split('[')[0];
-            final hxType    = getHaxeType(arrayType);
+            final arrayType = _in.split('[')[0];
+            final hxType    = parseType(arrayType);
 
             ct = macro : cpp.RawPointer<$hxType>;
         }
         else
         {
             ct = getHaxeType(cleaned);
-        }
 
-        // Get the base complex type, then wrap it in as many pointer as is required.
-        for (_ in 0...pointer)
-        {
-            ct = macro : cpp.Star<$ct>;
-        }
-        for (_ in 0...refType)
-        {
-            ct = macro : cpp.Reference<$ct>;
+            // Get the base complex type, then wrap it in as many pointer as is required.
+            for (_ in 0...pointer)
+            {
+                ct = macro : cpp.Star<$ct>;
+            }
+            for (_ in 0...refType)
+            {
+                ct = macro : cpp.Reference<$ct>;
+            }
+
+            ct = simplifyComplexType(ct);
         }
 
         // Attempt to detect pointer patters and map them to custom abstracts for easier end-user usage.
