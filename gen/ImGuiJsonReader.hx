@@ -76,7 +76,7 @@ class ImGuiJsonReader
     }
 
     /**
-     * Generate expr type definitions for all typedef aliases found in the json.
+     * Generate type definitions for all typedef aliases found in the json.
      * Ignores flags, structs, and iterators and they are generated else where.
      * @return Array<TypeDefinition>
      */
@@ -105,7 +105,7 @@ class ImGuiJsonReader
     }
 
     /**
-     * Generate expr type definitions for all the enums found in the json.
+     * Generate type definitions for all the enums found in the json.
      * Integer based abstract enums are generated with implicit to and from int conversions.
      * 
      * The json definition enum names are post fixed with `_` so we substring the last character away.
@@ -114,20 +114,30 @@ class ImGuiJsonReader
      */
     public function generateEnums() : Array<TypeDefinition>
     {
-        return [ for (name => values in enumStruct.enums) {
-            pack   : [ 'imgui' ],
-            kind   : TDAbstract(macro : Int, [ macro : Int ], [ macro : Int ]),
-            name   : name.substr(0, name.length - 1),
-            pos    : null,
-            meta   : [ { name: ':enum', pos : null } ],
-            fields : [ for (value in values) {
-                name : value.name.replace(name, ''),
-                kind : FVar(macro : Int, { pos: null, expr: EConst(CInt('${value.calc_value}')) }),
-                pos  : null,
-            } ]
-        } ];
+        return [
+            for (name => values in enumStruct.enums)
+            {
+                pack   : [ 'imgui' ],
+                kind   : TDAbstract(macro : Int, [ macro : Int ], [ macro : Int ]),
+                name   : name.substr(0, name.length - 1),
+                pos    : null,
+                meta   : [ { name: ':enum', pos : null } ],
+                fields : [ for (value in values) {
+                    name : value.name.replace(name, ''),
+                    kind : FVar(macro : Int, { pos: null, expr: EConst(CInt('${value.calc_value}')) }),
+                    pos  : null,
+                } ]
+            }
+        ];
     }
 
+    /**
+     * Generate externs for each struct in the enums and structs json.
+     * Also searches the definitions json for functions which belong to each struct.
+     * 
+     * Destructors are not current generated, stack based constructors only right now.
+     * @return Array<TypeDefinition>
+     */
     public function generateStructs() : Array<TypeDefinition>
     {
         final structs = [];
@@ -146,8 +156,8 @@ class ImGuiJsonReader
             // Generate fields
             for (value in values)
             {
-                // Ignore function and union types for now
-                if (value.type.contains('(*)') || value.type.contains('union {'))
+                // Ignore union types for now
+                if (value.type.contains('union {'))
                 {
                     continue;
                 }
@@ -210,6 +220,11 @@ class ImGuiJsonReader
         return structs;
     }
 
+    /**
+     * Generate an ImVector generic and sub classes for all found ImVectors.
+     * Same as structs, no descructors and stack based constructors only.
+     * @return Array<TypeDefinition>
+     */
     public function generateImVectors() : Array<TypeDefinition>
     {
         final generatedVectors = [];
@@ -330,6 +345,11 @@ class ImGuiJsonReader
         return generatedVectors;
     }
 
+    /**
+     * Generate an empty extern, needed to create context type.
+     * @param _name Name of the extern to generate.
+     * @return TypeDefinition
+     */
     public function generateEmptyExtern(_name : String) : TypeDefinition
     {
         final def    = macro class $_name {};
@@ -432,7 +452,7 @@ class ImGuiJsonReader
      * @param _function Json definition to generate a function from.
      * @param _isTopLevel If the function doesn't belong to a struct.
      * If true the function is generated as static and the native type is prefixed with the `ImGui::` namespace.
-     * @param _isConstructor
+     * @param _isConstructor if this function is a constructor.
      * @return Field
      */
     function generateFunction(_function : JsonFunction, _isTopLevel : Bool, _isConstructor : Bool) : Field
@@ -495,6 +515,12 @@ class ImGuiJsonReader
         }
     }
 
+    /**
+     * Parse the provided string containing a native c type into the equivilent haxe type.
+     * Currently parses pointer types and functions.
+     * @param _in Native c type.
+     * @return ComplexType
+     */
     function parseNativeString(_in : String) : ComplexType
     {
         if (_in.contains('(*)'))
@@ -561,7 +587,6 @@ class ImGuiJsonReader
             ct = simplifyComplexType(ct);
         }
 
-        // Attempt to detect pointer patters and map them to custom abstracts for easier end-user usage.
         return simplifyComplexType(ct);
     }
 
@@ -626,7 +651,7 @@ class ImGuiJsonReader
             case 'size_t'                      : macro : cpp.SizeT;
             case 'void'                        : macro : cpp.Void;
             case 'T'                           : macro : T;
-            case 'ImVector'                    : macro : imgui.ImVector<T>;
+            case 'ImVector'                    : macro : ImVector<T>;
             case _other: TPath({ pack: [ ], name : _other });
         }
     }
@@ -642,73 +667,27 @@ class ImGuiJsonReader
                     return _ct;
                 }
 
-                // Attempt to simplify `unsigned char*` and `void*` pointers to a custom abstract type.
+                // Attempt to simplify some base type pointers to a custom abstracts.
                 // Makes common pointer types easier to deal with.
-                if (p.name == 'Star')
+                if (p.name == 'Star' || p.name == 'RawPointer')
                 {
-                    for (param in p.params)
-                    {
-                        switch param
-                        {
-                            case TPType(inner):
-                                switch inner
-                                {
-                                    case TPath(innerPath):
-                                        switch innerPath.name
-                                        {
-                                            case 'UInt8': return macro : imgui.CharPointer;
-                                            case 'Void': return macro : imgui.VoidPointer;
-                                            case 'Int' : return macro : imgui.IntPointer;
-                                            case 'Float32': return macro : imgui.FloatPointer;
-                                            case 'Bool' : return macro : imgui.BoolPointer;
-                                            case 'Star':
-                                                for (param in innerPath.params)
-                                                {
-                                                    switch param
-                                                    {
-                                                        case TPType(t):
-                                                            switch t
-                                                            {
-                                                                case TPath(p):
-                                                                    if (p.name == 'ImDrawList')
-                                                                    {
-                                                                        return macro : cpp.RawPointer<cpp.Star<ImDrawList>>;
-                                                                    }
-                                                                case _:
-                                                            }
-                                                        case _:
-                                                    }
-                                                }
-                                            case _: // Not other pointer simplifications at this point
-                                        }
-                                    case _: throw 'complex type parameter should be another TPath';
-                                }
-                            case _: throw 'complex type parameter should be another TPath';
-                        }
-                    }
-                }
+                    final inner = getInnerParameter(p.params);
 
-                if (p.name == 'RawPointer')
-                {
-                    for (param in p.params)
+                    switch inner.name
                     {
-                        switch param
-                        {
-                            case TPType(inner):
-                                switch inner
-                                {
-                                    case TPath(innerPath):
-                                        switch innerPath.name
-                                        {
-                                            case 'Int': return macro : imgui.IntPointer;
-                                            case 'Float32': return macro : imgui.FloatPointer;
-                                            case 'Bool': return macro : imgui.BoolPointer;
-                                            case _:
-                                        }
-                                    case _:
-                                }
-                            case _:
-                        }
+                        case 'UInt8': return macro : imgui.CharPointer;
+                        case 'Void': return macro : imgui.VoidPointer;
+                        case 'Int' : return macro : imgui.IntPointer;
+                        case 'Float32': return macro : imgui.FloatPointer;
+                        case 'Bool' : return macro : imgui.BoolPointer;
+                        case 'Star':
+                            final inner = getInnerParameter(inner.params);
+                            
+                            if (inner.name == 'ImDrawList')
+                            {
+                                return macro : cpp.RawPointer<cpp.Star<ImDrawList>>;
+                            }
+                        case _: // Not other pointer simplifications at this point
                     }
                 }
 
@@ -716,30 +695,40 @@ class ImGuiJsonReader
                 // else, re-type it in a cpp.Star for easier use
                 if (p.name == 'RawConstPointer')
                 {
-                    for (param in p.params)
+                    final inner = getInnerParameter(p.params);
+
+                    switch inner.name
                     {
-                        switch param
-                        {
-                            case TPType(inner):
-                                switch inner
-                                {
-                                    case TPath(innerPath):
-                                        switch innerPath.name
-                                        {
-                                            case 'Int8': return macro : cpp.ConstCharStar;
-                                            case _: return macro : cpp.Star<$inner>;
-                                        }
-                                    case _:
-                                }
-                            case _:
-                        }
+                        case 'Int8': return macro : cpp.ConstCharStar;
+                        case _:
+                            final ct = TPath(inner);
+
+                            return macro : cpp.Star<$ct>;
                     }
                 }
-
-            case _: throw 'complex type should not be anything but TPath';
+            case _:
         }
 
         return _ct;
+    }
+
+    function getInnerParameter(_params : Array<TypeParam>) : TypePath
+    {
+        for (param in _params)
+        {
+            switch param
+            {
+                case TPType(t):
+                    switch t
+                    {
+                        case TPath(p): return p;
+                        case _:
+                    }
+                case _:
+            }
+        }
+
+        return null;
     }
 
     function occurance(_in : String, _search : String) : Int

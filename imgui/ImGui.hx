@@ -835,8 +835,14 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	var backendRendererUserData : imgui.VoidPointer;
 	@:native("BackendLanguageUserData")
 	var backendLanguageUserData : imgui.VoidPointer;
+	@:native("GetClipboardTextFn")
+	var getClipboardTextFn : cpp.Callable<imgui.VoidPointer -> cpp.ConstCharStar>;
+	@:native("SetClipboardTextFn")
+	var setClipboardTextFn : cpp.Callable<(imgui.VoidPointer, cpp.ConstCharStar) -> cpp.Void>;
 	@:native("ClipboardUserData")
 	var clipboardUserData : imgui.VoidPointer;
+	@:native("ImeSetInputScreenPosFn")
+	var imeSetInputScreenPosFn : cpp.Callable<(Int, Int) -> cpp.Void>;
 	@:native("ImeWindowHandle")
 	var imeWindowHandle : imgui.VoidPointer;
 	@:native("RenderDrawListsFnUnused")
@@ -2504,7 +2510,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("Data")
 	var data : cpp.RawPointer<T>;
 	@:native("swap")
-	function swap(_rhs:cpp.Reference<imgui.ImVector<T>>):cpp.Void;
+	function swap(_rhs:cpp.Reference<ImVector<T>>):cpp.Void;
 	@:native("size_in_bytes")
 	function size_in_bytes():Int;
 	@:native("size")
