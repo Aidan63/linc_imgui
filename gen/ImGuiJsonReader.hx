@@ -510,6 +510,7 @@ class ImGuiJsonReader
     function parseType(_in : String) : ComplexType
     {
         // count how many pointer levels then strip any of that away
+        final const   = _in.contains('const');
         final pointer = occurance(_in, '*');
         final refType = occurance(_in, '&');
         final cleaned = cleanNativeType(_in);
@@ -543,7 +544,14 @@ class ImGuiJsonReader
             // Get the base complex type, then wrap it in as many pointer as is required.
             for (_ in 0...pointer)
             {
-                ct = macro : cpp.Star<$ct>;
+                if (const)
+                {
+                    ct = macro : cpp.RawConstPointer<$ct>;
+                }
+                else
+                {
+                    ct = macro : cpp.Star<$ct>;
+                }
             }
             for (_ in 0...refType)
             {
@@ -648,7 +656,6 @@ class ImGuiJsonReader
                                     case TPath(innerPath):
                                         switch innerPath.name
                                         {
-                                            case 'Int8': return macro : cpp.ConstCharStar;
                                             case 'UInt8': return macro : imgui.CharPointer;
                                             case 'Void': return macro : imgui.VoidPointer;
                                             case 'Int' : return macro : imgui.IntPointer;
@@ -693,11 +700,34 @@ class ImGuiJsonReader
                                     case TPath(innerPath):
                                         switch innerPath.name
                                         {
-                                            case 'UInt8', 'Int8': return macro : cpp.ConstCharStar;
                                             case 'Int': return macro : imgui.IntPointer;
                                             case 'Float32': return macro : imgui.FloatPointer;
                                             case 'Bool': return macro : imgui.BoolPointer;
                                             case _:
+                                        }
+                                    case _:
+                                }
+                            case _:
+                        }
+                    }
+                }
+
+                // If we have a RawConstPointer<Int8> the re-type it as a ConstCharStar
+                // else, re-type it in a cpp.Star for easier use
+                if (p.name == 'RawConstPointer')
+                {
+                    for (param in p.params)
+                    {
+                        switch param
+                        {
+                            case TPType(inner):
+                                switch inner
+                                {
+                                    case TPath(innerPath):
+                                        switch innerPath.name
+                                        {
+                                            case 'Int8': return macro : cpp.ConstCharStar;
+                                            case _: return macro : cpp.Star<$inner>;
                                         }
                                     case _:
                                 }
