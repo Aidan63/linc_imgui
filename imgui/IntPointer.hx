@@ -30,4 +30,14 @@ abstract IntPointer(RawPointer<Int>) from RawPointer<Int> to RawPointer<Int>
     {
         return Pointer.fromRaw(this).ptr;
     }
+
+    @:arrayAccess public function get(_idx : Int) : Int
+    {
+        return this[_idx];
+    }
+
+    @:arrayAccess public function set(_idx : Int, _val : Int)
+    {
+        this[_idx] = _val;
+    }
 }

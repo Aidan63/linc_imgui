@@ -1,5 +1,6 @@
 package imgui;
 
+import cpp.Pointer;
 import cpp.Star;
 import cpp.RawPointer;
 
@@ -12,11 +13,18 @@ abstract VoidPointer(RawPointer<cpp.Void>) from RawPointer<cpp.Void> to RawPoint
 
     @:from public static function fromObject(_object : Dynamic)
     {
-        return new VoidPointer(cast cpp.Pointer.addressOf(_object).raw);
+        return new VoidPointer(cast Pointer.addressOf(_object).raw);
     }
 
     @:to public function toStar() : Star<cpp.Void>
     {
         return cast this;
+    }
+
+    @:to public function toDynamic() : Dynamic
+    {
+        final ptr : Pointer<Dynamic> = Pointer.fromRaw(this).reinterpret();
+
+        return ptr.ref;
     }
 }

@@ -30,4 +30,14 @@ abstract BoolPointer(RawPointer<Bool>) from RawPointer<Bool> to RawPointer<Bool>
     {
         return Pointer.fromRaw(this).ptr;
     }
+
+    @:arrayAccess public function get(_idx : Int) : Bool
+    {
+        return this[_idx];
+    }
+
+    @:arrayAccess public function set(_idx : Int, _val : Bool)
+    {
+        this[_idx] = _val;
+    }
 }

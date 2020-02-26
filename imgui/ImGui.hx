@@ -1437,7 +1437,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("Valid")
 	var valid : Bool;
 	@:native("CmdLists")
-	var cmdLists : cpp.Star<cpp.Star<ImDrawList>>;
+	var cmdLists : cpp.RawPointer<cpp.Star<ImDrawList>>;
 	@:native("CmdListsCount")
 	var cmdListsCount : Int;
 	@:native("TotalIdxCount")

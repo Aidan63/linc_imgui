@@ -652,6 +652,24 @@ class ImGuiJsonReader
                                             case 'Int' : return macro : imgui.IntPointer;
                                             case 'Float32': return macro : imgui.FloatPointer;
                                             case 'Bool' : return macro : imgui.BoolPointer;
+                                            case 'Star':
+                                                for (param in innerPath.params)
+                                                {
+                                                    switch param
+                                                    {
+                                                        case TPType(t):
+                                                            switch t
+                                                            {
+                                                                case TPath(p):
+                                                                    if (p.name == 'ImDrawList')
+                                                                    {
+                                                                        return macro : cpp.RawPointer<cpp.Star<ImDrawList>>;
+                                                                    }
+                                                                case _:
+                                                            }
+                                                        case _:
+                                                    }
+                                                }
                                             case _: // Not other pointer simplifications at this point
                                         }
                                     case _: throw 'complex type parameter should be another TPath';
