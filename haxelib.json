@@ -7,5 +7,6 @@
     "releasenote": "Initial release",
     "contributors": [
         "Aidan"
-    ]
+    ],
+    "classPath": "src"
 }

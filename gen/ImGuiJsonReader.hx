@@ -377,8 +377,8 @@ class ImGuiJsonReader
             { name: ':keep', pos : null },
             { name: ':structAccess', pos : null },
             { name: ':include', pos : null, params: [ macro $i{ '"imgui.h"' } ] },
-            { name: ':build', pos : null, params: [ macro linc.Linc.xml('imgui') ] },
-            { name: ':build', pos : null, params: [ macro linc.Linc.touch() ] }
+            { name: ':build', pos : null, params: [ macro imgui.linc.Linc.xml('imgui') ] },
+            { name: ':build', pos : null, params: [ macro imgui.linc.Linc.touch() ] }
         ];
 
         return topLevelClass;

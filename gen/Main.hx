@@ -60,7 +60,7 @@ class Main
             buffer.newline();
         }
 
-        File.saveContent('imgui/ImGui.hx', buffer.toString());
+        File.saveContent('src/imgui/ImGui.hx', buffer.toString());
     }
 }
 

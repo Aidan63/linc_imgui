@@ -1,4 +1,5 @@
 -cp gen
+-cp src
 
 -lib safety
 -lib json2object

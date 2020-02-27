@@ -7,7 +7,7 @@
 
         <!-- add files and flags to the haxe c++ build -->
 
-        <compilerflag value="-I${LINC_IMGUI_PATH}linc/"/>
+        <compilerflag value="-I${LINC_IMGUI_PATH}src/linc/"/>
         <compilerflag value="-I${LINC_IMGUI_PATH}lib/cimgui/imgui/" />
 
     </files>
