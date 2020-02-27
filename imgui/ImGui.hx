@@ -20,7 +20,7 @@ typedef ImS32 = Int;
 
 typedef ImS16 = cpp.Int16;
 
-typedef ImGuiSizeCallback = cpp.Callable<cpp.Star<ImGuiSizeCallbackData> -> cpp.Void>;
+typedef ImGuiSizeCallback = cpp.Callable<cpp.Star<ImGuiSizeCallbackData> -> Void>;
 
 typedef ImGuiInputTextCallback = cpp.Callable<ImGuiInputTextCallbackData -> Int>;
 
@@ -28,7 +28,7 @@ typedef ImGuiID = UInt;
 
 typedef ImDrawIdx = cpp.UInt16;
 
-typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>) -> cpp.Void>;
+typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>) -> Void>;
 
 @:enum abstract ImGuiWindowFlags(Int) from Int to Int {
 	var None : Int = 0;
@@ -838,11 +838,11 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("GetClipboardTextFn")
 	var getClipboardTextFn : cpp.Callable<imgui.VoidPointer -> cpp.ConstCharStar>;
 	@:native("SetClipboardTextFn")
-	var setClipboardTextFn : cpp.Callable<(imgui.VoidPointer, cpp.ConstCharStar) -> cpp.Void>;
+	var setClipboardTextFn : cpp.Callable<(imgui.VoidPointer, cpp.ConstCharStar) -> Void>;
 	@:native("ClipboardUserData")
 	var clipboardUserData : imgui.VoidPointer;
 	@:native("ImeSetInputScreenPosFn")
-	var imeSetInputScreenPosFn : cpp.Callable<(Int, Int) -> cpp.Void>;
+	var imeSetInputScreenPosFn : cpp.Callable<(Int, Int) -> Void>;
 	@:native("ImeWindowHandle")
 	var imeWindowHandle : imgui.VoidPointer;
 	@:native("RenderDrawListsFnUnused")
@@ -1748,8 +1748,8 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::SetClipboardText")
 	static function setClipboardText(_text:cpp.ConstCharStar):cpp.Void;
 	@:native("ImGui::SetAllocatorFunctions")
-	@:overload(function(_alloc_func:cpp.Callable<(cpp.SizeT, imgui.VoidPointer) -> imgui.VoidPointer>, _free_func:cpp.Callable<(imgui.VoidPointer, imgui.VoidPointer) -> cpp.Void>):cpp.Void { })
-	static function setAllocatorFunctions(_alloc_func:cpp.Callable<(cpp.SizeT, imgui.VoidPointer) -> imgui.VoidPointer>, _free_func:cpp.Callable<(imgui.VoidPointer, imgui.VoidPointer) -> cpp.Void>, _user_data:imgui.VoidPointer):cpp.Void;
+	@:overload(function(_alloc_func:cpp.Callable<(cpp.SizeT, imgui.VoidPointer) -> imgui.VoidPointer>, _free_func:cpp.Callable<(imgui.VoidPointer, imgui.VoidPointer) -> Void>):cpp.Void { })
+	static function setAllocatorFunctions(_alloc_func:cpp.Callable<(cpp.SizeT, imgui.VoidPointer) -> imgui.VoidPointer>, _free_func:cpp.Callable<(imgui.VoidPointer, imgui.VoidPointer) -> Void>, _user_data:imgui.VoidPointer):cpp.Void;
 	@:native("ImGui::Separator")
 	static function separator():cpp.Void;
 	@:native("ImGui::Selectable")

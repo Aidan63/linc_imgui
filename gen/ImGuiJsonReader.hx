@@ -533,7 +533,7 @@ class ImGuiJsonReader
         }
     }
 
-    function parseType(_in : String) : ComplexType
+    function parseType(_in : String, _nativeVoid = true) : ComplexType
     {
         // count how many pointer levels then strip any of that away
         final const   = _in.contains('const');
@@ -565,7 +565,7 @@ class ImGuiJsonReader
         }
         else
         {
-            ct = getHaxeType(cleaned);
+            ct = getHaxeType(cleaned, _nativeVoid);
 
             // Get the base complex type, then wrap it in as many pointer as is required.
             for (_ in 0...pointer)
@@ -607,7 +607,7 @@ class ImGuiJsonReader
             ctArgs.push(parseNativeString(type));
         }
 
-        final ctParams = TFunction(ctArgs, parseType(returnType));
+        final ctParams = TFunction(ctArgs, parseType(returnType, false));
 
         return macro : cpp.Callable<$ctParams>;
     }
@@ -632,7 +632,7 @@ class ImGuiJsonReader
         return _ct;
     }
 
-    function getHaxeType(_in : String) : ComplexType
+    function getHaxeType(_in : String, _nativeVoid = true) : ComplexType
     {
         return switch _in.trim()
         {
@@ -649,7 +649,7 @@ class ImGuiJsonReader
             case 'uint64_t'                    : macro : cpp.UInt64;
             case 'va_list', '...'              : macro : cpp.VarArg;
             case 'size_t'                      : macro : cpp.SizeT;
-            case 'void'                        : macro : cpp.Void;
+            case 'void'                        : _nativeVoid ? macro : cpp.Void : macro : Void;
             case 'T'                           : macro : T;
             case 'ImVector'                    : macro : ImVector<T>;
             case _other: TPath({ pack: [ ], name : _other });
