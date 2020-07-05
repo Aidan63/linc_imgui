@@ -3,40 +3,41 @@ package imgui;
 import cpp.Star;
 import cpp.Pointer;
 import cpp.RawPointer;
+import haxe.extern.AsVar;
 
 abstract BoolPointer(RawPointer<Bool>) from RawPointer<Bool> to RawPointer<Bool>
 {
-    function new(_ptr : RawPointer<Bool>)
+    inline function new(_ptr : RawPointer<Bool>)
     {
         this = _ptr;
     }
 
-    @:from public static function fromBool(_int : Bool)
+    @:from public static inline function fromBool(_bool : Bool)
     {
-        return new BoolPointer(Pointer.addressOf(_int).raw);
+        return new BoolPointer(cast cpp.Native.addressOf(_bool));
     }
 
-    @:from public static function fromBoolArray(_array : Array<Bool>)
+    @:from public static inline function fromBoolArray(_array : Array<Bool>)
     {
         return new BoolPointer(Pointer.arrayElem(_array, 0).raw);
     }
 
-    @:to public function toInt() : Bool
+    @:to public inline function toBool() : Bool
     {
-        return Pointer.fromRaw(this).value;
+        return (cast this : cpp.Star<Bool>);
     }
 
-    @:to public function toStar() : Star<Bool>
+    @:to public inline function toStar() : Star<Bool>
     {
-        return Pointer.fromRaw(this).ptr;
+        return cast this;
     }
 
-    @:arrayAccess public function get(_idx : Int) : Bool
+    @:arrayAccess public inline function get(_idx : Int) : Bool
     {
         return this[_idx];
     }
 
-    @:arrayAccess public function set(_idx : Int, _val : Bool)
+    @:arrayAccess public inline function set(_idx : Int, _val : Bool)
     {
         this[_idx] = _val;
     }

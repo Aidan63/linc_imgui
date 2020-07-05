@@ -6,17 +6,17 @@ import cpp.RawPointer;
 
 abstract IntPointer(RawPointer<Int>) from RawPointer<Int> to RawPointer<Int>
 {
-    function new(_ptr : RawPointer<Int>)
+    inline function new(_ptr : RawPointer<Int>)
     {
         this = _ptr;
     }
 
-    @:from public static function fromInt(_int : Int)
+    @:from public static inline function fromInt(_int : Int)
     {
         return new IntPointer(Pointer.addressOf(_int).raw);
     }
 
-    @:from public static function fromIntArray(_array : Array<Int>)
+    @:from public static inline function fromIntArray(_array : Array<Int>)
     {
         return new IntPointer(Pointer.arrayElem(_array, 0).raw);
     }

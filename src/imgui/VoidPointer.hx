@@ -6,25 +6,23 @@ import cpp.RawPointer;
 
 abstract VoidPointer(RawPointer<cpp.Void>) from RawPointer<cpp.Void> to RawPointer<cpp.Void>
 {
-    function new(_ptr : RawPointer<cpp.Void>)
+    inline function new(_ptr : RawPointer<cpp.Void>)
     {
         this = _ptr;
     }
 
-    @:from public static function fromObject(_object : Dynamic)
+    @:from public static inline function fromObject(_object : Any)
     {
-        return new VoidPointer(cast Pointer.addressOf(_object).raw);
+        return new VoidPointer(cast cpp.Native.addressOf(_object));
     }
 
-    @:to public function toStar() : Star<cpp.Void>
+    @:to public inline function toStar() : Star<cpp.Void>
     {
         return cast this;
     }
 
-    @:to public function toDynamic() : Dynamic
+    @:to public inline function toAny() : Any
     {
-        final ptr : Pointer<Dynamic> = Pointer.fromRaw(this).reinterpret();
-
-        return ptr.ref;
+        return (cast this : cpp.Star<Any>);
     }
 }
