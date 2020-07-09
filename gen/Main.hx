@@ -45,14 +45,6 @@ class Main
         buffer.newline();
         buffer.newline();
 
-        buffer.append(printer.printTypeDefinition(reader.generateEmptyExtern('ImGuiContext'), false));
-        buffer.newline();
-        buffer.newline();
-
-        buffer.append(printer.printTypeDefinition(reader.generateEmptyExtern('ImDrawListSharedData'), false));
-        buffer.newline();
-        buffer.newline();
-
         for (type in reader.generateImVectors())
         {
             buffer.append(printer.printTypeDefinition(type, false));

@@ -84,26 +84,30 @@ class ImGuiJsonReader
      */
     public function generateTypedefs() : Array<TypeDefinition>
     {
-        return [
-            for (name => value in typedefs)
-            {
-                if (name == 'iterator' ||
-                    name == 'const_iterator' ||
-                    name == 'value_type' ||
-                    name.endsWith('Flags') ||
-                    value.contains('struct '))
-                {
-                    continue;
-                }
-
-                if (enumStruct.enums.exists('${ name }_'))
-                {
-                    continue;
-                }
-
-                { pack: [ 'imgui' ], name: name, pos: null, fields: [], kind: TDAlias(parseNativeString(value)) }
-            }
+        final gen = [
+            { pack: [ 'imgui' ], name: 'FILE', pos: null, fields: [], kind: TDAlias(parseNativeString('void')) }
         ];
+
+        for (name => value in typedefs)
+        {
+            if (name == 'iterator' ||
+                name == 'const_iterator' ||
+                name == 'value_type' ||
+                name.endsWith('Flags') ||
+                value.contains('struct '))
+            {
+                continue;
+            }
+
+            if (enumStruct.enums.exists('${ name }_') || enumStruct.enums.exists(name))
+            {
+                continue;
+            }
+
+            gen.push({ pack: [ 'imgui' ], name: name, pos: null, fields: [], kind: TDAlias(parseNativeString(value)) });
+        }
+
+        return gen;
     }
 
     /**
@@ -121,7 +125,7 @@ class ImGuiJsonReader
             {
                 pack   : [ 'imgui' ],
                 kind   : TDAbstract(macro : Int, [ macro : Int ], [ macro : Int ]),
-                name   : name.substr(0, name.length - 1),
+                name   : if (name.endsWith('_')) name.substr(0, name.length - 1) else name,
                 pos    : null,
                 meta   : [ { name: ':enum', pos : null } ],
                 fields : [ for (value in values) {
@@ -164,15 +168,22 @@ class ImGuiJsonReader
                     continue;
                 }
 
+                if (value.type.startsWith('STB_'))
+                {
+                    continue;
+                }
+
+                // Need to do proper cleanup on the final name
+                // Quick hack works around it for now...
                 var finalType;
-                var finalName = value.name;
+                var finalName = value.name.replace('[2]', '');
 
                 if (value.template_type != '')
                 {
                     // TODO : Very lazy and should be improved.
                     // Exactly one of the templated types is also a pointer, so do a quick check and manually wrap it.
                     // Can't use parseNativeType as we need a user friendly string name, not the actual type
-                    if (value.template_type.contains('*'))
+                    if (value.template_type.contains('*') && !value.template_type.contains('*OrIndex'))
                     {
                         final ctInner = TPath({ pack : [ ], name : 'ImVector${value.template_type.replace('*', '')}Pointer' });
 
@@ -180,7 +191,7 @@ class ImGuiJsonReader
                     }
                     else
                     {
-                        finalType = TPath({ pack : [ ], name : 'ImVector${value.template_type}' });
+                        finalType = TPath({ pack : [ ], name : 'ImVector${value.template_type.replace(' ', '').replace('*', 'Ptr')}' });
                     }
                 }
                 else
@@ -241,7 +252,7 @@ class ImGuiJsonReader
             { name: ':native', pos : null, params: [ macro $i{ '"ImVector"' } ] }
         ];
         imVectorClass.fields = imVectorClass.fields.concat(generateFunctionFieldsArray(
-            definitions.map(f -> f.filter(i -> !i.constructor && !i.destructor && i.templated)), false));
+            definitions.map(f -> f.filter(i -> !i.constructor && !i.destructor && i.templated && i.stname == 'ImVector')), false));
 
         generatedVectors.push(imVectorClass);
 
@@ -296,8 +307,10 @@ class ImGuiJsonReader
         // Generate an extern for each templated type
         for (templatedType in templatedTypes)
         {
+            templatedType = templatedType.replace('*OrIndex', 'PtrOrIndex');
+
             final ct = parseNativeString(templatedType);
-            var name = cleanNativeType(templatedType);
+            var name = cleanNativeType(templatedType).replace(' ', '');
 
             for (_ in 0...occurance(templatedType, '*'))
             {
