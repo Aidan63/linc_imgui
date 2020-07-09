@@ -1,28 +1,34 @@
 package imgui;
 
-import cpp.Pointer;
-import cpp.Star;
-import cpp.RawPointer;
-
-abstract VoidPointer(RawPointer<cpp.Void>) from RawPointer<cpp.Void> to RawPointer<cpp.Void>
+abstract VoidPointer(cpp.Pointer<cpp.Void>) from cpp.Pointer<cpp.Void> to cpp.Pointer<cpp.Void>
 {
-    inline function new(_ptr : RawPointer<cpp.Void>)
+    inline function new(_ptr : cpp.Pointer<cpp.Void>)
     {
         this = _ptr;
     }
 
-    @:from public static inline function fromObject(_object : Any)
+    @:from public static inline function fromInt(_int : Int)
     {
-        return new VoidPointer(cast cpp.Native.addressOf(_object));
+        return new VoidPointer(cpp.Pointer.addressOf(_int).reinterpret());
     }
 
-    @:to public inline function toStar() : Star<cpp.Void>
+    @:from public static inline function fromFloat(_float : Float)
     {
-        return cast this;
+        return new VoidPointer(cpp.Pointer.addressOf(_float).reinterpret());
     }
 
-    @:to public inline function toAny() : Any
+    @:from public static inline function fromBool(_bool : Bool)
     {
-        return (cast this : cpp.Star<Any>);
+        return new VoidPointer(cpp.Pointer.addressOf(_bool).reinterpret());
+    }
+
+    @:to public inline function toRaw() : cpp.RawPointer<cpp.Void>
+    {
+        return this.raw;
+    }
+
+    @:to public inline function toPtr() : cpp.Star<cpp.Void>
+    {
+        return this.ptr;
     }
 }

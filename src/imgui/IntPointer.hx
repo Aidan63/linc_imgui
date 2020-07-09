@@ -1,42 +1,43 @@
 package imgui;
 
-import cpp.Star;
-import cpp.Pointer;
-import cpp.RawPointer;
-
-abstract IntPointer(RawPointer<Int>) from RawPointer<Int> to RawPointer<Int>
+abstract IntPointer(cpp.Pointer<Int>) from cpp.Pointer<Int> to cpp.Pointer<Int>
 {
-    inline function new(_ptr : RawPointer<Int>)
+    inline function new(_ptr : cpp.Pointer<Int>)
     {
         this = _ptr;
     }
 
     @:from public static inline function fromInt(_int : Int)
     {
-        return new IntPointer(Pointer.addressOf(_int).raw);
+        return new IntPointer(cpp.Pointer.addressOf(_int));
     }
 
     @:from public static inline function fromIntArray(_array : Array<Int>)
     {
-        return new IntPointer(Pointer.arrayElem(_array, 0).raw);
+        return new IntPointer(cpp.Pointer.arrayElem(_array, 0));
     }
 
-    @:to public function toInt() : Int
+    @:to public inline function toInt() : Int
     {
-        return Pointer.fromRaw(this).value;
+        return this.value;
     }
 
-    @:to public function toStar() : Star<Int>
+    @:to public inline function toRaw() : cpp.RawPointer<Int>
     {
-        return Pointer.fromRaw(this).ptr;
+        return this.raw;
     }
 
-    @:arrayAccess public function get(_idx : Int) : Int
+    @:to public inline function toPtr() : cpp.Star<Int>
+    {
+        return this.ptr;
+    }
+
+    @:arrayAccess public inline function get(_idx : Int) : Int
     {
         return this[_idx];
     }
 
-    @:arrayAccess public function set(_idx : Int, _val : Int)
+    @:arrayAccess public inline function set(_idx : Int, _val : Int)
     {
         this[_idx] = _val;
     }

@@ -67,6 +67,8 @@ class ImGuiJsonReader
     final typedefs : JsonTypedef;
     final enumStruct : JsonEnumStruct;
     final definitions : JsonDefinitions;
+    
+    var abstractPtrs = true;
 
     public function new(_typedefs : String, _enumStruct : String, _definitions : String)
     {
@@ -604,7 +606,11 @@ class ImGuiJsonReader
             final name = split.pop();
             final type = split.join(' ');
 
+            abstractPtrs = false;
+
             ctArgs.push(parseNativeString(type));
+
+            abstractPtrs = true;
         }
 
         final ctParams = TFunction(ctArgs, parseType(returnType, false));
@@ -675,11 +681,11 @@ class ImGuiJsonReader
 
                     switch inner.name
                     {
-                        case 'UInt8': return macro : imgui.CharPointer;
-                        case 'Void': return macro : imgui.VoidPointer;
-                        case 'Int' : return macro : imgui.IntPointer;
-                        case 'Float32': return macro : imgui.FloatPointer;
-                        case 'Bool' : return macro : imgui.BoolPointer;
+                        case 'UInt8' if (abstractPtrs): return macro : imgui.CharPointer;
+                        case 'Void' if (abstractPtrs): return macro : imgui.VoidPointer;
+                        case 'Int' if (abstractPtrs): return macro : imgui.IntPointer;
+                        case 'Float32' if (abstractPtrs): return macro : imgui.FloatPointer;
+                        case 'Bool' if (abstractPtrs): return macro : imgui.BoolPointer;
                         case 'Star':
                             final inner = getInnerParameter(inner.params);
                             

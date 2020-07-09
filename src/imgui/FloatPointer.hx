@@ -1,33 +1,33 @@
 package imgui;
 
-import cpp.Star;
-import cpp.Pointer;
-import cpp.RawPointer;
-import cpp.Float32;
-
-abstract FloatPointer(RawPointer<Float32>) from RawPointer<Float32> to RawPointer<Float32>
+abstract FloatPointer(cpp.Pointer<cpp.Float32>) from cpp.Pointer<cpp.Float32> to cpp.Pointer<cpp.Float32>
 {
-    inline function new(_ptr : RawPointer<Float32>)
+    inline function new(_ptr : cpp.Pointer<cpp.Float32>)
     {
         this = _ptr;
     }
 
-    @:from public static inline function fromFloat(_float : Float32)
+    @:from public static inline function fromFloat(_float : cpp.Float32)
     {
-        return new FloatPointer(cast cpp.Native.addressOf(_float));
+        return new FloatPointer(cpp.Pointer.addressOf(_float));
     }
 
-    @:from public static inline function fromFloatArray(_array : Array<Float32>)
+    @:from public static inline function fromFloatArray(_array : Array<cpp.Float32>)
     {
-        return new FloatPointer(Pointer.arrayElem(_array, 0).raw);
+        return new FloatPointer(cpp.Pointer.arrayElem(_array, 0));
     }
 
-    @:to public inline function toFloat32() : Float32
+    @:to public inline function toFloat32() : cpp.Float32
     {
-        return Pointer.fromRaw(this).value;
+        return this.value;
     }
 
-    @:to public inline function toStar() : Star<Float32>
+    @:to public inline function toPtr() : cpp.Star<cpp.Float32>
+    {
+        return cast this;
+    }
+
+    @:to public inline function toRaw() : cpp.RawPointer<cpp.Float32>
     {
         return cast this;
     }

@@ -836,9 +836,9 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("BackendLanguageUserData")
 	var backendLanguageUserData : imgui.VoidPointer;
 	@:native("GetClipboardTextFn")
-	var getClipboardTextFn : cpp.Callable<imgui.VoidPointer -> cpp.ConstCharStar>;
+	var getClipboardTextFn : cpp.Callable<cpp.Star<cpp.Void> -> cpp.ConstCharStar>;
 	@:native("SetClipboardTextFn")
-	var setClipboardTextFn : cpp.Callable<(imgui.VoidPointer, cpp.ConstCharStar) -> Void>;
+	var setClipboardTextFn : cpp.Callable<(cpp.Star<cpp.Void>, cpp.ConstCharStar) -> Void>;
 	@:native("ClipboardUserData")
 	var clipboardUserData : imgui.VoidPointer;
 	@:native("ImeSetInputScreenPosFn")
@@ -1748,8 +1748,8 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::SetClipboardText")
 	static function setClipboardText(_text:cpp.ConstCharStar):cpp.Void;
 	@:native("ImGui::SetAllocatorFunctions")
-	@:overload(function(_alloc_func:cpp.Callable<(cpp.SizeT, imgui.VoidPointer) -> imgui.VoidPointer>, _free_func:cpp.Callable<(imgui.VoidPointer, imgui.VoidPointer) -> Void>):cpp.Void { })
-	static function setAllocatorFunctions(_alloc_func:cpp.Callable<(cpp.SizeT, imgui.VoidPointer) -> imgui.VoidPointer>, _free_func:cpp.Callable<(imgui.VoidPointer, imgui.VoidPointer) -> Void>, _user_data:imgui.VoidPointer):cpp.Void;
+	@:overload(function(_alloc_func:cpp.Callable<(cpp.SizeT, cpp.Star<cpp.Void>) -> imgui.VoidPointer>, _free_func:cpp.Callable<(cpp.Star<cpp.Void>, cpp.Star<cpp.Void>) -> Void>):cpp.Void { })
+	static function setAllocatorFunctions(_alloc_func:cpp.Callable<(cpp.SizeT, cpp.Star<cpp.Void>) -> imgui.VoidPointer>, _free_func:cpp.Callable<(cpp.Star<cpp.Void>, cpp.Star<cpp.Void>) -> Void>, _user_data:imgui.VoidPointer):cpp.Void;
 	@:native("ImGui::Separator")
 	static function separator():cpp.Void;
 	@:native("ImGui::Selectable")
@@ -1832,12 +1832,12 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:overload(function(_label:cpp.ConstCharStar, _values:imgui.FloatPointer, _values_count:Int, _values_offset:Int, _stride:Int):cpp.Void { })
 	@:overload(function(_label:cpp.ConstCharStar, _values:imgui.FloatPointer, _values_count:Int, _values_offset:Int):cpp.Void { })
 	@:overload(function(_label:cpp.ConstCharStar, _values:imgui.FloatPointer, _values_count:Int):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32, _graph_size:ImVec2):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _scale_min:cpp.Float32, _scale_max:cpp.Float32):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _scale_min:cpp.Float32):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32, _graph_size:ImVec2):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _scale_min:cpp.Float32, _scale_max:cpp.Float32):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _scale_min:cpp.Float32):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int):cpp.Void { })
 	static function plotLines(_label:cpp.ConstCharStar, _values:imgui.FloatPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32, _graph_size:ImVec2, _stride:Int):cpp.Void;
 	@:native("ImGui::PlotHistogram")
 	@:overload(function(_label:cpp.ConstCharStar, _values:imgui.FloatPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32, _stride:Int):cpp.Void { })
@@ -1846,12 +1846,12 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:overload(function(_label:cpp.ConstCharStar, _values:imgui.FloatPointer, _values_count:Int, _values_offset:Int, _stride:Int):cpp.Void { })
 	@:overload(function(_label:cpp.ConstCharStar, _values:imgui.FloatPointer, _values_count:Int, _values_offset:Int):cpp.Void { })
 	@:overload(function(_label:cpp.ConstCharStar, _values:imgui.FloatPointer, _values_count:Int):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32, _graph_size:ImVec2):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _scale_min:cpp.Float32, _scale_max:cpp.Float32):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _scale_min:cpp.Float32):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int):cpp.Void { })
-	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(imgui.VoidPointer, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32, _graph_size:ImVec2):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _scale_min:cpp.Float32, _scale_max:cpp.Float32):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int, _scale_min:cpp.Float32):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int, _values_offset:Int):cpp.Void { })
+	@:overload(function(_label:cpp.ConstCharStar, _values_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int) -> cpp.Float32>, _data:imgui.VoidPointer, _values_count:Int):cpp.Void { })
 	static function plotHistogram(_label:cpp.ConstCharStar, _values:imgui.FloatPointer, _values_count:Int, _values_offset:Int, _overlay_text:cpp.ConstCharStar, _scale_min:cpp.Float32, _scale_max:cpp.Float32, _graph_size:ImVec2, _stride:Int):cpp.Void;
 	@:native("ImGui::OpenPopupOnItemClick")
 	@:overload(function(_str_id:cpp.ConstCharStar):Bool { })
@@ -1906,8 +1906,8 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	static function listBoxFooter():cpp.Void;
 	@:native("ImGui::ListBox")
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<cpp.ConstCharStar>, _items_count:Int):Bool { })
-	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _height_in_items:Int):Bool { })
-	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
+	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _height_in_items:Int):Bool { })
+	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
 	static function listBox(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<cpp.ConstCharStar>, _items_count:Int, _height_in_items:Int):Bool;
 	@:native("ImGui::LabelTextV")
 	static function labelTextV(_label:cpp.ConstCharStar, _fmt:cpp.ConstCharStar, _args:cpp.VarArg):cpp.Void;
@@ -2349,8 +2349,8 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<cpp.ConstCharStar>, _items_count:Int):Bool { })
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_separated_by_zeros:cpp.ConstCharStar, _popup_max_height_in_items:Int):Bool { })
 	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_separated_by_zeros:cpp.ConstCharStar):Bool { })
-	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _popup_max_height_in_items:Int):Bool { })
-	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(imgui.VoidPointer, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
+	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _popup_max_height_in_items:Int):Bool { })
+	@:overload(function(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
 	static function combo(_label:cpp.ConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<cpp.ConstCharStar>, _items_count:Int, _popup_max_height_in_items:Int):Bool;
 	@:native("ImGui::Columns")
 	@:overload(function(_count:Int, _id:cpp.ConstCharStar):cpp.Void { })
