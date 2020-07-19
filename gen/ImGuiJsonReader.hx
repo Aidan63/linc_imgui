@@ -88,6 +88,8 @@ class ImGuiJsonReader
             { pack: [ 'imgui' ], name: 'FILE', pos: null, fields: [], kind: TDAlias(parseNativeString('void')) }
         ];
 
+        abstractPtrs = false;
+
         for (name => value in typedefs)
         {
             if (name == 'iterator' ||
@@ -106,6 +108,8 @@ class ImGuiJsonReader
 
             gen.push({ pack: [ 'imgui' ], name: name, pos: null, fields: [], kind: TDAlias(parseNativeString(value)) });
         }
+
+        abstractPtrs = true;
 
         return gen;
     }

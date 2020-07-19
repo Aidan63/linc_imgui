@@ -16,7 +16,7 @@ typedef ImU32 = UInt;
 
 typedef ImU16 = cpp.UInt16;
 
-typedef ImTextureID = imgui.VoidPointer;
+typedef ImTextureID = cpp.Star<cpp.Void>;
 
 typedef ImS8 = cpp.Int8;
 
