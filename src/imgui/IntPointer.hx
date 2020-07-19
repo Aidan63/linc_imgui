@@ -9,12 +9,12 @@ abstract IntPointer(cpp.Pointer<Int>) from cpp.Pointer<Int> to cpp.Pointer<Int>
 
     @:from public static inline function fromInt(_int : Int)
     {
-        return new IntPointer(cpp.Pointer.addressOf(_int));
+        return new IntPointer(cpp.VarPointer.addressOf(_int));
     }
 
     @:from public static inline function fromIntArray(_array : Array<Int>)
     {
-        return new IntPointer(cpp.Pointer.arrayElem(_array, 0));
+        return new IntPointer(cpp.VarPointer.arrayElem(_array, 0));
     }
 
     @:to public inline function toInt() : Int

@@ -718,7 +718,7 @@ class ImGuiJsonReader
 
                     switch inner.name
                     {
-                        case 'Int8': return macro : cpp.ConstCharStar;
+                        case 'Int8': return macro : cpp.VarConstCharStar;
                         case _:
                             final ct = TPath(inner);
 
