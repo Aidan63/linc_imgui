@@ -1,5 +1,7 @@
 package imgui;
 
+import imgui.utils.VarPointer;
+
 abstract BoolPointer(cpp.Pointer<Bool>) from cpp.Pointer<Bool> to cpp.Pointer<Bool>
 {
     inline function new(_ptr : cpp.Pointer<Bool>)
@@ -9,12 +11,12 @@ abstract BoolPointer(cpp.Pointer<Bool>) from cpp.Pointer<Bool> to cpp.Pointer<Bo
 
     @:from public static inline function fromBool(_bool : Bool)
     {
-        return new BoolPointer(cpp.VarPointer.addressOf(_bool));
+        return new BoolPointer(VarPointer.addressOf(_bool));
     }
 
     @:from public static inline function fromBoolArray(_array : Array<Bool>)
     {
-        return new BoolPointer(cpp.VarPointer.arrayElem(_array, 0));
+        return new BoolPointer(VarPointer.arrayElem(_array, 0));
     }
 
     @:to public inline function toBool() : Bool
