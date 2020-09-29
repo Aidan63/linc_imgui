@@ -666,8 +666,9 @@ class ImGuiJsonReader
             case 'float'                       : macro : cpp.Float32;
             case 'double'                      : macro : Float;
             case 'bool'                        : macro : Bool;
-            case 'char', 'signed char'         : macro : cpp.Int8;
-            case 'unsigned char', 'const char' : macro : cpp.UInt8;
+            case 'char', 'const char'          : macro : cpp.Char;
+            case 'signed char'                 : macro : cpp.Int8;
+            case 'unsigned char'               : macro : cpp.UInt8;
             case 'int64_t'                     : macro : cpp.Int64;
             case 'uint64_t'                    : macro : cpp.UInt64;
             case 'va_list', '...'              : macro : cpp.VarArg;
@@ -722,7 +723,7 @@ class ImGuiJsonReader
 
                     switch inner.name
                     {
-                        case 'Int8': return macro : imgui.utils.VarConstCharStar;
+                        case 'Int8', 'UInt8', 'Char': return macro : imgui.utils.VarConstCharStar;
                         case _:
                             final ct = TPath(inner);
 

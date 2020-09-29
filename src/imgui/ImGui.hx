@@ -899,12 +899,12 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGuiWindowSettings")
 	static function create():ImGuiWindowSettings;
 	@:native("GetName")
-	function getName():cpp.Star<cpp.Int8>;
+	function getName():cpp.Star<cpp.Char>;
 }
 
 @:keep @:structAccess @:include("imgui.h") @:native("ImGuiWindow") extern class ImGuiWindow {
 	@:native("Name")
-	var name : cpp.Star<cpp.Int8>;
+	var name : cpp.Star<cpp.Char>;
 	@:native("ID")
 	var iD : ImGuiID;
 	@:native("Flags")
@@ -1087,7 +1087,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("e")
 	var e : imgui.utils.VarConstCharStar;
 	@:native("split")
-	function split(_separator:cpp.Int8, _out:ImVectorImGuiTextRangePointer):cpp.Void;
+	function split(_separator:cpp.Char, _out:ImVectorImGuiTextRangePointer):cpp.Void;
 	@:native("empty")
 	function empty():Bool;
 	@:native("ImGuiTextRange")
@@ -1097,7 +1097,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 
 @:keep @:structAccess @:include("imgui.h") @:native("ImGuiTextFilter") extern class ImGuiTextFilter {
 	@:native("InputBuf")
-	var inputBuf : cpp.RawPointer<cpp.Int8>;
+	var inputBuf : cpp.RawPointer<cpp.Char>;
 	@:native("Filters")
 	var filters : ImVectorImGuiTextRange;
 	@:native("CountGrep")
@@ -1449,7 +1449,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("DataFrameCount")
 	var dataFrameCount : Int;
 	@:native("DataType")
-	var dataType : cpp.RawPointer<cpp.Int8>;
+	var dataType : cpp.RawPointer<cpp.Char>;
 	@:native("Preview")
 	var preview : Bool;
 	@:native("Delivery")
@@ -1679,7 +1679,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("EventKey")
 	var eventKey : ImGuiKey;
 	@:native("Buf")
-	var buf : cpp.Star<cpp.Int8>;
+	var buf : cpp.Star<cpp.Char>;
 	@:native("BufTextLen")
 	var bufTextLen : Int;
 	@:native("BufSize")
@@ -2279,7 +2279,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("WantTextInputNextFrame")
 	var wantTextInputNextFrame : Int;
 	@:native("TempBuffer")
-	var tempBuffer : cpp.RawPointer<cpp.Int8>;
+	var tempBuffer : cpp.RawPointer<cpp.Char>;
 	@:native("ImGuiContext")
 	static function create(_shared_font_atlas:cpp.Star<ImFontAtlas>):ImGuiContext;
 }
@@ -2428,7 +2428,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("EllipsisChar")
 	var ellipsisChar : ImWchar;
 	@:native("Name")
-	var name : cpp.RawPointer<cpp.Int8>;
+	var name : cpp.RawPointer<cpp.Char>;
 	@:native("DstFont")
 	var dstFont : cpp.Star<ImFont>;
 	@:native("ImFontConfig")
@@ -2631,7 +2631,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("CalcTextSizeA")
 	@:overload(function(_pOut:cpp.Star<ImVec2>, _self:cpp.Star<ImFont>, _size:cpp.Float32, _max_width:cpp.Float32, _wrap_width:cpp.Float32, _text_begin:imgui.utils.VarConstCharStar, _text_end:imgui.utils.VarConstCharStar):cpp.Void { })
 	@:overload(function(_pOut:cpp.Star<ImVec2>, _self:cpp.Star<ImFont>, _size:cpp.Float32, _max_width:cpp.Float32, _wrap_width:cpp.Float32, _text_begin:imgui.utils.VarConstCharStar):cpp.Void { })
-	function calcTextSizeA(_pOut:cpp.Star<ImVec2>, _self:cpp.Star<ImFont>, _size:cpp.Float32, _max_width:cpp.Float32, _wrap_width:cpp.Float32, _text_begin:imgui.utils.VarConstCharStar, _text_end:imgui.utils.VarConstCharStar, _remaining:cpp.Star<cpp.RawConstPointer<cpp.Int8>>):cpp.Void;
+	function calcTextSizeA(_pOut:cpp.Star<ImVec2>, _self:cpp.Star<ImFont>, _size:cpp.Float32, _max_width:cpp.Float32, _wrap_width:cpp.Float32, _text_begin:imgui.utils.VarConstCharStar, _text_end:imgui.utils.VarConstCharStar, _remaining:cpp.Star<cpp.RawConstPointer<cpp.Char>>):cpp.Void;
 	@:native("BuildLookupTable")
 	function buildLookupTable():cpp.Void;
 	@:native("AddRemapChar")
@@ -3052,7 +3052,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::Text")
 	static function text(_fmt:imgui.utils.VarConstCharStar, _vargs:cpp.VarArg):cpp.Void;
 	@:native("ImGui::TempInputText")
-	static function tempInputText(_bb:ImRect, _id:ImGuiID, _label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:Int, _flags:ImGuiInputTextFlags):Bool;
+	static function tempInputText(_bb:ImRect, _id:ImGuiID, _label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:Int, _flags:ImGuiInputTextFlags):Bool;
 	@:native("ImGui::TempInputScalar")
 	@:overload(function(_bb:ImRect, _id:ImGuiID, _label:imgui.utils.VarConstCharStar, _data_type:ImGuiDataType, _p_data:imgui.VoidPointer, _format:imgui.utils.VarConstCharStar, _p_clamp_min:imgui.VoidPointer):Bool { })
 	@:overload(function(_bb:ImRect, _id:ImGuiID, _label:imgui.utils.VarConstCharStar, _data_type:ImGuiDataType, _p_data:imgui.VoidPointer, _format:imgui.utils.VarConstCharStar):Bool { })
@@ -3546,8 +3546,8 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	static function listBoxFooter():cpp.Void;
 	@:native("ImGui::ListBox")
 	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<imgui.utils.VarConstCharStar>, _items_count:Int):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _height_in_items:Int):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Char>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _height_in_items:Int):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Char>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
 	static function listBox(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<imgui.utils.VarConstCharStar>, _items_count:Int, _height_in_items:Int):Bool;
 	@:native("ImGui::LabelTextV")
 	static function labelTextV(_label:imgui.utils.VarConstCharStar, _fmt:imgui.utils.VarConstCharStar, _args:cpp.VarArg):cpp.Void;
@@ -3666,25 +3666,25 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::InvisibleButton")
 	static function invisibleButton(_str_id:imgui.utils.VarConstCharStar, _size:ImVec2):Bool;
 	@:native("ImGui::InputTextWithHint")
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _flags:ImGuiInputTextFlags, _user_data:imgui.VoidPointer):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _user_data:imgui.VoidPointer):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT):Bool { })
-	static function inputTextWithHint(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _flags:ImGuiInputTextFlags, _callback:ImGuiInputTextCallback, _user_data:imgui.VoidPointer):Bool;
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _flags:ImGuiInputTextFlags, _user_data:imgui.VoidPointer):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _user_data:imgui.VoidPointer):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT):Bool { })
+	static function inputTextWithHint(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _flags:ImGuiInputTextFlags, _callback:ImGuiInputTextCallback, _user_data:imgui.VoidPointer):Bool;
 	@:native("ImGui::InputTextMultiline")
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _size:ImVec2, _flags:ImGuiInputTextFlags, _user_data:imgui.VoidPointer):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _size:ImVec2, _user_data:imgui.VoidPointer):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _user_data:imgui.VoidPointer):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT):Bool { })
-	static function inputTextMultiline(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _size:ImVec2, _flags:ImGuiInputTextFlags, _callback:ImGuiInputTextCallback, _user_data:imgui.VoidPointer):Bool;
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _size:ImVec2, _flags:ImGuiInputTextFlags, _user_data:imgui.VoidPointer):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _size:ImVec2, _user_data:imgui.VoidPointer):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _user_data:imgui.VoidPointer):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT):Bool { })
+	static function inputTextMultiline(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _size:ImVec2, _flags:ImGuiInputTextFlags, _callback:ImGuiInputTextCallback, _user_data:imgui.VoidPointer):Bool;
 	@:native("ImGui::InputTextEx")
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:Int, _size_arg:ImVec2, _flags:ImGuiInputTextFlags, _user_data:imgui.VoidPointer):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:Int, _size_arg:ImVec2, _flags:ImGuiInputTextFlags):Bool { })
-	static function inputTextEx(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:Int, _size_arg:ImVec2, _flags:ImGuiInputTextFlags, _callback:ImGuiInputTextCallback, _user_data:imgui.VoidPointer):Bool;
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:Int, _size_arg:ImVec2, _flags:ImGuiInputTextFlags, _user_data:imgui.VoidPointer):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:Int, _size_arg:ImVec2, _flags:ImGuiInputTextFlags):Bool { })
+	static function inputTextEx(_label:imgui.utils.VarConstCharStar, _hint:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:Int, _size_arg:ImVec2, _flags:ImGuiInputTextFlags, _callback:ImGuiInputTextCallback, _user_data:imgui.VoidPointer):Bool;
 	@:native("ImGui::InputText")
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _flags:ImGuiInputTextFlags, _user_data:imgui.VoidPointer):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _user_data:imgui.VoidPointer):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT):Bool { })
-	static function inputText(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _flags:ImGuiInputTextFlags, _callback:ImGuiInputTextCallback, _user_data:imgui.VoidPointer):Bool;
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _flags:ImGuiInputTextFlags, _user_data:imgui.VoidPointer):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _user_data:imgui.VoidPointer):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT):Bool { })
+	static function inputText(_label:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _flags:ImGuiInputTextFlags, _callback:ImGuiInputTextCallback, _user_data:imgui.VoidPointer):Bool;
 	@:native("ImGui::InputScalarN")
 	@:overload(function(_label:imgui.utils.VarConstCharStar, _data_type:ImGuiDataType, _p_data:imgui.VoidPointer, _components:Int, _p_step:imgui.VoidPointer, _p_step_fast:imgui.VoidPointer, _format:imgui.utils.VarConstCharStar):Bool { })
 	@:overload(function(_label:imgui.utils.VarConstCharStar, _data_type:ImGuiDataType, _p_data:imgui.VoidPointer, _components:Int, _p_step:imgui.VoidPointer, _p_step_fast:imgui.VoidPointer):Bool { })
@@ -3766,10 +3766,10 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::ImTriangleArea")
 	static function imTriangleArea(_a:ImVec2, _b:ImVec2, _c:ImVec2):cpp.Float32;
 	@:native("ImGui::ImTextStrToUtf8")
-	static function imTextStrToUtf8(_buf:cpp.Star<cpp.Int8>, _buf_size:Int, _in_text:cpp.Star<ImWchar>, _in_text_end:cpp.Star<ImWchar>):Int;
+	static function imTextStrToUtf8(_buf:cpp.Star<cpp.Char>, _buf_size:Int, _in_text:cpp.Star<ImWchar>, _in_text_end:cpp.Star<ImWchar>):Int;
 	@:native("ImGui::ImTextStrFromUtf8")
 	@:overload(function(_buf:cpp.Star<ImWchar>, _buf_size:Int, _in_text:imgui.utils.VarConstCharStar, _in_text_end:imgui.utils.VarConstCharStar):Int { })
-	static function imTextStrFromUtf8(_buf:cpp.Star<ImWchar>, _buf_size:Int, _in_text:imgui.utils.VarConstCharStar, _in_text_end:imgui.utils.VarConstCharStar, _in_remaining:cpp.Star<cpp.RawConstPointer<cpp.Int8>>):Int;
+	static function imTextStrFromUtf8(_buf:cpp.Star<ImWchar>, _buf_size:Int, _in_text:imgui.utils.VarConstCharStar, _in_text_end:imgui.utils.VarConstCharStar, _in_remaining:cpp.Star<cpp.RawConstPointer<cpp.Char>>):Int;
 	@:native("ImGui::ImTextCountUtf8BytesFromStr")
 	static function imTextCountUtf8BytesFromStr(_in_text:cpp.Star<ImWchar>, _in_text_end:cpp.Star<ImWchar>):Int;
 	@:native("ImGui::ImTextCountUtf8BytesFromChar")
@@ -3781,7 +3781,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::ImStrnicmp")
 	static function imStrnicmp(_str1:imgui.utils.VarConstCharStar, _str2:imgui.utils.VarConstCharStar, _count:cpp.SizeT):Int;
 	@:native("ImGui::ImStrncpy")
-	static function imStrncpy(_dst:cpp.Star<cpp.Int8>, _src:imgui.utils.VarConstCharStar, _count:cpp.SizeT):cpp.Void;
+	static function imStrncpy(_dst:cpp.Star<cpp.Char>, _src:imgui.utils.VarConstCharStar, _count:cpp.SizeT):cpp.Void;
 	@:native("ImGui::ImStrlenW")
 	static function imStrlenW(_str:cpp.Star<ImWchar>):Int;
 	@:native("ImGui::ImStristr")
@@ -3791,15 +3791,15 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::ImStreolRange")
 	static function imStreolRange(_str:imgui.utils.VarConstCharStar, _str_end:imgui.utils.VarConstCharStar):imgui.utils.VarConstCharStar;
 	@:native("ImGui::ImStrdupcpy")
-	static function imStrdupcpy(_dst:cpp.Star<cpp.Int8>, _p_dst_size:cpp.Star<cpp.SizeT>, _str:imgui.utils.VarConstCharStar):cpp.Star<cpp.Int8>;
+	static function imStrdupcpy(_dst:cpp.Star<cpp.Char>, _p_dst_size:cpp.Star<cpp.SizeT>, _str:imgui.utils.VarConstCharStar):cpp.Star<cpp.Char>;
 	@:native("ImGui::ImStrdup")
-	static function imStrdup(_str:imgui.utils.VarConstCharStar):cpp.Star<cpp.Int8>;
+	static function imStrdup(_str:imgui.utils.VarConstCharStar):cpp.Star<cpp.Char>;
 	@:native("ImGui::ImStrchrRange")
-	static function imStrchrRange(_str_begin:imgui.utils.VarConstCharStar, _str_end:imgui.utils.VarConstCharStar, _c:cpp.Int8):imgui.utils.VarConstCharStar;
+	static function imStrchrRange(_str_begin:imgui.utils.VarConstCharStar, _str_end:imgui.utils.VarConstCharStar, _c:cpp.Char):imgui.utils.VarConstCharStar;
 	@:native("ImGui::ImStrbolW")
 	static function imStrbolW(_buf_mid_line:cpp.Star<ImWchar>, _buf_begin:cpp.Star<ImWchar>):cpp.Star<ImWchar>;
 	@:native("ImGui::ImStrTrimBlanks")
-	static function imStrTrimBlanks(_str:cpp.Star<cpp.Int8>):cpp.Void;
+	static function imStrTrimBlanks(_str:cpp.Star<cpp.Char>):cpp.Void;
 	@:native("ImGui::ImStrSkipBlank")
 	static function imStrSkipBlank(_str:imgui.utils.VarConstCharStar):imgui.utils.VarConstCharStar;
 	@:native("ImGui::ImSaturate")
@@ -3810,7 +3810,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:overload(function(_x:Float, _y:Float):Float { })
 	static function imPow(_x:cpp.Float32, _y:cpp.Float32):cpp.Float32;
 	@:native("ImGui::ImParseFormatTrimDecorations")
-	static function imParseFormatTrimDecorations(_format:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT):imgui.utils.VarConstCharStar;
+	static function imParseFormatTrimDecorations(_format:imgui.utils.VarConstCharStar, _buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT):imgui.utils.VarConstCharStar;
 	@:native("ImGui::ImParseFormatPrecision")
 	static function imParseFormatPrecision(_format:imgui.utils.VarConstCharStar, _default_value:Int):Int;
 	@:native("ImGui::ImParseFormatFindStart")
@@ -3850,9 +3850,9 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::ImGetDirQuadrantFromDelta")
 	static function imGetDirQuadrantFromDelta(_dx:cpp.Float32, _dy:cpp.Float32):ImGuiDir;
 	@:native("ImGui::ImFormatStringV")
-	static function imFormatStringV(_buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _fmt:imgui.utils.VarConstCharStar, _args:cpp.VarArg):Int;
+	static function imFormatStringV(_buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _fmt:imgui.utils.VarConstCharStar, _args:cpp.VarArg):Int;
 	@:native("ImGui::ImFormatString")
-	static function imFormatString(_buf:cpp.Star<cpp.Int8>, _buf_size:cpp.SizeT, _fmt:imgui.utils.VarConstCharStar, _vargs:cpp.VarArg):Int;
+	static function imFormatString(_buf:cpp.Star<cpp.Char>, _buf_size:cpp.SizeT, _fmt:imgui.utils.VarConstCharStar, _vargs:cpp.VarArg):Int;
 	@:native("ImGui::ImFontAtlasBuildWithStbTruetype")
 	static function imFontAtlasBuildWithStbTruetype(_atlas:cpp.Star<ImFontAtlas>):Bool;
 	@:native("ImGui::ImFontAtlasBuildSetupFont")
@@ -3891,7 +3891,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::ImCharIsBlankW")
 	static function imCharIsBlankW(_c:UInt):Bool;
 	@:native("ImGui::ImCharIsBlankA")
-	static function imCharIsBlankA(_c:cpp.Int8):Bool;
+	static function imCharIsBlankA(_c:cpp.Char):Bool;
 	@:native("ImGui::ImBitArrayTestBit")
 	static function imBitArrayTestBit(_arr:cpp.Star<ImU32>, _n:Int):Bool;
 	@:native("ImGui::ImBitArraySetBitRange")
@@ -4238,7 +4238,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:native("ImGui::DataTypeGetInfo")
 	static function dataTypeGetInfo(_data_type:ImGuiDataType):cpp.Star<ImGuiDataTypeInfo>;
 	@:native("ImGui::DataTypeFormatString")
-	static function dataTypeFormatString(_buf:cpp.Star<cpp.Int8>, _buf_size:Int, _data_type:ImGuiDataType, _p_data:imgui.VoidPointer, _format:imgui.utils.VarConstCharStar):Int;
+	static function dataTypeFormatString(_buf:cpp.Star<cpp.Char>, _buf_size:Int, _data_type:ImGuiDataType, _p_data:imgui.VoidPointer, _format:imgui.utils.VarConstCharStar):Int;
 	@:native("ImGui::DataTypeClamp")
 	static function dataTypeClamp(_data_type:ImGuiDataType, _p_data:imgui.VoidPointer, _p_min:imgui.VoidPointer, _p_max:imgui.VoidPointer):Bool;
 	@:native("ImGui::DataTypeApplyOpFromText")
@@ -4254,8 +4254,8 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<imgui.utils.VarConstCharStar>, _items_count:Int):Bool { })
 	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_separated_by_zeros:imgui.utils.VarConstCharStar, _popup_max_height_in_items:Int):Bool { })
 	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_separated_by_zeros:imgui.utils.VarConstCharStar):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _popup_max_height_in_items:Int):Bool { })
-	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Int8>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Char>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int, _popup_max_height_in_items:Int):Bool { })
+	@:overload(function(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items_getter:cpp.Callable<(cpp.Star<cpp.Void>, Int, cpp.Star<cpp.RawConstPointer<cpp.Char>>) -> Bool>, _data:imgui.VoidPointer, _items_count:Int):Bool { })
 	static function combo(_label:imgui.utils.VarConstCharStar, _current_item:imgui.IntPointer, _items:cpp.RawPointer<imgui.utils.VarConstCharStar>, _items_count:Int, _popup_max_height_in_items:Int):Bool;
 	@:native("ImGui::Columns")
 	@:overload(function(_count:Int, _id:imgui.utils.VarConstCharStar):cpp.Void { })
@@ -4555,7 +4555,7 @@ typedef ImDrawCallback = cpp.Callable<(cpp.Star<ImDrawList>, cpp.Star<ImDrawCmd>
 	static function create():ImVectorImGuiTextRange;
 }
 
-@:keep @:structAccess @:include("imgui.h") @:native("ImVector<char>") extern class ImVectorchar extends ImVector<cpp.Int8> {
+@:keep @:structAccess @:include("imgui.h") @:native("ImVector<char>") extern class ImVectorchar extends ImVector<cpp.Char> {
 	@:native("ImVector<char>")
 	@:overload(function(_src:ImVectorchar):ImVectorchar { })
 	static function create():ImVectorchar;
