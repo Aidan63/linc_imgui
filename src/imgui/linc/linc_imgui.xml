@@ -21,6 +21,7 @@
         <file name="${IMGUI}/imgui.cpp" />
         <file name="${IMGUI}/imgui_draw.cpp" />
         <file name="${IMGUI}/imgui_demo.cpp" />
+        <file name="${IMGUI}/imgui_tables.cpp" />
         <file name="${IMGUI}/imgui_widgets.cpp" />
     </files>
 

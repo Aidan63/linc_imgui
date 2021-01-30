@@ -85,7 +85,8 @@ class ImGuiJsonReader
     public function generateTypedefs() : Array<TypeDefinition>
     {
         final gen = [
-            { pack: [ 'imgui' ], name: 'FILE', pos: null, fields: [], kind: TDAlias(parseNativeString('void')) }
+            { pack: [ 'imgui' ], name: 'FILE', pos: null, fields: [], kind: TDAlias(parseNativeString('void')) },
+            { pack: [ 'imgui' ], name: 'ImGuiWindowPtr', pos: null, fields: [], kind: TDAlias(parseNativeString('void')) }
         ];
 
         abstractPtrs = false;
@@ -621,13 +622,21 @@ class ImGuiJsonReader
             final split = arg.split(' ');
 
             final name = split.pop();
-            final type = split.join(' ');
 
-            abstractPtrs = false;
+            if (name.contains('...'))
+            {
+                ctArgs.push(macro : haxe.extern.Rest<String>);
+            }
+            else
+            {
+                final type = split.join(' ');
 
-            ctArgs.push(parseNativeString(type));
-
-            abstractPtrs = true;
+                abstractPtrs = false;
+    
+                ctArgs.push(parseNativeString(type));
+    
+                abstractPtrs = true;
+            }
         }
 
         final ctParams = TFunction(ctArgs, parseType(returnType, false));
