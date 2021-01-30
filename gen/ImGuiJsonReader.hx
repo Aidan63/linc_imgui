@@ -153,6 +153,26 @@ class ImGuiJsonReader
     {
         final structs = [];
 
+        final tmp = macro class ImGuiDockRequest {};
+        tmp.isExtern = true;
+        tmp.meta     = [
+            { name: ':keep', pos : null },
+            { name: ':structAccess', pos : null },
+            { name: ':include', pos : null, params: [ macro $i{ '"imgui.h"' } ] },
+            { name: ':native', pos : null, params: [ macro $i{ '"ImGuiDockRequest"' } ] }
+        ];
+        structs.push(tmp);
+
+        final tmp = macro class ImGuiDockNodeSettings {};
+        tmp.isExtern = true;
+        tmp.meta     = [
+            { name: ':keep', pos : null },
+            { name: ':structAccess', pos : null },
+            { name: ':include', pos : null, params: [ macro $i{ '"imgui.h"' } ] },
+            { name: ':native', pos : null, params: [ macro $i{ '"ImGuiDockNodeSettings"' } ] }
+        ];
+        structs.push(tmp);
+
         for (name => values in enumStruct.structs)
         {
             final struct    = macro class $name {};
@@ -313,6 +333,7 @@ class ImGuiJsonReader
         for (templatedType in templatedTypes)
         {
             templatedType = templatedType.replace('*OrIndex', 'PtrOrIndex');
+            templatedType = templatedType.replace('const_charPtr*', 'const char*');
 
             final ct = parseNativeString(templatedType);
             var name = cleanNativeType(templatedType).replace(' ', '');
@@ -562,6 +583,11 @@ class ImGuiJsonReader
         final cleaned = cleanNativeType(_in);
         var ct;
 
+        if (_in.contains('ImVector_const_charPtr*'))
+        {
+            return macro : ImVectorcharPointer;
+        }
+
         if (cleaned.startsWith('ImVector_'))
         {
             var hxType = cleaned.replace('ImVector_', '');
@@ -675,7 +701,7 @@ class ImGuiJsonReader
             case 'float'                       : macro : cpp.Float32;
             case 'double'                      : macro : Float;
             case 'bool'                        : macro : Bool;
-            case 'char', 'const char'          : macro : cpp.Char;
+            case 'char', 'const char', '_charPtr' : macro : cpp.Char;
             case 'signed char'                 : macro : cpp.Int8;
             case 'unsigned char'               : macro : cpp.UInt8;
             case 'int64_t'                     : macro : cpp.Int64;
